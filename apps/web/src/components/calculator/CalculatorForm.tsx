@@ -1,11 +1,11 @@
 'use client';
 
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import { useCalculatorStore } from '../../stores/calculatorStore';
-import { CalculatorIcon, ScaleIcon, ShoppingBagIcon, TruckIcon, TagIcon, CreditCardIcon, BuildingOfficeIcon, SparklesIcon, ScaleIcon } from '@heroicons/react/24/outline';
+import { CalculatorIcon, ShoppingBagIcon, TruckIcon, TagIcon, CreditCardIcon, BuildingOfficeIcon, SparklesIcon, ScaleIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 import React from 'react';
 
@@ -102,7 +102,7 @@ const PROMO_PROGRAMS: Record<string, Array<{ value: string; label: string }>> = 
 export function CalculatorForm() {
   const { t } = useTranslation();
   const { inputs, setInputs, calculate, isCalculating } = useCalculatorStore();
-  const marketplace = useWatch({ control: useForm<CalculatorFormData>({ defaultValues: inputs }).control, name: 'marketplace' }) || inputs.marketplace;
+  // marketplace di-watch via watch() di useForm di bawah
 
   const {
     register,
@@ -123,6 +123,7 @@ export function CalculatorForm() {
   const sellingPrice = watch('sellingPrice');
   const targetMargin = watch('targetMargin');
   const hpp = watch('hpp');
+  const marketplace = watch('marketplace') || inputs.marketplace;
 
   const handleSubmitForm = (data: CalculatorFormData) => {
     setInputs(data);
@@ -158,9 +159,10 @@ export function CalculatorForm() {
                 className={clsx(
                   'relative p-3 rounded-lg border-2 transition-all text-left',
                   inputs.marketplace === mp.value
-                    ? `border-2 bg-[${mp.color}]/10`
+                    ? 'border-current'
                     : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                 )}
+                style={inputs.marketplace === mp.value ? { borderColor: mp.color, backgroundColor: `${mp.color}1A` } : undefined}
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: mp.color }}>
@@ -169,7 +171,7 @@ export function CalculatorForm() {
                   <span className="font-medium text-sm text-slate-900 dark:text-white">{mp.label}</span>
                 </div>
                 {inputs.marketplace === mp.value && (
-                  <div className="absolute top-1 right-1 w-5 h-5 rounded-full bg-[${mp.color}] flex items-center justify-center">
+                  <div className="absolute top-1 right-1 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: mp.color }}>
                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                   </div>
                 )}

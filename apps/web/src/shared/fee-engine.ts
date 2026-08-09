@@ -697,21 +697,10 @@ export function getFeeConfig(marketplace: Marketplace): MarketplaceFeeConfig {
 /**
  * Format currency for Indonesian Rupiah
  */
-export function formatIDR(amount: number): string {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
 
 /**
  * Format percentage
  */
-export function formatPercent(value: number): string {
-  return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
-}
 
 /**
  * Validate calculation inputs

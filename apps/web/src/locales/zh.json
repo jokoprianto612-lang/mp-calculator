@@ -210,5 +210,11 @@
     "error": "发生错误，请重试",
     "unauthorized": "请先登录",
     "sessionExpired": "会话已过期，请重新登录"
+  },
+  "footer": {
+    "copyright": "版权所有。",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "contact": "联系我们"
   }
 }

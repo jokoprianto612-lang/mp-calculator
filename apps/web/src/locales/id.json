@@ -210,5 +210,11 @@
     "error": "Terjadi kesalahan, silakan coba lagi",
     "unauthorized": "Silakan masuk terlebih dahulu",
     "sessionExpired": "Sesi berakhir, silakan masuk kembali"
+  },
+  "footer": {
+    "copyright": "Hak cipta dilindungi.",
+    "privacy": "Kebijakan Privasi",
+    "terms": "Syarat Layanan",
+    "contact": "Kontak"
   }
 }

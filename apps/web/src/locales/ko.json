@@ -210,5 +210,11 @@
     "error": "오류가 발생했습니다. 다시 시도해 주세요",
     "unauthorized": "로그인이 필요합니다",
     "sessionExpired": "세션이 만료되었습니다. 다시 로그인해 주세요"
+  },
+  "footer": {
+    "copyright": "모든 권리 보유.",
+    "privacy": "개인정보 처리방침",
+    "terms": "이용약관",
+    "contact": "문의하기"
   }
 }

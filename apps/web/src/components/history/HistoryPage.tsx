@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
-import { MagnifyingGlassIcon, FunnelIcon, ArrowDownTrayIcon, ArrowUpTrayIcon, TrashIcon, DocumentDuplicateIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, FunnelIcon, ArrowDownTrayIcon, ArrowUpTrayIcon, TrashIcon, DocumentDuplicateIcon, EyeIcon, CalculatorIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
@@ -209,7 +209,7 @@ export function HistoryPage() {
               <div key={calculation.id} className="card p-4 hover:shadow-card-hover transition-shadow">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1 min-w-0">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: getMarketplaceColor(calculation.marketplace).split(' ')[0].replace('bg-', '').replace('-100', '-100') }}>
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: getMarketplaceSolidColor(calculation.marketplace) }}>
                       <CalculatorIcon className="h-6 w-6 text-white" />
                     </div>
                     <div className="min-w-0">
@@ -320,5 +320,3 @@ export function HistoryPage() {
     </div>
   );
 }
-
-import { CalculatorIcon } from '@heroicons/react/24/outline';

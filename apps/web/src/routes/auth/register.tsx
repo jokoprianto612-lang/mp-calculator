@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createRoute } from '@tanstack/react-router';
+import { rootRoute } from '../__root';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,7 +22,7 @@ const registerSchema = z.object({
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
-export const registerRoute = createFileRoute('/auth/register')({
+export const registerRoute = createRoute({ getParentRoute: () => rootRoute, path: '/auth/register',
   component: RegisterPage,
 });
 
