@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronDownIcon, ChevronUpIcon, MinusIcon, PlusIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 import React from 'react';
-import type { FeeBreakdownItem } from '@mp-calculator/shared';
+import type { FeeBreakdownItem } from '@/shared';
 
 interface CalculatorBreakdownProps {
   data: FeeBreakdownItem[];

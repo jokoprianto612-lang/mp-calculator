@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { CalculatorResults } from '../calculator/CalculatorResults';
 import { CalculatorBreakdown } from '../calculator/CalculatorBreakdown';
-import type { CalculationRecord } from '@mp-calculator/shared';
+import type { CalculationRecord } from '@/shared';
 
 interface HistoryPageProps {}
 

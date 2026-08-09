@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { User } from '@mp-calculator/shared';
+import type { User } from '@/shared';
 import axios from 'axios';
 
 const api = axios.create({
