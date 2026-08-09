@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { CalculatorForm } from '../../components/calculator/CalculatorForm';
-import { CalculatorResults } from '../../components/calculator/CalculatorResults';
-import { CalculatorBreakdown } from '../../components/calculator/CalculatorBreakdown';
-import { useCalculatorStore } from '../../stores/calculatorStore';
+import { CalculatorForm } from '../components/calculator/CalculatorForm';
+import { CalculatorResults } from '../components/calculator/CalculatorResults';
+import { CalculatorBreakdown } from '../components/calculator/CalculatorBreakdown';
+import { useCalculatorStore } from '../stores/calculatorStore';
 
 export const calculatorRoute = createFileRoute('/calculator/')({
   component: CalculatorPage,

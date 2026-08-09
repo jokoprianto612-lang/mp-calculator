@@ -1,7 +1,7 @@
 import { createRootRoute, Outlet, Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/authStore';
-import { Menu, X, CalculatorIcon, ClockArrowCounterclockwisePathIcon, DocumentDuplicateIcon, Cog6ToothIcon, UserCircleIcon, ArrowRightOnRectangleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, CalculatorIcon, ClockIcon, DocumentDuplicateIcon, Cog6ToothIcon, UserCircleIcon, ArrowRightOnRectangleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 import React from 'react';
 
@@ -156,7 +156,7 @@ function RootLayout() {
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {mobileMenuOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
               </button>
             </div>
           </div>

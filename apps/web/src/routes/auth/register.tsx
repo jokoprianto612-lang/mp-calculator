@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '../../stores/authStore';
-import { CalculatorIcon, EyeIcon, EyeSlashIcon, MailIcon, LockClosedIcon, UserIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { CalculatorIcon, EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, UserIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
 import React from 'react';
@@ -98,7 +98,7 @@ function RegisterPage() {
 
           <div className="form-group">
             <label htmlFor="email" className="label">
-              <MailIcon className="h-5 w-5 inline-block mr-1" />
+              <EnvelopeIcon className="h-5 w-5 inline-block mr-1" />
               {t('auth.email')}
             </label>
             <input

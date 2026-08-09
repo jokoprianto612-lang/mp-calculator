@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import { useCalculatorStore } from '../../stores/calculatorStore';
-import { CalculatorIcon, TargetIcon, ShoppingBagIcon, TruckIcon, TagIcon, CreditCardIcon, BuildingOfficeIcon, SparklesIcon, ScaleIcon } from '@heroicons/react/24/outline';
+import { CalculatorIcon, ScaleIcon, ShoppingBagIcon, TruckIcon, TagIcon, CreditCardIcon, BuildingOfficeIcon, SparklesIcon, ScaleIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 import React from 'react';
 
@@ -232,7 +232,7 @@ export function CalculatorForm() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="form-group">
             <label htmlFor="hpp" className="label">
-              <TargetIcon className="h-5 w-5 inline-block mr-1" />
+              <ScaleIcon className="h-5 w-5 inline-block mr-1" />
               {t('calculator.inputs.hpp')}
             </label>
             <input
@@ -249,7 +249,7 @@ export function CalculatorForm() {
 
           <div className="form-group">
             <label htmlFor="targetMargin" className="label">
-              <TargetIcon className="h-5 w-5 inline-block mr-1" />
+              <ScaleIcon className="h-5 w-5 inline-block mr-1" />
               {t('calculator.inputs.targetMargin')}
             </label>
             <input
