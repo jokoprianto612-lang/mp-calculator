@@ -28,7 +28,7 @@
     "@fastify/sensible": "^5.5.0",
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^3.0.0",
-    "@mp-calculator/shared": "^1.0.0",
+    "@mp-calculator/shared": "workspace:*",
     "@prisma/client": "^5.10.0",
     "argon2": "^0.31.0",
     "axios": "^1.6.0",

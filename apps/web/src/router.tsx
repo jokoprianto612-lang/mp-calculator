@@ -7,8 +7,7 @@ import { presetsRoute } from './routes/presets';
 import { settingsRoute } from './routes/settings';
 import { loginRoute } from './routes/auth/login';
 import { registerRoute } from './routes/auth/register';
-import { authGuard } from './guards/authGuard';
-import { guestGuard } from './guards/guestGuard';
+import { authGuard, guestGuard } from './guards/authGuard';
 
 const routeTree = rootRoute.addChildren([
   indexRoute,

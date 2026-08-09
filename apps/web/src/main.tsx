@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { I18nextProvider } from 'react-i18next';
 import { Toaster } from 'react-hot-toast';
 import i18n from './i18n';
 import { router } from './router';
-import { App } from './App';
 import './styles/globals.css';
 
 const queryClient = new QueryClient({
@@ -49,8 +47,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             },
           }}
         />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </I18nextProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
+     </I18nextProvider>
+   </QueryClientProvider>
+ </React.StrictMode>
 );
