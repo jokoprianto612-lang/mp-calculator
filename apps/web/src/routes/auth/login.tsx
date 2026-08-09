@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createRoute, useNavigate } from '@tanstack/react-router';
+import { rootRoute } from '../__root';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +18,7 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-export const loginRoute = createFileRoute('/auth/login')({
+export const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '/auth/login',
   component: LoginPage,
 });
 
@@ -184,5 +185,3 @@ function LoginPage() {
     </div>
   );
 }
-
-import { useNavigate } from '@tanstack/react-router';

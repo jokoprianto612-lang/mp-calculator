@@ -1,9 +1,10 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createRoute } from '@tanstack/react-router';
+import { rootRoute } from './__root';
 import { useTranslation } from 'react-i18next';
 import { CalculatorIcon, ArrowRightIcon, CheckCircleIcon, GlobeAltIcon, SparklesIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 
-export const indexRoute = createFileRoute('/')({
+export const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: '/',
   component: HomePage,
 });
 

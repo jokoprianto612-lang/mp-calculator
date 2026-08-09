@@ -69,7 +69,7 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
               {title}
             </h3>
             {mode === 'live' && data.vsStorePercent && (
-              <p className="text-sm mt-1" className={mode === 'marketplace' ? 'text-primary-100' : 'text-slate-500 dark:text-slate-400'}>
+              <p className={clsx('text-sm mt-1', mode === 'marketplace' ? 'text-primary-100' : 'text-slate-500 dark:text-slate-400')}>
                 {data.vsStorePercent > 0 ? '+' : ''}{data.vsStorePercent.toFixed(0)}% {t('calculator.vsStorePrice')}
               </p>
             )}
@@ -132,11 +132,11 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
               )}>
                 <p className={clsx('text-4xl sm:text-5xl lg:text-6xl font-bold', mode === 'marketplace' ? 'text-white' : 'text-slate-900 dark:text-white')}>
                   {data.sellingPrice || data.marketplacePrice || data.livePrice ? formatIDR(data.sellingPrice || data.marketplacePrice || data.livePrice) : '-'}
-                </p>
+                 </p>
                 {data.netSale && data.netSale !== (data.sellingPrice || data.marketplacePrice || data.livePrice) && (
                   <p className={clsx('text-sm mt-1', mode === 'marketplace' ? 'text-primary-100' : 'text-slate-500 dark:text-slate-400')}>
                     Net Sale: {formatIDR(data.netSale)}
-                  </p>
+                   </p>
                 )}
               </div>
 
@@ -144,10 +144,10 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
               <div className={clsx('mt-4 px-4 py-3 rounded-xl text-center', profitBg, profitBorder)}>
                 <p className={clsx('text-lg font-bold', profitColor)}>
                   {isProfit ? '+' : ''}{formatIDR(data.netProfit ?? 0)} ({(data.netProfitPercent ?? 0).toFixed(1)}%)
-                </p>
+                 </p>
                 <p className={clsx('text-sm mt-1', mode === 'marketplace' ? 'text-primary-100' : 'text-slate-500 dark:text-slate-400')}>
                   {t('calculator.netProfit')}
-                </p>
+                 </p>
               </div>
             </>
           ) : (

@@ -210,17 +210,17 @@ function RootLayout() {
         <div className="container-main py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-slate-500 dark:text-slate-400 text-center md:text-left">
-              © {new Date().getFullYear()} {t('app.name')}. All rights reserved.
+              © {new Date().getFullYear()} {t('app.name')}. {t('footer.copyright')}
             </p>
             <div className="flex items-center gap-6">
               <a href="#" className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                Privacy Policy
+                {t('footer.privacy')}
               </a>
               <a href="#" className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                Terms of Service
+                {t('footer.terms')}
               </a>
               <a href="#" className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
-                Contact
+                {t('footer.contact')}
               </a>
             </div>
           </div>
