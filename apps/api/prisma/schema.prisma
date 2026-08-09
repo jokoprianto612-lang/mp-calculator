@@ -1,0 +1,148 @@
+// Prisma Schema for MP Calculator
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?
+  name          String?
+  avatar        String?
+  provider      String    @default("email") // "email", "google", "github"
+  providerId    String?
+  locale        String    @default("id")
+  theme         String    @default("system")
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  calculations  Calculation[]
+  presets       Preset[]
+  sessions      Session[]
+  oauthAccounts OAuthAccount[]
+  
+  @@index([email])
+  @@index([provider, providerId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+model OAuthAccount {
+  id           String  @id @default(cuid())
+  userId       String
+  provider     String  // "google", "github"
+  providerId   String
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+  scope        String?
+  tokenType    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([provider, providerId])
+  @@index([userId])
+}
+
+model Calculation {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String?
+  marketplace String
+  mode        String   // "marketplace", "live"
+  inputs      Json
+  results     Json
+  breakdown   Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@index([marketplace])
+}
+
+model Preset {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  marketplace String
+  inputs      Json
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([marketplace])
+}
+
+model MarketplaceFeeConfig {
+  id              String   @id @default(cuid())
+  marketplace     String   @unique
+  version         Int      @default(1)
+  config          Json
+  effectiveFrom   DateTime @default(now())
+  effectiveUntil  DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([marketplace])
+  @@index([effectiveFrom])
+}
+
+model TranslationCache {
+  id        String   @id @default(cuid())
+  sourceText String  @db.Text
+  sourceLang String
+  targetLang String
+  translatedText String @db.Text
+  provider  String   @default("deepl")
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  
+  @@unique([sourceText, sourceLang, targetLang, provider])
+  @@index([expiresAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  oldData   Json?
+  newData   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}

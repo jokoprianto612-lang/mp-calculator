@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mp-calculator-postgres
+    environment:
+      POSTGRES_DB: mp_calculator
+      POSTGRES_USER: mp_calculator
+      POSTGRES_PASSWORD: mp_calculator_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mp_calculator -d mp_calculator"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: mp-calculator-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    container_name: mp-calculator-api
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://mp_calculator:mp_calculator_dev@postgres:5432/mp_calculator?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your-super-secret-jwt-key-min-32-chars-dev
+      JWT_ACCESS_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      COOKIE_SECRET: your-super-secret-cookie-key-min-32-chars-dev
+      COOKIE_SECURE: "false"
+      CORS_ORIGIN: http://localhost:5173
+      DEEPL_API_KEY: ${DEEPL_API_KEY:-}
+      DEEPL_API_URL: https://api-free.deepl.com/v2
+      FRONTEND_URL: http://localhost:5173
+      LOG_LEVEL: debug
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../apps/api:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: pnpm dev
+
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web
+    container_name: mp-calculator-web
+    environment:
+      NODE_ENV: development
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../apps/web:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    command: pnpm dev
+
+volumes:
+  postgres_data:
+  redis_data:

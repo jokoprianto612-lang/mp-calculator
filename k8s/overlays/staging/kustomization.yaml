@@ -1,0 +1,59 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: mp-calculator
+
+resources:
+- ../../base/mp-calculator.yaml
+
+commonLabels:
+  environment: staging
+
+patches:
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mp-calculator-api
+    spec:
+      replicas: 2
+      template:
+        spec:
+          containers:
+          - name: api
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+  target:
+    kind: Deployment
+    name: mp-calculator-api
+
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mp-calculator-web
+    spec:
+      replicas: 2
+  target:
+    kind: Deployment
+    name: mp-calculator-web
+
+images:
+- name: okongzinc/mp-calculator-api
+  newTag: staging-latest
+- name: okongzinc/mp-calculator-web
+  newTag: staging-latest
+
+configMapGenerator:
+- name: mp-calculator-config
+  behavior: merge
+  literals:
+  - NODE_ENV=production
+  - LOG_LEVEL=info
+  - CORS_ORIGIN=https://staging.mpcalculator.app
+  - FRONTEND_URL=https://staging.mpcalculator.app

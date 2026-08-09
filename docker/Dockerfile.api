@@ -1,0 +1,48 @@
+# Dockerfile for API (Fastify + TypeScript)
+FROM node:20-alpine AS base
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* turbo.json ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/shared/package.json ./packages/shared/
+
+# Install dependencies
+RUN pnpm install --no-frozen-lockfile --filter @mp-calculator/api --filter @mp-calculator/shared
+
+# Copy source code
+COPY apps/api ./apps/api
+COPY packages/shared ./packages/shared
+
+# Generate Prisma client
+WORKDIR /app/apps/api
+RUN pnpm db:generate
+
+# Build
+RUN pnpm build
+
+# Production stage
+FROM node:20-alpine AS production
+
+RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
+
+WORKDIR /app
+
+# Copy built files and dependencies
+COPY --from=base /app/package.json /app/pnpm-workspace.yaml /app/turbo.json ./
+COPY --from=base /app/apps/api/package.json ./apps/api/
+COPY --from=base /app/packages/shared/package.json ./packages/shared/
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=base /app/apps/api/node_modules ./apps/api/node_modules
+COPY --from=base /app/packages/shared/node_modules ./packages/shared/node_modules
+COPY --from=base /app/apps/api/dist ./apps/api/dist
+COPY --from=base /app/packages/shared/dist ./packages/shared/dist
+COPY --from=base /app/apps/api/prisma ./apps/api/prisma
+
+EXPOSE 3000
+
+CMD ["node", "apps/api/dist/index.js"]
