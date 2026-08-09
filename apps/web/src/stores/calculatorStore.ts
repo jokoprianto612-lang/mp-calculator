@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { CalculationInputs, CalculationResult, Marketplace, CalculationMode } from '@mp-calculator/shared';
+import type { CalculationInputs, CalculationResult, Marketplace, CalculationMode } from '@/shared';
 
 interface CalculatorState {
   // Form inputs
@@ -71,7 +71,7 @@ export const useCalculatorStore = create<CalculatorState>()(
         
         try {
           // Import the fee engine dynamically
-          const { calculateMarketplacePrice, calculateLivePrice, validateInputs } = await import('@mp-calculator/shared');
+          const { calculateMarketplacePrice, calculateLivePrice, validateInputs } = await import('@/shared');
           
           // Validate
           const validation = validateInputs(inputs);
