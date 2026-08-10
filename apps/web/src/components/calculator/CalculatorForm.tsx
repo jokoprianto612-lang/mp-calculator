@@ -15,7 +15,7 @@ const calculatorSchema = z.object({
   category: z.string().min(1, 'Kategori wajib dipilih'),
   hpp: z.number().min(1, 'HPP minimal 1'),
   targetMargin: z.number().min(-100).max(1000).optional(),
-  sellingPrice: z.number().min(1).optional(),
+  sellingPrice: z.number().nonnegative().optional(),
   sellerVoucher: z.number().min(0).default(0),
   platformVoucher: z.number().min(0).default(0),
   isMallSeller: z.boolean().default(false),
@@ -32,10 +32,19 @@ const calculatorSchema = z.object({
   liveAdBudget: z.number().min(0).default(0),
   livePackingCost: z.number().min(0).default(0),
 }).refine(
-  (data) => data.sellingPrice !== undefined || data.targetMargin !== undefined,
+  (data) => {
+    // Treat 0, NaN, null, undefined as 'not set'
+    const hasSP = typeof data.sellingPrice === 'number' && data.sellingPrice > 0;
+    const hasTM = typeof data.targetMargin === 'number' && data.targetMargin > 0;
+    return hasSP || hasTM;
+  },
   { message: 'Harus mengisi Harga Jual atau Target Margin', path: ['targetMargin'] }
 ).refine(
-  (data) => !(data.sellingPrice !== undefined && data.targetMargin !== undefined),
+  (data) => {
+    const hasSP = typeof data.sellingPrice === 'number' && data.sellingPrice > 0;
+    const hasTM = typeof data.targetMargin === 'number' && data.targetMargin > 0;
+    return !(hasSP && hasTM);
+  },
   { message: 'Hanya isi salah satu: Harga Jual atau Target Margin', path: ['sellingPrice'] }
 );
 
@@ -112,8 +121,8 @@ export function CalculatorForm() {
     formState: { errors },
   } = useForm<CalculatorFormData>({
     resolver: zodResolver(calculatorSchema),
-    defaultValues: inputs,
-    mode: 'onChange',
+    defaultValues: { ...inputs, liveDiscountPercent: inputs.liveDiscountPercent ?? 20, liveAdBudget: inputs.liveAdBudget ?? 0, livePackingCost: inputs.livePackingCost ?? 0 },
+    mode: 'onSubmit',
   });
 
   const mode = watch('mode');
@@ -145,7 +154,10 @@ export function CalculatorForm() {
   const formatNumber = (num: number) => `Rp${num.toLocaleString('id-ID')}`;
 
   return (
-    <form onSubmit={handleSubmit(handleSubmitForm)} className="card p-5 space-y-6">
+    <form onSubmit={handleSubmit(handleSubmitForm, (errors) => {
+      // eslint-disable-next-line no-console
+      console.warn('[CalculatorForm] validation failed:', errors);
+    })} className="card p-5 space-y-6">
       {/* Marketplace & Mode */}
       <div className="space-y-4">
         <div>

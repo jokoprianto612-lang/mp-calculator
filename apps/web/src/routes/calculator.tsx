@@ -25,7 +25,7 @@ function CalculatorPage() {
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Calculator Form - Left Side */}
         <div className="lg:col-span-5 lg:sticky lg:top-20 lg:self-start">
-          <CalculatorForm />
+<CalculatorForm />
         </div>
 
         {/* Results - Right Side */}

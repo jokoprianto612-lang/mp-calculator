@@ -1,25 +1,25 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { CalculationInputs, CalculationResult, Marketplace, CalculationMode } from '@/shared';
+import type { CalculationInputs, CalculationResult } from '@/shared';
 
 interface CalculatorState {
   // Form inputs
   inputs: CalculationInputs;
   setInputs: (inputs: Partial<CalculationInputs>) => void;
   resetInputs: () => void;
-  
+
   // Results
   marketplacePrice: CalculationResult | null;
   livePrice: CalculationResult | null;
   setMarketplacePrice: (result: CalculationResult) => void;
   setLivePrice: (result: CalculationResult) => void;
-  
+
   // Calculation state
   isCalculating: boolean;
   setIsCalculating: (value: boolean) => void;
   lastCalculated: Date | null;
   setLastCalculated: (date: Date) => void;
-  
+
   // Actions
   calculate: () => Promise<void>;
 }
@@ -42,6 +42,10 @@ const defaultInputs: CalculationInputs = {
   packingCost: 5000,
   freeShippingProgram: 'xtra',
   promoProgram: 'promo-xtra',
+  // Live mode defaults (required by zod schema even when mode='marketplace')
+  liveDiscountPercent: 20,
+  liveAdBudget: 0,
+  livePackingCost: 0,
 };
 
 export const useCalculatorStore = create<CalculatorState>()(
@@ -67,22 +71,22 @@ export const useCalculatorStore = create<CalculatorState>()(
 
       calculate: async () => {
         const { inputs, setIsCalculating, setMarketplacePrice, setLivePrice, setLastCalculated } = get();
-        setIsCalculating(true);
-        
+setIsCalculating(true);
+
         try {
           // Import the fee engine dynamically
           const { calculateMarketplacePrice, calculateLivePrice, validateInputs } = await import('@/shared');
-          
+
           // Validate
           const validation = validateInputs(inputs);
           if (!validation.valid) {
             throw new Error(validation.errors.join(', '));
           }
-          
+
           // Calculate marketplace price
           const marketplaceResult = calculateMarketplacePrice(inputs);
           setMarketplacePrice(marketplaceResult);
-          
+
           // Calculate live price if in live mode
           if (inputs.mode === 'live') {
             const liveInputs = inputs as any; // LiveSellingInputs
@@ -91,7 +95,7 @@ export const useCalculatorStore = create<CalculatorState>()(
           } else {
             setLivePrice(null as any);
           }
-          
+
           setLastCalculated(new Date());
         } catch (error) {
           console.error('Calculation error:', error);
