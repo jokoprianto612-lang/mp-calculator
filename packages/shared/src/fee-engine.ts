@@ -24,23 +24,26 @@ Decimal.set({ precision: 28, rounding: Decimal.ROUND_HALF_UP });
 export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   tokopedia: {
     marketplace: 'tokopedia',
-    version: 1,
-    platformCommissionRate: 0.025,      // 2.5%
+    version: 2,
+    platformCommissionRate: 0.05,       // Komisi Platform 5% (avg, 2.5-10% range per kategori)
     dynamicCommissionRates: {
-      'electronics': 0.035,
-      'fashion': 0.045,
-      'home': 0.03,
-      'beauty': 0.04,
-      'health': 0.03,
-      'sports': 0.035,
-      'automotive': 0.025,
-      'books': 0.02,
-      'toys': 0.04,
-      'food': 0.02,
-      'default': 0.03,
+      'electronics': 0.04,
+      'fashion': 0.06,
+      'home': 0.04,
+      'beauty': 0.05,
+      'health': 0.04,
+      'sports': 0.045,
+      'automotive': 0.03,
+      'books': 0.025,
+      'toys': 0.05,
+      'food': 0.03,
+      'default': 0.04,
     },
-    mallServiceRate: 0.01,              // 1%
-    orderProcessingFee: 1250,           // Rp1,250 per order
+    dynamicCommissionCap: 650000,       // Rp650.000 cap per item
+    mallServiceRate: 0.02,              // Mall +2% (12.2% total Mall max)
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1250,           // Rp1.250 per order
     logisticsFeeConfig: {
       baseFee: 5000,
       perKgFee: 2500,
@@ -61,8 +64,8 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   },
   shopee: {
     marketplace: 'shopee',
-    version: 1,
-    platformCommissionRate: 0.03,       // 3%
+    version: 2,
+    platformCommissionRate: 0.10,       // Shopee Admin 10% (per kategori dasar)
     dynamicCommissionRates: {
       'electronics': 0.04,
       'fashion': 0.05,
@@ -76,8 +79,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.025,
       'default': 0.035,
     },
-    mallServiceRate: 0.015,             // 1.5%
-    orderProcessingFee: 1500,           // Rp1,500 per order
+    dynamicCommissionCap: 650000,       // Rp650.000 cap per item (Tokopedia/TikTok aligned)
+    mallServiceRate: 0.017,             // Mall rate +1.7% (Shopee Mall 11.7% total)
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1250,           // Rp1.250 per order (Biaya Proses Pesanan)
     logisticsFeeConfig: {
       baseFee: 4000,
       perKgFee: 3000,
@@ -98,8 +104,8 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   },
   lazada: {
     marketplace: 'lazada',
-    version: 1,
-    platformCommissionRate: 0.02,       // 2%
+    version: 2,
+    platformCommissionRate: 0.04,       // Lazada Commission 4% (avg, range 2-8% per kategori)
     dynamicCommissionRates: {
       'electronics': 0.03,
       'fashion': 0.04,
@@ -113,8 +119,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.02,
       'default': 0.025,
     },
-    mallServiceRate: 0.008,             // 0.8%
-    orderProcessingFee: 1000,           // Rp1,000 per order
+    dynamicCommissionCap: 500000,       // Rp500.000 cap per item (Lazada)
+    mallServiceRate: 0.015,             // Mall +1.5%
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1000,           // Rp1.000 per order
     logisticsFeeConfig: {
       baseFee: 6000,
       perKgFee: 2000,
@@ -135,23 +144,26 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   },
   tiktok: {
     marketplace: 'tiktok',
-    version: 1,
-    platformCommissionRate: 0.015,      // 1.5% (promotional rate)
+    version: 2,
+    platformCommissionRate: 0.05,       // Komisi Platform 5% (unified with Tokopedia May 2026)
     dynamicCommissionRates: {
-      'electronics': 0.025,
-      'fashion': 0.035,
-      'home': 0.02,
-      'beauty': 0.03,
-      'health': 0.02,
-      'sports': 0.025,
-      'automotive': 0.015,
-      'books': 0.01,
-      'toys': 0.03,
-      'food': 0.015,
-      'default': 0.02,
+      'electronics': 0.04,
+      'fashion': 0.06,
+      'home': 0.04,
+      'beauty': 0.05,
+      'health': 0.04,
+      'sports': 0.045,
+      'automotive': 0.03,
+      'books': 0.025,
+      'toys': 0.05,
+      'food': 0.03,
+      'default': 0.04,
     },
-    mallServiceRate: 0.005,             // 0.5%
-    orderProcessingFee: 500,            // Rp500 per order
+    dynamicCommissionCap: 650000,       // Rp650.000 cap per item (unified Tokopedia)
+    mallServiceRate: 0.02,              // Mall +2%
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1250,           // Rp1.250 per order (unified Tokopedia)
     logisticsFeeConfig: {
       baseFee: 3000,
       perKgFee: 1500,
@@ -194,7 +206,7 @@ export function calculateLogisticsFee(
  * Get dynamic commission rate for a category
  */
 export function getDynamicCommissionRate(config: MarketplaceFeeConfig, category: string): number {
-  return config.dynamicCommissionRates[category] ?? config.dynamicCommissionRates.default ?? 0.03;
+  return config.dynamicCommissionRates[category] ?? config.dynamicCommissionRates['default'] ?? 0.03;
 }
 
 /**
@@ -334,9 +346,9 @@ function calculateSellingPriceFromMargin(
   // Iterate to converge
   for (let i = 0; i < 20; i++) {
     const testResult = computeFees(sellingPrice, inputs, config, dynamicRate);
-    const actualMargin = testResult.netProfitPercent / 100;
+    const actualMargin = Number(testResult.netProfitPercent) / 100;
     
-    const diff = actualMargin - targetMargin;
+    const diff = actualMargin - Number(targetMargin);
     if (Math.abs(diff) < 0.0001) break; // Converged
     
     // Adjust price
@@ -368,40 +380,53 @@ function computeFees(
   
   // Platform Commission Fee
   const platformFee = netSale.times(config.platformCommissionRate);
-  
-  // Dynamic Commission Fee
-  const dynamicFee = netSale.times(dynamicRate);
-  
+
+  // Dynamic Commission Fee (with optional cap per item)
+  let dynamicFee = netSale.times(dynamicRate);
+  if (config.dynamicCommissionCap && dynamicFee.greaterThan(config.dynamicCommissionCap)) {
+    dynamicFee = new Decimal(config.dynamicCommissionCap);
+  }
+
   // Mall Service Fee (if mall seller)
   const mallFee = inputs.isMallSeller ? netSale.times(config.mallServiceRate) : new Decimal(0);
-  
+
+  // Mall Payment Fee (1.8% cap Rp50.000, only for mall sellers)
+  let mallPaymentFee = new Decimal(0);
+  if (inputs.isMallSeller && config.mallPaymentFeeRate) {
+    mallPaymentFee = netSale.times(config.mallPaymentFeeRate);
+    if (config.mallPaymentFeeCap && mallPaymentFee.greaterThan(config.mallPaymentFeeCap)) {
+      mallPaymentFee = new Decimal(config.mallPaymentFeeCap);
+    }
+  }
+
   // Order Processing Fee
   const processingFee = new Decimal(config.orderProcessingFee);
-  
+
   // Logistics Fee
   const logisticsFee = calculateLogisticsFee(inputs.weight, config.logisticsFeeConfig);
-  
+
   // AMS Commission Fee
   const amsFee = inputs.useAms ? netSale.times(config.amsCommissionRate) : new Decimal(0);
-  
+
   // Advertising Fee
   const adFee = adBudget;
-  
+
   // Free Shipping Fee
   const freeShippingProgram = config.freeShippingPrograms.find(p => p.id === inputs.freeShippingProgram);
   const freeShippingFee = calculateFreeShippingFee(netSale, freeShippingProgram, config);
-  
+
   // Promo Fee
   const promoProgram = config.promoPrograms.find(p => p.id === inputs.promoProgram);
   const promoFee = calculatePromoFee(netSale, promoProgram, config);
-  
+
   // Tax (PPh 22)
   const taxFee = netSale.times(config.taxRate);
-  
+
   // Total Marketplace Deductions (fees charged by marketplace)
   const marketplaceDeduction = platformFee
     .plus(dynamicFee)
     .plus(mallFee)
+    .plus(mallPaymentFee)
     .plus(processingFee)
     .plus(logisticsFee)
     .plus(amsFee)
@@ -434,6 +459,7 @@ function computeFees(
     platformFee,
     dynamicFee,
     mallFee,
+    mallPaymentFee,
     processingFee,
     logisticsFee,
     amsFee,
@@ -475,6 +501,7 @@ interface BreakdownData {
   platformFee: Decimal;
   dynamicFee: Decimal;
   mallFee: Decimal;
+  mallPaymentFee: Decimal;
   processingFee: Decimal;
   logisticsFee: Decimal;
   amsFee: Decimal;
@@ -502,6 +529,7 @@ function buildBreakdown(data: BreakdownData): FeeBreakdownItem[] {
     platformFee,
     dynamicFee,
     mallFee,
+    mallPaymentFee,
     processingFee,
     logisticsFee,
     amsFee,
@@ -590,7 +618,17 @@ function buildBreakdown(data: BreakdownData): FeeBreakdownItem[] {
       tooltip: `Biaya layanan mall ${(config.mallServiceRate * 100).toFixed(2)}% dari Net Sale`,
     });
   }
-  
+
+  // Mall Payment Fee
+  if (mallPaymentFee.greaterThan(0)) {
+    items.push({
+      label: 'Biaya Pembayaran Mall',
+      amount: mallPaymentFee.neg().toNumber(),
+      type: 'expense',
+      tooltip: `1,8% dari Net Sale${config.mallPaymentFeeCap ? ` · maks. Rp${config.mallPaymentFeeCap.toLocaleString('id-ID')}` : ''}`,
+    });
+  }
+
   // Processing Fee
   items.push({
     label: 'Biaya Pemrosesan Pesanan',
@@ -692,25 +730,6 @@ function buildBreakdown(data: BreakdownData): FeeBreakdownItem[] {
  */
 export function getFeeConfig(marketplace: Marketplace): MarketplaceFeeConfig {
   return DEFAULT_FEE_CONFIGS[marketplace];
-}
-
-/**
- * Format currency for Indonesian Rupiah
- */
-export function formatIDR(amount: number): string {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-/**
- * Format percentage
- */
-export function formatPercent(value: number): string {
-  return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
 }
 
 /**
