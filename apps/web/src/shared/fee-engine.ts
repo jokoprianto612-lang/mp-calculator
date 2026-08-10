@@ -24,23 +24,26 @@ Decimal.set({ precision: 28, rounding: Decimal.ROUND_HALF_UP });
 export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   tokopedia: {
     marketplace: 'tokopedia',
-    version: 1,
-    platformCommissionRate: 0.025,      // 2.5%
+    version: 2,
+    platformCommissionRate: 0.05,       // Komisi Platform 5% (unified May 2026)
     dynamicCommissionRates: {
-      'electronics': 0.035,
-      'fashion': 0.045,
-      'home': 0.03,
-      'beauty': 0.04,
-      'health': 0.03,
-      'sports': 0.035,
-      'automotive': 0.025,
-      'books': 0.02,
-      'toys': 0.04,
-      'food': 0.02,
-      'default': 0.03,
+      'electronics': 0.04,
+      'fashion': 0.06,
+      'home': 0.04,
+      'beauty': 0.05,
+      'health': 0.04,
+      'sports': 0.045,
+      'automotive': 0.03,
+      'books': 0.025,
+      'toys': 0.05,
+      'food': 0.03,
+      'default': 0.04,
     },
-    mallServiceRate: 0.01,              // 1%
-    orderProcessingFee: 1250,           // Rp1,250 per order
+    dynamicCommissionCap: 650000,
+    mallServiceRate: 0.02,
+    mallPaymentFeeRate: 0.018,
+    mallPaymentFeeCap: 50000,
+    orderProcessingFee: 1250,
     logisticsFeeConfig: {
       baseFee: 5000,
       perKgFee: 2500,
@@ -61,8 +64,8 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   },
   shopee: {
     marketplace: 'shopee',
-    version: 1,
-    platformCommissionRate: 0.03,       // 3%
+    version: 2,
+    platformCommissionRate: 0.10,       // Shopee Admin 10%
     dynamicCommissionRates: {
       'electronics': 0.04,
       'fashion': 0.05,
@@ -76,8 +79,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.025,
       'default': 0.035,
     },
-    mallServiceRate: 0.015,             // 1.5%
-    orderProcessingFee: 1500,           // Rp1,500 per order
+    dynamicCommissionCap: 650000,
+    mallServiceRate: 0.017,
+    mallPaymentFeeRate: 0.018,
+    mallPaymentFeeCap: 50000,
+    orderProcessingFee: 1250,
     logisticsFeeConfig: {
       baseFee: 4000,
       perKgFee: 3000,
@@ -98,8 +104,8 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   },
   lazada: {
     marketplace: 'lazada',
-    version: 1,
-    platformCommissionRate: 0.02,       // 2%
+    version: 2,
+    platformCommissionRate: 0.04,       // Lazada 4%
     dynamicCommissionRates: {
       'electronics': 0.03,
       'fashion': 0.04,
@@ -113,8 +119,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.02,
       'default': 0.025,
     },
-    mallServiceRate: 0.008,             // 0.8%
-    orderProcessingFee: 1000,           // Rp1,000 per order
+    dynamicCommissionCap: 500000,
+    mallServiceRate: 0.015,
+    mallPaymentFeeRate: 0.018,
+    mallPaymentFeeCap: 50000,
+    orderProcessingFee: 1000,
     logisticsFeeConfig: {
       baseFee: 6000,
       perKgFee: 2000,
@@ -135,23 +144,26 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   },
   tiktok: {
     marketplace: 'tiktok',
-    version: 1,
-    platformCommissionRate: 0.015,      // 1.5% (promotional rate)
+    version: 2,
+    platformCommissionRate: 0.05,       // Komisi Platform 5% (unified with Tokopedia May 2026)
     dynamicCommissionRates: {
-      'electronics': 0.025,
-      'fashion': 0.035,
-      'home': 0.02,
-      'beauty': 0.03,
-      'health': 0.02,
-      'sports': 0.025,
-      'automotive': 0.015,
-      'books': 0.01,
-      'toys': 0.03,
-      'food': 0.015,
-      'default': 0.02,
+      'electronics': 0.04,
+      'fashion': 0.06,
+      'home': 0.04,
+      'beauty': 0.05,
+      'health': 0.04,
+      'sports': 0.045,
+      'automotive': 0.03,
+      'books': 0.025,
+      'toys': 0.05,
+      'food': 0.03,
+      'default': 0.04,
     },
-    mallServiceRate: 0.005,             // 0.5%
-    orderProcessingFee: 500,            // Rp500 per order
+    dynamicCommissionCap: 650000,
+    mallServiceRate: 0.02,
+    mallPaymentFeeRate: 0.018,
+    mallPaymentFeeCap: 50000,
+    orderProcessingFee: 1250,
     logisticsFeeConfig: {
       baseFee: 3000,
       perKgFee: 1500,
@@ -365,43 +377,56 @@ function computeFees(
   // Net Sale = Selling Price - Seller Voucher - Platform Voucher
   const netSale = sellingPrice.minus(sellerVoucher).minus(platformVoucher);
   if (netSale.lessThan(0)) throw new Error('Vouchers cannot exceed selling price');
-  
+
   // Platform Commission Fee
   const platformFee = netSale.times(config.platformCommissionRate);
-  
-  // Dynamic Commission Fee
-  const dynamicFee = netSale.times(dynamicRate);
-  
+
+  // Dynamic Commission Fee (with optional cap per item)
+  let dynamicFee = netSale.times(dynamicRate);
+  if (config.dynamicCommissionCap && dynamicFee.greaterThan(config.dynamicCommissionCap)) {
+    dynamicFee = new Decimal(config.dynamicCommissionCap);
+  }
+
   // Mall Service Fee (if mall seller)
   const mallFee = inputs.isMallSeller ? netSale.times(config.mallServiceRate) : new Decimal(0);
-  
+
+  // Mall Payment Fee (1.8% cap Rp50.000, only for mall sellers)
+  let mallPaymentFee = new Decimal(0);
+  if (inputs.isMallSeller && config.mallPaymentFeeRate) {
+    mallPaymentFee = netSale.times(config.mallPaymentFeeRate);
+    if (config.mallPaymentFeeCap && mallPaymentFee.greaterThan(config.mallPaymentFeeCap)) {
+      mallPaymentFee = new Decimal(config.mallPaymentFeeCap);
+    }
+  }
+
   // Order Processing Fee
   const processingFee = new Decimal(config.orderProcessingFee);
-  
+
   // Logistics Fee
   const logisticsFee = calculateLogisticsFee(inputs.weight, config.logisticsFeeConfig);
-  
+
   // AMS Commission Fee
   const amsFee = inputs.useAms ? netSale.times(config.amsCommissionRate) : new Decimal(0);
-  
+
   // Advertising Fee
   const adFee = adBudget;
-  
+
   // Free Shipping Fee
   const freeShippingProgram = config.freeShippingPrograms.find(p => p.id === inputs.freeShippingProgram);
   const freeShippingFee = calculateFreeShippingFee(netSale, freeShippingProgram, config);
-  
+
   // Promo Fee
   const promoProgram = config.promoPrograms.find(p => p.id === inputs.promoProgram);
   const promoFee = calculatePromoFee(netSale, promoProgram, config);
-  
+
   // Tax (PPh 22)
   const taxFee = netSale.times(config.taxRate);
-  
-  // Total Marketplace Deductions (fees charged by marketplace)
+
+  // Total Marketplace Deductions
   const marketplaceDeduction = platformFee
     .plus(dynamicFee)
     .plus(mallFee)
+    .plus(mallPaymentFee)
     .plus(processingFee)
     .plus(logisticsFee)
     .plus(amsFee)
@@ -426,30 +451,31 @@ function computeFees(
   
   // Build breakdown
   const breakdown = buildBreakdown({
-    sellingPrice,
-    netSale,
-    sellerVoucher,
-    platformVoucher,
-    hpp,
-    platformFee,
-    dynamicFee,
-    mallFee,
-    processingFee,
-    logisticsFee,
-    amsFee,
-    adFee,
-    freeShippingFee,
-    promoFee,
-    taxFee,
-    packingCost,
-    marketplaceDeduction,
-    sellerCost,
-    netProfit,
-    inputs,
-    config,
-    freeShippingProgram,
-    promoProgram,
-  });
+      sellingPrice,
+      netSale,
+      sellerVoucher,
+      platformVoucher,
+      hpp,
+      platformFee,
+      dynamicFee,
+      mallFee,
+      mallPaymentFee,
+      processingFee,
+      logisticsFee,
+      amsFee,
+      adFee,
+      freeShippingFee,
+      promoFee,
+      taxFee,
+      packingCost,
+      marketplaceDeduction,
+      sellerCost,
+      netProfit,
+      inputs,
+      config,
+      freeShippingProgram,
+      promoProgram,
+    });
   
   return {
     netSale: netSale.toNumber(),
@@ -475,6 +501,7 @@ interface BreakdownData {
   platformFee: Decimal;
   dynamicFee: Decimal;
   mallFee: Decimal;
+  mallPaymentFee: Decimal;
   processingFee: Decimal;
   logisticsFee: Decimal;
   amsFee: Decimal;
@@ -502,6 +529,7 @@ function buildBreakdown(data: BreakdownData): FeeBreakdownItem[] {
     platformFee,
     dynamicFee,
     mallFee,
+    mallPaymentFee,
     processingFee,
     logisticsFee,
     amsFee,
@@ -590,7 +618,17 @@ function buildBreakdown(data: BreakdownData): FeeBreakdownItem[] {
       tooltip: `Biaya layanan mall ${(config.mallServiceRate * 100).toFixed(2)}% dari Net Sale`,
     });
   }
-  
+
+  // Mall Payment Fee
+  if (mallPaymentFee.greaterThan(0)) {
+    items.push({
+      label: 'Biaya Pembayaran Mall',
+      amount: mallPaymentFee.neg().toNumber(),
+      type: 'expense',
+      tooltip: `1,8% dari Net Sale${config.mallPaymentFeeCap ? ` · maks. Rp${config.mallPaymentFeeCap.toLocaleString('id-ID')}` : ''}`,
+    });
+  }
+
   // Processing Fee
   items.push({
     label: 'Biaya Pemrosesan Pesanan',

@@ -72,6 +72,7 @@
       "platformFee": "Platform Commission Fee",
       "dynamicFee": "Dynamic Commission Fee",
       "mallFee": "Mall Service Fee",
+      "mallPaymentFee": "Mall Payment Fee",
       "processingFee": "Order Processing Fee",
       "logisticsFee": "Logistics Service Fee",
       "amsFee": "AMS Commission Fee",

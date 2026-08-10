@@ -72,6 +72,7 @@
       "platformFee": "平台佣金费",
       "dynamicFee": "动态佣金费",
       "mallFee": "商城服务费",
+      "mallPaymentFee": "商城支付费",
       "processingFee": "订单处理费",
       "logisticsFee": "物流服务费",
       "amsFee": "AMS 佣金费",

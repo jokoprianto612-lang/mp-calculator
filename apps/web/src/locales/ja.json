@@ -72,6 +72,7 @@
       "platformFee": "プラットフォーム手数料",
       "dynamicFee": "動的手数料",
       "mallFee": "モールサービス料",
+      "mallPaymentFee": "モール決済手数料",
       "processingFee": "注文処理料",
       "logisticsFee": "物流サービス料",
       "amsFee": "AMS手数料",

@@ -72,6 +72,7 @@
       "platformFee": "Biaya Komisi Platform",
       "dynamicFee": "Biaya Komisi Dinamis",
       "mallFee": "Biaya Layanan Mall",
+      "mallPaymentFee": "Biaya Pembayaran Mall",
       "processingFee": "Biaya Pemrosesan Pesanan",
       "logisticsFee": "Biaya Layanan Logistik",
       "amsFee": "Biaya Komisi AMS",

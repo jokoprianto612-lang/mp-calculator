@@ -72,6 +72,7 @@
       "platformFee": "플랫폼 수수료",
       "dynamicFee": "동적 수수료",
       "mallFee": "몰 서비스 수수료",
+      "mallPaymentFee": "몰 결제 수수료",
       "processingFee": "주문 처리 수수료",
       "logisticsFee": "물류 서비스 수수료",
       "amsFee": "AMS 수수료",
