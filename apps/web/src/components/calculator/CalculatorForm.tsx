@@ -15,7 +15,7 @@ const calculatorSchema = z.object({
   category: z.string().min(1, 'Kategori wajib dipilih'),
   hpp: z.number().min(1, 'HPP minimal 1'),
   targetMargin: z.number().min(-100).max(1000).optional(),
-  sellingPrice: z.number().nonnegative().optional(),
+  sellingPrice: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? undefined : v, z.number().nonnegative().optional()),
   sellerVoucher: z.number().min(0).default(0),
   platformVoucher: z.number().min(0).default(0),
   isMallSeller: z.boolean().default(false),
