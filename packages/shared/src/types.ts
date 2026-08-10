@@ -13,7 +13,10 @@ export interface MarketplaceFeeConfig {
   version: number;
   platformCommissionRate: number;        // e.g., 0.025 = 2.5%
   dynamicCommissionRates: Record<string, number>; // category -> rate
+  dynamicCommissionCap?: number;         // cap per item for dynamic commission (e.g. 650000)
   mallServiceRate: number;               // e.g., 0.01 = 1%
+  mallPaymentFeeRate?: number;           // e.g., 0.018 = 1.8% (mall payment fee)
+  mallPaymentFeeCap?: number;            // e.g., 50000 cap
   orderProcessingFee: number;            // fixed amount per order
   logisticsFeeConfig: LogisticsFeeConfig;
   amsCommissionRate: number;             // e.g., 0.03 = 3%
