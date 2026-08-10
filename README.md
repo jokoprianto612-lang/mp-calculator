@@ -319,7 +319,7 @@ The web app is self-contained and deployable to Cloudflare Pages without the API
 
 **Dashboard configuration:**
 - **Branch to deploy:** `feature/web-redesign`
-- **Build command:** `pnpm install --no-frozen-lockfile && pnpm --filter @svcmarket/web run build`
+- **Build command:** `pnpm install --no-frozen-lockfile && pnpm --filter @mp-calculator/web run build`
 - **Build output directory:** `apps/web/dist`
 - **Root directory:** *(leave empty / blank)*
 - **Environment variables:**
@@ -433,4 +433,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 - **DeepL** for translation API
 - **Indonesian Marketplace Communities** for fee structure data
-- **Open Source Contributors** for all the amazing libraries used
+- **Open Source Contributors** for all the amazing libraries used/usr/bin/bash: line 7: /c/Users/asusv/AppData/Local/hermes/cache/terminal/hermes-cwd-2819669c4129.txt: Device or resource busy
