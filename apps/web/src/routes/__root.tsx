@@ -2,6 +2,7 @@ import { createRootRoute, Outlet, Link, useNavigate } from '@tanstack/react-rout
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/authStore';
 import { Bars3Icon, XMarkIcon, CalculatorIcon, Cog6ToothIcon, UserCircleIcon, ArrowRightOnRectangleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { OkongzINCLogo } from '../components/brand/OkongzINCLogo';
 import { clsx } from 'clsx';
 import React from 'react';
 import { AnimatedBackground } from '../components/common/AnimatedBackground';
@@ -48,9 +49,9 @@ function RootLayout() {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary-500 hover:text-primary-400 transition-colors">
-              <CalculatorIcon className="h-7 w-7" />
+              <OkongzINCLogo size={40} />
               <span>{t('app.name')}</span>
-           </Link>
+          </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex md:items-center md:gap-6">

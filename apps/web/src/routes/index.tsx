@@ -2,6 +2,7 @@ import { Link, createRoute } from '@tanstack/react-router';
 import { rootRoute } from './__root';
 import { useTranslation } from 'react-i18next';
 import { CalculatorIcon, ArrowRightIcon, CheckCircleIcon, GlobeAltIcon, SparklesIcon, BoltIcon, ChartBarIcon } from '@heroicons/react/24/outline';
+import { OkongzINCLogo } from '../components/brand/OkongzINCLogo';
 
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -41,13 +42,17 @@ function HomePage() {
       <section className="relative py-24 sm:py-32">
         <div className="container-main">
           <div className="max-w-4xl mx-auto text-center">
+            <div className="flex justify-center mb-8">
+              <OkongzINCLogo size={140} />
+           </div>
+
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/15 text-primary-300 border border-primary-500/30 text-sm font-medium mb-8">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-primary-500 opacity-75 animate-ping" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500" />
-             </span>
+            </span>
               <span>Versi 1.0 - Production Ready</span>
-           </div>
+          </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
               <span className="text-slate-100">{t('app.name')}</span>
