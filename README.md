@@ -313,6 +313,25 @@ kubectl apply -k k8s/overlays/staging
 kubectl apply -k k8s/overlays/prod
 ```
 
+### Cloudflare Pages (Web only)
+
+The web app is self-contained and deployable to Cloudflare Pages without the API server (calculator uses local fee engine).
+
+**Dashboard configuration:**
+- **Branch to deploy:** `feature/web-redesign`
+- **Build command:** `pnpm install --no-frozen-lockfile && pnpm --filter @svcmarket/web run build`
+- **Build output directory:** `apps/web/dist`
+- **Root directory:** *(leave empty / blank)*
+- **Environment variables:**
+  - `VITE_API_URL` — leave empty (offline mode) or set to API URL
+  - `NODE_VERSION` — `20`
+
+**Important:** Root directory MUST be empty. Setting it to `/` causes "root directory not found" error because the build expects to run pnpm workspace commands from project root.
+
+**SPA routing:** Handled by `apps/web/public/_redirects` (all routes → `/index.html`).
+
+**Caching:** `apps/web/public/_headers` sets immutable cache for hashed assets, fresh `/index.html` per request.
+
 ### Environment Variables
 
 #### API Required
