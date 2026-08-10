@@ -1,4 +1,4 @@
-# MP Calculator - Marketplace Profit Calculator
+# OkongzINC - Marketplace Profit Calculator
 
 A comprehensive marketplace profit calculator for Indonesian e-commerce sellers (Tokopedia, Shopee, Lazada, TikTok Shop) with integrated DeepL translation capabilities.
 
