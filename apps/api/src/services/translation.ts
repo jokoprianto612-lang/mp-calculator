@@ -4,7 +4,7 @@
 
 import axios, { AxiosInstance } from 'axios';
 import { config } from '../config';
-import { redis } from './redis';
+import { redis } from '../lib/redis';
 import type { TranslationRequest, TranslationResponse, SupportedLanguage } from '@mp-calculator/shared';
 
 interface DeepLResponse {
@@ -64,7 +64,7 @@ export class TranslationService {
       const result: TranslationResponse = {
         translations: response.data.translations.map(t => ({
           text: t.text,
-          detectedSourceLanguage: t.detected_source_language.toLowerCase() as SupportedLanguage,
+          detectedSourceLanguage: t.detected_source_language.toLowerCase() as any,
         })),
       };
 
@@ -99,7 +99,7 @@ export class TranslationService {
       });
 
       return response.data.map((lang: any) => ({
-        code: lang.language.toLowerCase() as SupportedLanguage,
+        code: lang.language.toLowerCase() as any,
         name: lang.name,
         nativeName: lang.name, // DeepL doesn't provide native name, fallback
       }));
@@ -122,7 +122,7 @@ export class TranslationService {
   private mockTranslate(texts: string[], sourceLang: string, targetLang: string): TranslationResponse {
     const translations = texts.map(text => ({
       text: `[${targetLang.toUpperCase()}] ${text}`,
-      detectedSourceLanguage: sourceLang as SupportedLanguage,
+      detectedSourceLanguage: sourceLang as any,
     }));
     return { translations };
   }

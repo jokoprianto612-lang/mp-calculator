@@ -115,11 +115,12 @@ export function PresetsPage() {
     return colors[mp] || 'bg-slate-100 text-slate-700';
   };
 
-  const formatDate = (date: string) => new Date(date).toLocaleDateString('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
+  const formatDate = (date: Date | string) =>
+    new Date(date).toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
 
   return (
     <div className="container-main py-6 lg:py-8">
@@ -334,5 +335,3 @@ function PresetForm({ initialData, onSubmit, onClose }: {
     </form>
   );
 }
-
-import { useState } from 'react';

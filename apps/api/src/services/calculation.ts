@@ -75,9 +75,9 @@ export class CalculationService {
         name: data.name,
         marketplace: data.inputs.marketplace,
         mode: data.inputs.mode,
-        inputs: data.inputs,
-        results: liveResult ?? result,
-        breakdown: liveResult?.breakdown ?? result.breakdown,
+        inputs: data.inputs as any,
+        results: (liveResult ?? result) as any,
+        breakdown: (liveResult?.breakdown ?? result.breakdown) as any,
       },
     });
   }
@@ -130,7 +130,7 @@ export class CalculationService {
     if (!existing) throw new Error('Calculation not found');
 
     // Merge inputs
-    const mergedInputs = { ...existing.inputs, ...data.inputs } as CalculationInputs;
+    const mergedInputs = Object.assign({}, (existing as any).inputs, data.inputs) as CalculationInputs;
     
     // Recalculate
     const result = await this.calculate(mergedInputs);
@@ -142,9 +142,9 @@ export class CalculationService {
       where: { id },
       data: {
         name: data.name ?? existing.name,
-        inputs: mergedInputs,
-        results: liveResult ?? result,
-        breakdown: liveResult?.breakdown ?? result.breakdown,
+        inputs: mergedInputs as any,
+        results: (liveResult ?? result) as any,
+        breakdown: (liveResult?.breakdown ?? result.breakdown) as any,
       },
     });
   }
@@ -169,9 +169,9 @@ export class CalculationService {
         name: `${existing.name || 'Calculation'} (Copy)`,
         marketplace: existing.marketplace,
         mode: existing.mode,
-        inputs: existing.inputs,
-        results: existing.results,
-        breakdown: existing.breakdown,
+        inputs: existing.inputs as any,
+        results: existing.results as any,
+        breakdown: existing.breakdown as any,
       },
     });
   }

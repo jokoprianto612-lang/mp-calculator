@@ -85,13 +85,14 @@ export function HistoryPage() {
     setShowDetail(true);
   };
 
-  const formatDate = (date: string) => new Date(date).toLocaleString('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const formatDate = (date: Date | string) =>
+    new Date(date).toLocaleString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
 
   const formatIDR = (num: number) => `Rp${num.toLocaleString('id-ID')}`;
 
@@ -103,6 +104,16 @@ export function HistoryPage() {
       tiktok: 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300',
     };
     return colors[mp] || 'bg-slate-100 text-slate-700';
+  };
+
+  const getMarketplaceSolidColor = (mp: string) => {
+    const solid: Record<string, string> = {
+      tokopedia: '#00A651',
+      shopee: '#EE4D2D',
+      lazada: '#FF6B00',
+      tiktok: '#0a0a0a',
+    };
+    return solid[mp] || '#6366F1';
   };
 
   const getModeLabel = (mode: string) => mode === 'marketplace' ? t('calculator.inputs.modeMarketplace') : t('calculator.inputs.modeLive');
@@ -310,7 +321,7 @@ export function HistoryPage() {
                 isCalculating={false}
               />
               <CalculatorBreakdown
-                data={selectedCalculation.breakdown ?? []}
+                data={selectedCalculation.results?.breakdown ?? []}
                 mode="marketplace"
               />
             </div>

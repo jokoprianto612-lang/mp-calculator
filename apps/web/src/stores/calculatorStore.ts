@@ -89,7 +89,7 @@ export const useCalculatorStore = create<CalculatorState>()(
             const liveResult = calculateLivePrice(marketplaceResult.marketplacePrice, liveInputs);
             setLivePrice(liveResult);
           } else {
-            setLivePrice(null);
+            setLivePrice(null as any);
           }
           
           setLastCalculated(new Date());

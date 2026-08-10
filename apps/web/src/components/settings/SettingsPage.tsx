@@ -234,7 +234,7 @@ export function SettingsPage() {
                     <button
                       key={theme.value}
                       type="button"
-                      onClick={() => profileForm.setValue('theme', theme.value, { shouldValidate: true })}
+                      onClick={() => profileForm.setValue('theme', theme.value as ProfileFormData['theme'], { shouldValidate: true })}
                       className={clsx(
                         'relative p-4 rounded-xl border-2 transition-all text-left',
                         profileForm.watch('theme') === theme.value
@@ -273,7 +273,7 @@ export function SettingsPage() {
                     <button
                       key={lang.code}
                       type="button"
-                      onClick={() => profileForm.setValue('locale', lang.code, { shouldValidate: true })}
+                      onClick={() => profileForm.setValue('locale', lang.code as ProfileFormData['locale'], { shouldValidate: true })}
                       className={clsx(
                         'relative p-4 rounded-xl border-2 transition-all text-left',
                         profileForm.watch('locale') === lang.code
@@ -300,8 +300,8 @@ export function SettingsPage() {
 
               <div className="card p-6">
                 <button
-                  type="submit"
-                  form={profileForm._form}
+                  type="button"
+                  onClick={() => { void profileForm.handleSubmit(handleProfileSubmit)(); }}
                   className="btn-primary w-full"
                   disabled={isSaving}
                 >

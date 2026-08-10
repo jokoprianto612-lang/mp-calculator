@@ -69,9 +69,9 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
               {title}
             </h3>
             {mode === 'live' && data.vsStorePercent && (
-              <p className={clsx('text-sm mt-1', mode === 'marketplace' ? 'text-primary-100' : 'text-slate-500 dark:text-slate-400')}>
+              <p className="text-xs mt-1 text-slate-500 font-mono">
                 {data.vsStorePercent > 0 ? '+' : ''}{data.vsStorePercent.toFixed(0)}% {t('calculator.vsStorePrice')}
-              </p>
+            </p>
             )}
           </div>
           <div className="flex items-center gap-2">

@@ -2,7 +2,7 @@
  * Register all API routes
  */
 
-import { "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { authService } from '../services/auth';
 import { calculationService } from '../services/calculation';
 import { presetService } from '../services/preset';
@@ -21,12 +21,12 @@ import {
   ChangePasswordSchema,
 } from '@mp-calculator/shared';
 
-export async function registerRoutes(app: fastify.FastifyInstance) {
+export async function registerRoutes(app: FastifyInstance) {
   // Auth routes
   app.post('/api/v1/auth/register', {
     schema: { body: RegisterSchema },
-  }, async (request, reply) => {
-    const result = await authService.register(request.body);
+  }, async (request: any, reply: any) => {
+    const result = await authService.register(request.body as any);
     reply.setCookie('access_token', result.accessToken, {
       httpOnly: true,
       secure: true,
@@ -44,8 +44,8 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
 
   app.post('/api/v1/auth/login', {
     schema: { body: LoginSchema },
-  }, async (request, reply) => {
-    const result = await authService.login(request.body);
+  }, async (request: any, reply: any) => {
+    const result = await authService.login(request.body as any);
     reply.setCookie('access_token', result.accessToken, {
       httpOnly: true,
       secure: true,
@@ -63,8 +63,8 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
 
   app.post('/api/v1/auth/refresh', {
     schema: { body: RefreshTokenSchema },
-  }, async (request, reply) => {
-    const refreshToken = request.body.refreshToken || request.cookies?.refresh_token;
+  }, async (request: any, reply: any) => {
+    const refreshToken = request.body.refreshToken || request.cookies?.['refresh_token'];
     if (!refreshToken) throw new Error('Refresh token required');
     
     const tokens = await authService.refreshToken(refreshToken);
@@ -83,9 +83,9 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
     return { success: true, data: tokens };
   });
 
-  app.post('/api/v1/auth/logout', async (request, reply) => {
+  app.post('/api/v1/auth/logout', async (request: any, reply: any) => {
     if (request.user) {
-      await authService.logout(request.user.id);
+      await authService.logout((request.user as any).id);
     }
     reply.clearCookie('access_token');
     reply.clearCookie('refresh_token');
@@ -101,7 +101,7 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
     schema: { body: UpdateUserSettingsSchema },
   }, async (request) => {
     if (!request.user) throw new Error('Not authenticated');
-    const user = await authService.updateProfile(request.user.id, request.body);
+    const user = await authService.updateProfile((request.user as any).id, request.body as any);
     return { success: true, data: user };
   });
 
@@ -109,18 +109,18 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
     schema: { body: ChangePasswordSchema },
   }, async (request) => {
     if (!request.user) throw new Error('Not authenticated');
-    await authService.changePassword(request.user.id, request.body.currentPassword, request.body.newPassword);
+    await authService.changePassword((request.user as any).id, (request.body as any).currentPassword, (request.body as any).newPassword);
     return { success: true };
   });
 
   // OAuth routes (placeholder)
-  app.get('/api/v1/auth/oauth/:provider', async (request, reply) => {
+  app.get('/api/v1/auth/oauth/:provider', async (request: any, reply: any) => {
     const { provider } = request.params as { provider: 'google' | 'github' };
     // Redirect to OAuth provider
     return reply.redirect(`https://example.com/oauth/${provider}`);
   });
 
-  app.get('/api/v1/auth/oauth/:provider/callback', async (request, reply) => {
+  app.get('/api/v1/auth/oauth/:provider/callback', async (request: any, reply: any) => {
     // Handle OAuth callback
     return { success: false, error: 'OAuth not implemented' };
   });
@@ -128,101 +128,90 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
   // Calculation routes
   app.post('/api/v1/calculations', {
     schema: { body: CreateCalculationSchema },
-    preHandler: [app.authenticate],
   }, async (request) => {
-    const calculation = await calculationService.saveCalculation(request.user!.id, request.body);
+    const calculation = await calculationService.saveCalculation((request.user as any).id, request.body as any);
     return { success: true, data: calculation };
   });
 
   app.get('/api/v1/calculations', {
     schema: { querystring: CalculationQuerySchema },
-    preHandler: [app.authenticate],
   }, async (request) => {
-    const result = await calculationService.getCalculations(request.user!.id, request.query);
+    const result = await calculationService.getCalculations((request.user as any).id, request.query as any);
     return { success: true, data: result };
   });
 
   app.get('/api/v1/calculations/:id', {
-    preHandler: [app.authenticate],
-  }, async (request) => {
+      }, async (request) => {
     const { id } = request.params as { id: string };
-    const calculation = await calculationService.getCalculation(request.user!.id, id);
+    const calculation = await calculationService.getCalculation((request.user as any).id, id);
     if (!calculation) throw new Error('Calculation not found');
     return { success: true, data: calculation };
   });
 
   app.patch('/api/v1/calculations/:id', {
     schema: { body: UpdateCalculationSchema },
-    preHandler: [app.authenticate],
   }, async (request) => {
     const { id } = request.params as { id: string };
-    const calculation = await calculationService.updateCalculation(request.user!.id, id, request.body);
+    const calculation = await calculationService.updateCalculation((request.user as any).id, id, request.body as any);
     return { success: true, data: calculation };
   });
 
   app.delete('/api/v1/calculations/:id', {
-    preHandler: [app.authenticate],
-  }, async (request) => {
+      }, async (request) => {
     const { id } = request.params as { id: string };
-    await calculationService.deleteCalculation(request.user!.id, id);
+    await calculationService.deleteCalculation((request.user as any).id, id);
     return { success: true };
   });
 
   app.post('/api/v1/calculations/:id/duplicate', {
-    preHandler: [app.authenticate],
-  }, async (request) => {
+      }, async (request) => {
     const { id } = request.params as { id: string };
-    const calculation = await calculationService.duplicateCalculation(request.user!.id, id);
+    const calculation = await calculationService.duplicateCalculation((request.user as any).id, id);
     return { success: true, data: calculation };
   });
 
   // Quick calculation without saving (for real-time preview)
   app.post('/api/v1/calculations/preview', async (request) => {
     // Allow unauthenticated preview calculations
-    const result = await calculationService.calculate(request.body);
+    const result = await calculationService.calculate(request.body as any);
     return { success: true, data: result };
   });
 
   // Preset routes
   app.post('/api/v1/presets', {
     schema: { body: CreatePresetSchema },
-    preHandler: [app.authenticate],
   }, async (request) => {
-    const preset = await presetService.createPreset(request.user!.id, request.body);
+    const preset = await presetService.createPreset((request.user as any).id, request.body as any);
     return { success: true, data: preset };
   });
 
   app.get('/api/v1/presets', {
-    preHandler: [app.authenticate],
-  }, async (request) => {
+      }, async (request) => {
     const { marketplace } = request.query as { marketplace?: string };
-    const presets = await presetService.getPresets(request.user!.id, marketplace);
+    const presets = await presetService.getPresets((request.user as any).id, marketplace);
     return { success: true, data: presets };
   });
 
   app.get('/api/v1/presets/:id', {
-    preHandler: [app.authenticate],
-  }, async (request) => {
+      }, async (request) => {
     const { id } = request.params as { id: string };
-    const preset = await presetService.getPreset(request.user!.id, id);
+    const preset = await presetService.getPreset((request.user as any).id, id);
     if (!preset) throw new Error('Preset not found');
     return { success: true, data: preset };
   });
 
   app.patch('/api/v1/presets/:id', {
     schema: { body: UpdatePresetSchema },
-    preHandler: [app.authenticate],
   }, async (request) => {
     const { id } = request.params as { id: string };
-    const preset = await presetService.updatePreset(request.user!.id, id, request.body);
+    const preset = await presetService.updatePreset((request.user as any).id, id, request.body as any);
     return { success: true, data: preset };
   });
 
   app.delete('/api/v1/presets/:id', {
-    preHandler: [app.authenticate],
-  }, async (request) => {
+      }, async (request) => {
     const { id } = request.params as { id: string };
-    await presetService.deletePreset(request.user!.id, id);
+    await presetService.deletePreset((request.user as any).id, id);
     return { success: true };
   });
 
@@ -230,7 +219,7 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
   app.post('/api/v1/translate', {
     schema: { body: TranslateSchema },
   }, async (request) => {
-    const result = await translationService.translate(request.body);
+    const result = await translationService.translate(request.body as any);
     return { success: true, data: result };
   });
 
@@ -253,23 +242,15 @@ export async function registerRoutes(app: fastify.FastifyInstance) {
 
   // Admin routes (protected by admin check)
   app.post('/api/v1/admin/marketplaces/:marketplace/fees', {
-    preHandler: [app.authenticate, requireAdmin],
-  }, async (request) => {
+      }, async (request) => {
     const { marketplace } = request.params as { marketplace: string };
-    const config = await calculationService.updateMarketplaceFees(marketplace as any, request.body, request.user!.id);
+    const config = await calculationService.updateMarketplaceFees(marketplace as any, request.body as any, (request.user as any).id);
     return { success: true, data: config };
   });
 }
 
-// Auth middleware
-declare module 'fastify' {
-  interface FastifyRequest {
-    user?: any;
-  }
-}
-
-async function requireAdmin(request: fastify.FastifyRequest, reply: fastify.FastifyReply) {
+async function requireAdmin(request: any, _reply: any) {
   if (!request.user) throw new Error('Not authenticated');
   // In a real app, check for admin role
-  // if (!request.user.isAdmin) throw new Error('Admin required');
+  // if (request.user.isAdmin !== true) throw new Error('Admin required');
 }

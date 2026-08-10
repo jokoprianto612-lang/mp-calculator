@@ -68,8 +68,8 @@ export class PresetService {
     return prisma.preset.update({
       where: { id },
       data: {
-        name: data.name,
-        inputs: data.inputs ? { ...existing.inputs, ...data.inputs } : existing.inputs,
+        name: data.name as string,
+        inputs: data.inputs ? ({ ...(existing.inputs as object), ...data.inputs } as any) : (existing.inputs as any),
         isDefault: data.isDefault ?? existing.isDefault,
       },
     });

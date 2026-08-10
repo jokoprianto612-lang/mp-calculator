@@ -65,7 +65,7 @@ export async function registerPlugins(app: any) {
     timeWindow: config.rateLimit.window,
     allowList: ['127.0.0.1', '::1'],
     redis: redis,
-    keyGenerator: (req) => req.ip,
+    keyGenerator: (req: any) => req.ip,
     errorMessage: 'Too many requests, please try again later',
   });
 

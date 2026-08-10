@@ -4,11 +4,11 @@
 
 import { prisma } from '../lib/prisma';
 import { hashPassword, verifyPassword, validatePasswordStrength } from '../lib/password';
-import { createAccessToken, createRefreshToken, verifyAccessToken, verifyRefreshToken } from '../lib/jwt';
+import { signAccessToken, signRefreshToken, verifyToken } from '../lib/jwt';
 import { redis } from '../lib/redis';
 import { config } from '../config';
 import type { RegisterInput, LoginInput, OAuthCallbackInput } from '@mp-calculator/shared';
-import type { User } from '@mp-calculator/shared';
+import type { User } from '@prisma/client';
 
 const REFRESH_TOKEN_PREFIX = 'refresh_token:';
 const REFRESH_TOKEN_TTL = 7 * 24 * 60 * 60; // 7 days
@@ -89,7 +89,7 @@ export class AuthService {
     // Verify refresh token
     let payload;
     try {
-      payload = await verifyRefreshToken(refreshToken);
+      payload = await verifyToken(refreshToken);
     } catch {
       throw new Error('Invalid or expired refresh token');
     }
@@ -126,7 +126,7 @@ export class AuthService {
    * Get current user from access token
    */
   async getCurrentUser(accessToken: string) {
-    const payload = await verifyAccessToken(accessToken);
+    const payload = await verifyToken(accessToken);
     const user = await prisma.user.findUnique({ where: { id: payload.sub } });
     if (!user) throw new Error('User not found');
     return this.sanitizeUser(user);
@@ -199,8 +199,8 @@ export class AuthService {
    */
   private async generateTokens(userId: string, email: string) {
     const [accessToken, refreshToken] = await Promise.all([
-      createAccessToken(userId, email),
-      createRefreshToken(userId, email),
+      signAccessToken({ sub: userId, email }),
+      signRefreshToken({ sub: userId }),
     ]);
 
     return { accessToken, refreshToken, expiresIn: 15 * 60 }; // 15 minutes

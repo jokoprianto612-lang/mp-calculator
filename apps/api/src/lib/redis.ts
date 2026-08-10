@@ -24,6 +24,6 @@ redis.on('connect', () => {
   console.log('Redis connected');
 });
 
-if (process.env.NODE_ENV !== 'production') globalForRedis.redis = redis;
+if (process.env['NODE_ENV'] !== 'production') globalForRedis.redis = redis;
 
 export default redis;

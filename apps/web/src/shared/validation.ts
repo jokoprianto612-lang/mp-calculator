@@ -11,8 +11,8 @@ export const CalculationModeSchema = z.enum(['marketplace', 'live']);
 export const LanguageSchema = z.enum(['id', 'en', 'zh', 'ja', 'ko']);
 export const ThemeSchema = z.enum(['light', 'dark', 'system']);
 
-// Calculation inputs
-export const CalculationInputsSchema = z.object({
+// Calculation inputs (base for extend/partial; refined version adds cross-field validation)
+export const CalculationInputsBaseSchema = z.object({
   marketplace: MarketplaceSchema,
   mode: CalculationModeSchema,
   category: z.string().min(1, 'Kategori wajib diisi'),
@@ -36,7 +36,9 @@ export const CalculationInputsSchema = z.object({
   packingCost: z.number().min(0).default(0),
   freeShippingProgram: z.string().optional(),
   promoProgram: z.string().optional(),
-}).refine(
+});
+
+export const CalculationInputsSchema = CalculationInputsBaseSchema.refine(
   (data) => data.sellingPrice !== undefined || data.targetMargin !== undefined,
   { message: 'Harus mengisi sellingPrice atau targetMargin', path: ['sellingPrice'] }
 ).refine(
@@ -44,7 +46,7 @@ export const CalculationInputsSchema = z.object({
   { message: 'Hanya boleh mengisi salah satu: sellingPrice atau targetMargin', path: ['targetMargin'] }
 );
 
-export const LiveSellingInputsSchema = CalculationInputsSchema.extend({
+export const LiveSellingInputsSchema = CalculationInputsBaseSchema.extend({
   liveDiscountPercent: z.number().min(0).max(100),
   liveAdBudget: z.number().min(0).optional(),
   livePackingCost: z.number().min(0).optional(),
@@ -81,7 +83,7 @@ export const CreateCalculationSchema = z.object({
 
 export const UpdateCalculationSchema = z.object({
   name: z.string().max(200).optional(),
-  inputs: CalculationInputsSchema.partial().optional(),
+  inputs: CalculationInputsBaseSchema.partial().optional(),
 });
 
 export const CalculationQuerySchema = z.object({
@@ -103,13 +105,13 @@ export const CreatePresetSchema = z.object({
 
 export const UpdatePresetSchema = z.object({
   name: z.string().min(1).max(100).optional(),
-  inputs: CalculationInputsSchema.partial().optional(),
+  inputs: CalculationInputsBaseSchema.partial().optional(),
   isDefault: z.boolean().optional(),
 });
 
 // Translation schemas
 export const TranslateSchema = z.object({
-  text: z.union([z.string(), z.array(z.string())]).min(1),
+  text: z.union([z.string().min(1), z.array(z.string()).min(1)]),
   targetLang: LanguageSchema,
   sourceLang: LanguageSchema.optional(),
   preserveFormatting: z.boolean().default(false),

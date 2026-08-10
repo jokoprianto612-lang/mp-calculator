@@ -22,7 +22,7 @@ export const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '
   component: LoginPage,
 });
 
-function LoginPage() {
+export function LoginPage() {
   const { t } = useTranslation();
   const { login, isLoading } = useAuthStore();
   const navigate = useNavigate();

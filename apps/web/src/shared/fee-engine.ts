@@ -334,9 +334,9 @@ function calculateSellingPriceFromMargin(
   // Iterate to converge
   for (let i = 0; i < 20; i++) {
     const testResult = computeFees(sellingPrice, inputs, config, dynamicRate);
-    const actualMargin = testResult.netProfitPercent / 100;
+    const actualMargin = Number(testResult.netProfitPercent) / 100;
     
-    const diff = actualMargin - targetMargin;
+    const diff = actualMargin - Number(targetMargin);
     if (Math.abs(diff) < 0.0001) break; // Converged
     
     // Adjust price

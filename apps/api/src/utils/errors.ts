@@ -5,6 +5,7 @@
 import { FastifyInstance, FastifyError, FastifyRequest, FastifyReply } from 'fastify';
 import { ZodError } from 'zod';
 import { Prisma } from '@prisma/client';
+import { config } from '../config';
 
 export function setupErrorHandler(app: FastifyInstance) {
   app.setErrorHandler(async (error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
@@ -110,7 +111,7 @@ export function setupErrorHandler(app: FastifyInstance) {
 // Custom error classes
 export class AppError extends Error {
   constructor(
-    public message: string,
+    message: string,
     public statusCode: number = 500,
     public code: string = 'ERROR'
   ) {

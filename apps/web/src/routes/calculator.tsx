@@ -1,6 +1,5 @@
 import { createRoute } from '@tanstack/react-router';
 import { rootRoute } from './__root';
-import { rootRoute } from './__root';
 import { useTranslation } from 'react-i18next';
 import { CalculatorForm } from '../components/calculator/CalculatorForm';
 import { CalculatorResults } from '../components/calculator/CalculatorResults';

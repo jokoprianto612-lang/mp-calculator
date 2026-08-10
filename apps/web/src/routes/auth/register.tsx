@@ -1,4 +1,4 @@
-import { Link, createRoute } from '@tanstack/react-router';
+import { Link, createRoute, useNavigate } from '@tanstack/react-router';
 import { rootRoute } from '../__root';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
@@ -26,7 +26,7 @@ export const registerRoute = createRoute({ getParentRoute: () => rootRoute, path
   component: RegisterPage,
 });
 
-function RegisterPage() {
+export function RegisterPage() {
   const { t } = useTranslation();
   const { register: registerUser, isLoading } = useAuthStore();
   const navigate = useNavigate();
@@ -247,5 +247,3 @@ function RegisterPage() {
     </div>
   );
 }
-
-import { useNavigate } from '@tanstack/react-router';
