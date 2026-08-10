@@ -157,7 +157,7 @@ export function CalculatorForm() {
     <form onSubmit={handleSubmit(handleSubmitForm, (errors) => {
       // eslint-disable-next-line no-console
       console.warn('[CalculatorForm] validation failed:', errors);
-    })} className="card p-5 space-y-6">
+    })} className="relative overflow-hidden rounded-xl border border-primary-900/30 bg-[#121812]/60 backdrop-blur-sm p-5 space-y-6">
       {/* Marketplace & Mode */}
       <div className="space-y-4">
         <div>
@@ -171,8 +171,8 @@ export function CalculatorForm() {
                 className={clsx(
                   'relative p-3 rounded-lg border-2 transition-all text-left',
                   inputs.marketplace === mp.value
-                    ? 'border-current'
-                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                    ? 'border-primary-500 bg-primary-500/10'
+                    : 'border-primary-900/30 hover:border-primary-700/50'
                 )}
                 style={inputs.marketplace === mp.value ? { borderColor: mp.color, backgroundColor: `${mp.color}1A` } : undefined}
               >
@@ -206,8 +206,8 @@ export function CalculatorForm() {
                 className={clsx(
                   'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 transition-all',
                   mode === opt.value
-                    ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                    ? 'border-primary-500 bg-primary-500/15 text-primary-300'
+                    : 'border-primary-900/30 hover:border-primary-700/50'
                 )}
               >
                 <opt.icon className="h-5 w-5" />
@@ -237,8 +237,8 @@ export function CalculatorForm() {
       </div>
 
       {/* Core Pricing */}
-      <div className="border-t border-slate-200 dark:border-slate-700 pt-4 space-y-4">
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+      <div className="border-t border-primary-900/20 pt-5 space-y-4">
+        <h3 className="text-xs font-semibold text-primary-400 uppercase tracking-wider flex items-center gap-2">
           <CalculatorIcon className="h-5 w-5 text-primary-500" />
           Harga & Margin
         </h3>
@@ -273,7 +273,7 @@ export function CalculatorForm() {
               min="-100"
               max="1000"
               step="0.1"
-              className={clsx('input', errors.targetMargin && 'input-error', sellingPrice && 'bg-slate-50 dark:bg-slate-800/50')}
+              className={clsx('input', errors.targetMargin && 'input-error', sellingPrice && 'bg-[#0a0e0a]/40')}
               placeholder="20"
               disabled={!!sellingPrice}
             />
@@ -293,7 +293,7 @@ export function CalculatorForm() {
             type="number"
             min="1"
             step="1000"
-            className={clsx('input', errors.sellingPrice && 'input-error', targetMargin && 'bg-slate-50 dark:bg-slate-800/50')}
+            className={clsx('input', errors.sellingPrice && 'input-error', targetMargin && 'bg-[#0a0e0a]/40')}
             placeholder="250000"
             disabled={!!targetMargin}
           />
@@ -303,8 +303,8 @@ export function CalculatorForm() {
       </div>
 
       {/* Vouchers */}
-      <div className="border-t border-slate-200 dark:border-slate-700 pt-4 space-y-4">
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+      <div className="border-t border-primary-900/20 pt-5 space-y-4">
+        <h3 className="text-xs font-semibold text-primary-400 uppercase tracking-wider flex items-center gap-2">
           <CreditCardIcon className="h-5 w-5 text-primary-500" />
           Voucher & Diskon
         </h3>
@@ -338,8 +338,8 @@ export function CalculatorForm() {
       </div>
 
       {/* Seller Settings */}
-      <div className="border-t border-slate-200 dark:border-slate-700 pt-4 space-y-4">
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+      <div className="border-t border-primary-900/20 pt-5 space-y-4">
+        <h3 className="text-xs font-semibold text-primary-400 uppercase tracking-wider flex items-center gap-2">
           <BuildingOfficeIcon className="h-5 w-5 text-primary-500" />
           Pengaturan Penjual
         </h3>
@@ -351,7 +351,7 @@ export function CalculatorForm() {
               type="checkbox"
               className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
             />
-            <span className="text-sm text-slate-700 dark:text-slate-300">{t('calculator.inputs.isMallSeller')}</span>
+            <span className="text-sm text-slate-300">{t('calculator.inputs.isMallSeller')}</span>
           </label>
 
           <label className="flex items-center gap-2 cursor-pointer">
@@ -360,7 +360,7 @@ export function CalculatorForm() {
               type="checkbox"
               className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
             />
-            <span className="text-sm text-slate-700 dark:text-slate-300">{t('calculator.inputs.useAms')}</span>
+            <span className="text-sm text-slate-300">{t('calculator.inputs.useAms')}</span>
           </label>
         </div>
 
@@ -372,7 +372,7 @@ export function CalculatorForm() {
             type="number"
             min="0"
             step="1000"
-            className={clsx('input', !useAds && 'bg-slate-50 dark:bg-slate-800/50')}
+            className={clsx('input', !useAds && 'bg-[#0a0e0a]/40')}
             placeholder="0"
             disabled={!useAds}
           />
@@ -395,8 +395,8 @@ export function CalculatorForm() {
       </div>
 
       {/* Shipping & Logistics */}
-      <div className="border-t border-slate-200 dark:border-slate-700 pt-4 space-y-4">
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+      <div className="border-t border-primary-900/20 pt-5 space-y-4">
+        <h3 className="text-xs font-semibold text-primary-400 uppercase tracking-wider flex items-center gap-2">
           <TruckIcon className="h-5 w-5 text-primary-500" />
           Pengiriman & Logistik
         </h3>
@@ -468,8 +468,8 @@ export function CalculatorForm() {
       </div>
 
       {/* Packing Cost */}
-      <div className="border-t border-slate-200 dark:border-slate-700 pt-4 space-y-4">
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+      <div className="border-t border-primary-900/20 pt-5 space-y-4">
+        <h3 className="text-xs font-semibold text-primary-400 uppercase tracking-wider flex items-center gap-2">
           <ScaleIcon className="h-5 w-5 text-primary-500" />
           Biaya Tambahan
         </h3>
@@ -526,7 +526,7 @@ export function CalculatorForm() {
       <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
         <button
           type="submit"
-          className="btn-primary w-full py-3 text-lg"
+          className="relative w-full py-3.5 text-base font-semibold rounded-lg bg-primary-500 hover:bg-primary-400 text-[#0a0e0a] transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_30px_rgba(118,185,0,0.25)] hover:shadow-[0_0_40px_rgba(118,185,0,0.4)]"
           disabled={isCalculating}
         >
           {isCalculating ? (

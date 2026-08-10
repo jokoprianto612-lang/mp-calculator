@@ -1,9 +1,10 @@
 import { createRootRoute, Outlet, Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/authStore';
-import { Bars3Icon, XMarkIcon, CalculatorIcon, ClockIcon, DocumentDuplicateIcon, Cog6ToothIcon, UserCircleIcon, ArrowRightOnRectangleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, CalculatorIcon, Cog6ToothIcon, UserCircleIcon, ArrowRightOnRectangleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
 import React from 'react';
+import { AnimatedBackground } from '../components/common/AnimatedBackground';
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
@@ -14,6 +15,7 @@ function RootLayout() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [langMenuOpen, setLangMenuOpen] = React.useState(false);
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
 
   const handleLogout = async () => {
@@ -24,6 +26,7 @@ function RootLayout() {
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+    setLangMenuOpen(false);
   };
 
   const languages = [
@@ -35,56 +38,59 @@ function RootLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="relative min-h-screen bg-[#0a0e0a] text-slate-100 overflow-x-hidden">
+      {/* Animated background - green network pattern */}
+      <AnimatedBackground />
+
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0e0a]/80 backdrop-blur-md border-b border-primary-900/30">
         <div className="container-main">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary-600 dark:text-primary-400">
-              <CalculatorIcon className="h-8 w-8" />
+            <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary-500 hover:text-primary-400 transition-colors">
+              <CalculatorIcon className="h-7 w-7" />
               <span>{t('app.name')}</span>
-            </Link>
+           </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex md:items-center md:gap-6">
               {isAuthenticated ? (
                 <>
-                  <Link to="/calculator" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors">
+                  <Link to="/calculator" className="text-sm font-medium text-slate-300 hover:text-primary-400 transition-colors">
                     {t('nav.calculator')}
-                  </Link>
-                  <Link to="/history" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors">
+                 </Link>
+                  <Link to="/history" className="text-sm font-medium text-slate-300 hover:text-primary-400 transition-colors">
                     {t('nav.history')}
-                  </Link>
-                  <Link to="/presets" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors">
+                 </Link>
+                  <Link to="/presets" className="text-sm font-medium text-slate-300 hover:text-primary-400 transition-colors">
                     {t('nav.presets')}
-                  </Link>
-                  <Link to="/settings" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors">
+                 </Link>
+                  <Link to="/settings" className="text-sm font-medium text-slate-300 hover:text-primary-400 transition-colors">
                     {t('nav.settings')}
-                  </Link>
+                 </Link>
                 </>
               ) : (
                 <>
-                  <Link to="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors">
+                  <Link to="/login" className="text-sm font-medium text-slate-300 hover:text-primary-400 transition-colors">
                     {t('nav.login')}
-                  </Link>
+                 </Link>
                   <Link to="/register" className="btn-primary btn-sm">
                     {t('nav.register')}
-                  </Link>
+                 </Link>
                 </>
               )}
-              
+
               {/* Language Selector */}
               <div className="relative">
                 <button
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
-                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-slate-300 hover:text-primary-400 transition-colors rounded-lg hover:bg-primary-900/20"
+                  onClick={() => { setLangMenuOpen(!langMenuOpen); setUserMenuOpen(false); }}
                 >
                   <GlobeAltIcon className="h-5 w-5" />
                   <span>{languages.find(l => l.code === i18n.language)?.nativeName || i18n.language}</span>
-                </button>
-                {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-50 animate-in">
+               </button>
+                {langMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-[#121812] rounded-lg shadow-xl border border-primary-900/40 py-1 z-50 animate-in">
                     {languages.map(lang => (
                       <button
                         key={lang.code}
@@ -92,140 +98,140 @@ function RootLayout() {
                         className={clsx(
                           'w-full px-4 py-2 text-left text-sm transition-colors',
                           i18n.language === lang.code
-                            ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
-                            : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
+                            ? 'bg-primary-500/20 text-primary-300'
+                            : 'text-slate-300 hover:bg-primary-900/20'
                         )}
                       >
                         {lang.nativeName}
-                      </button>
+                     </button>
                     ))}
-                  </div>
+                 </div>
                 )}
-              </div>
+             </div>
 
               {/* User Menu */}
               {isAuthenticated && (
                 <div className="relative">
                   <button
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-primary-900/20 transition-colors"
+                    onClick={() => { setUserMenuOpen(!userMenuOpen); setLangMenuOpen(false); }}
                   >
-                    <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
-                      <UserCircleIcon className="h-5 w-5 text-primary-600 dark:text-primary-400" />
-                    </div>
-                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:block">
+                    <div className="w-8 h-8 rounded-full bg-primary-500/20 flex items-center justify-center">
+                      <UserCircleIcon className="h-5 w-5 text-primary-400" />
+                   </div>
+                    <span className="text-sm font-medium text-slate-200 hidden sm:block">
                       {user?.name || user?.email}
-                    </span>
-                  </button>
+                   </span>
+                 </button>
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-50 animate-in">
+                    <div className="absolute right-0 mt-2 w-48 bg-[#121812] rounded-lg shadow-xl border border-primary-900/40 py-1 z-50 animate-in">
                       <Link
                         to="/settings"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-primary-900/20"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <Cog6ToothIcon className="h-5 w-5" />
                         {t('nav.settings')}
-                      </Link>
+                     </Link>
                       <Link
                         to="/profile"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-primary-900/20"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <UserCircleIcon className="h-5 w-5" />
                         {t('nav.profile')}
-                      </Link>
-                      <hr className="my-1 border-slate-200 dark:border-slate-700" />
+                     </Link>
+                      <hr className="my-1 border-primary-900/30" />
                       <button
                         onClick={handleLogout}
-                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-danger-600 hover:bg-danger-50 dark:hover:bg-danger-900/20"
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-red-900/20"
                       >
                         <ArrowRightOnRectangleIcon className="h-5 w-5" />
                         {t('nav.logout')}
-                      </button>
-                    </div>
+                     </button>
+                   </div>
                   )}
-                </div>
+               </div>
               )}
-            </div>
+           </div>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button
-                className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+                className="p-2 rounded-lg text-slate-300 hover:bg-primary-900/20 transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
+             </button>
+           </div>
+         </div>
+       </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 py-4 animate-in">
+          <div className="md:hidden bg-[#0a0e0a]/95 border-t border-primary-900/30 py-4 animate-in">
             <div className="container-main space-y-2">
               {isAuthenticated ? (
                 <>
-                  <Link to="/calculator" className="block px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/calculator" className="block px-4 py-2 text-slate-300 hover:bg-primary-900/20 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
                     {t('nav.calculator')}
-                  </Link>
-                  <Link to="/history" className="block px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                 </Link>
+                  <Link to="/history" className="block px-4 py-2 text-slate-300 hover:bg-primary-900/20 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
                     {t('nav.history')}
-                  </Link>
-                  <Link to="/presets" className="block px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                 </Link>
+                  <Link to="/presets" className="block px-4 py-2 text-slate-300 hover:bg-primary-900/20 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
                     {t('nav.presets')}
-                  </Link>
-                  <Link to="/settings" className="block px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                 </Link>
+                  <Link to="/settings" className="block px-4 py-2 text-slate-300 hover:bg-primary-900/20 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
                     {t('nav.settings')}
-                  </Link>
-                  <hr className="my-2 border-slate-200 dark:border-slate-700" />
-                  <button onClick={handleLogout} className="w-full px-4 py-2 text-left text-danger-600 hover:bg-danger-50 dark:hover:bg-danger-900/20 rounded-lg">
+                 </Link>
+                  <hr className="my-2 border-primary-900/30" />
+                  <button onClick={handleLogout} className="w-full px-4 py-2 text-left text-red-400 hover:bg-red-900/20 rounded-lg">
                     {t('nav.logout')}
-                  </button>
+                 </button>
                 </>
               ) : (
                 <>
-                  <Link to="/login" className="block px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/login" className="block px-4 py-2 text-slate-300 hover:bg-primary-900/20 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
                     {t('nav.login')}
-                  </Link>
+                 </Link>
                   <Link to="/register" className="block px-4 py-2 text-center btn-primary mx-4 mt-2" onClick={() => setMobileMenuOpen(false)}>
                     {t('nav.register')}
-                  </Link>
+                 </Link>
                 </>
               )}
-            </div>
-          </div>
+           </div>
+         </div>
         )}
-      </nav>
+     </nav>
 
       {/* Main Content */}
-      <main className="pt-16 min-h-screen">
+      <main className="relative pt-16 min-h-screen z-10">
         <Outlet />
-      </main>
+     </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+      <footer className="relative z-10 border-t border-primary-900/30 bg-[#0a0e0a]/80 backdrop-blur-md">
         <div className="container-main py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-500 dark:text-slate-400 text-center md:text-left">
-              © {new Date().getFullYear()} {t('app.name')}. {t('footer.copyright')}
-            </p>
+            <p className="text-sm text-slate-400 text-center md:text-left">
+              &copy; {new Date().getFullYear()} {t('app.name')}. {t('footer.copyright')}
+           </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
+              <a href="#" className="text-sm text-slate-400 hover:text-primary-400 transition-colors">
                 {t('footer.privacy')}
-              </a>
-              <a href="#" className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
+             </a>
+              <a href="#" className="text-sm text-slate-400 hover:text-primary-400 transition-colors">
                 {t('footer.terms')}
-              </a>
-              <a href="#" className="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
+             </a>
+              <a href="#" className="text-sm text-slate-400 hover:text-primary-400 transition-colors">
                 {t('footer.contact')}
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
+             </a>
+           </div>
+         </div>
+       </div>
+     </footer>
+   </div>
   );
 }

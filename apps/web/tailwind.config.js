@@ -9,17 +9,17 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#FFF4ED',
-          100: '#FFE8D6',
-          200: '#FFD1AD',
-          300: '#FFAD77',
-          400: '#FF853D',
-          500: '#FF6B35',  // Main orange from screenshots
-          600: '#E85528',
-          700: '#C7421F',
-          800: '#A3361E',
-          900: '#842F1D',
-          950: '#46140B',
+          50: '#EAFFE0',
+          100: '#C9FFA8',
+          200: '#A4FF70',
+          300: '#7DFF3F',
+          400: '#5EE822',
+          500: '#76B900',  // NVIDIA green
+          600: '#5EA500',
+          700: '#4A8B00',
+          800: '#366600',
+          900: '#1F3D00',
+          950: '#0E1F00',
         },
         slate: {
           50: '#F8FAFC',
@@ -62,9 +62,10 @@ export default {
         '4xl': '2rem',
       },
       boxShadow: {
-        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
-        'card-hover': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.4), 0 10px 20px -2px rgba(0, 0, 0, 0.3)',
+        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.4)',
+        'card-hover': '0 10px 25px -5px rgba(118, 185, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.4)',
+        'glow': '0 0 30px rgba(118, 185, 0, 0.25)',
       },
       animation: {
         'slide-in': 'slideIn 0.3s ease-out',
