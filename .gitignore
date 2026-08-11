@@ -57,3 +57,9 @@ routeTree.gen.ts
 *.pem
 .vercel
 .netlify/usr/bin/bash: line 7: /c/Users/asusv/AppData/Local/hermes/cache/terminal/hermes-cwd-2819669c4129.txt: Device or resource busy
+.backup-*
+# Test scripts (local development only)
+packages/shared/test-*.js
+
+# Bash terminal artifacts (defensive)
+*-cwd-*.txt

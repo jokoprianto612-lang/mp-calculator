@@ -72,10 +72,6 @@ export interface CalculationInputs {
   packingCost: number;
   freeShippingProgram?: string;   // program ID
   promoProgram?: string;          // program ID
-  // Live mode defaults (optional in marketplace mode, required in live mode)
-  liveDiscountPercent?: number;
-  liveAdBudget?: number;
-  livePackingCost?: number;
 }
 
 export interface LiveSellingInputs extends CalculationInputs {
@@ -97,6 +93,7 @@ export interface CalculationResult {
   netProfitPercent: number;
   breakdown: FeeBreakdownItem[];
   liveBreakdown?: FeeBreakdownItem[];
+  vsStorePercent?: number;  // For live: % diff live profit vs marketplace profit
 }
 
 export interface FeeBreakdownItem {

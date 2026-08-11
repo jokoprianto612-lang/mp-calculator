@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**", ".next/**", "!.next/cache/**"],
@@ -40,6 +40,5 @@
       "cache": false
     }
   },
-  "globalEnv": ["NODE_ENV", "DATABASE_URL", "REDIS_URL", "JWT_SECRET", "DEEPL_API_KEY"],
-  "tasks": {}
+  "globalEnv": ["NODE_ENV", "DATABASE_URL", "REDIS_URL", "JWT_SECRET", "DEEPL_API_KEY"]
 }

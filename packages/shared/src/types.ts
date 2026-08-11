@@ -93,6 +93,7 @@ export interface CalculationResult {
   netProfitPercent: number;
   breakdown: FeeBreakdownItem[];
   liveBreakdown?: FeeBreakdownItem[];
+  vsStorePercent?: number;  // For live: % diff live profit vs marketplace profit
 }
 
 export interface FeeBreakdownItem {

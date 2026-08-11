@@ -313,11 +313,19 @@ export function calculateLivePrice(
   };
   
   const result = computeFees(livePrice, liveInputs, config, dynamicRate);
-  
+
+  // vsStorePercent = % difference live profit vs marketplace profit
+  // Positive = live lebih untung, negative = live lebih rugi
+  const mpResult = computeFees(new Decimal(marketplacePrice), inputs, config, dynamicRate);
+  const vsStorePercent = mpResult.netProfit === 0
+    ? 0
+    : ((result.netProfit - mpResult.netProfit) / Math.abs(mpResult.netProfit)) * 100;
+
   return {
     marketplacePrice,
     livePrice: livePrice.toNumber(),
     ...result,
+    vsStorePercent,
   };
 }
 
@@ -410,23 +418,18 @@ function computeFees(
   const adBudget = new Decimal(inputs.adBudget);
   const packingCost = new Decimal(inputs.packingCost);
 
-  // Gross Revenue = Selling Price + Platform Voucher (subsidi dari platform, seller tetap terima)
-  // Sumber: Tokopedia & TikTok Shop Academy "Aturan Perhitungan Komisi" —
-  //   "Ongkir dan diskon platform TIDAK termasuk ke dalam penghitungan komisi"
-  //   Artinya platform voucher = subsidi Tokopedia yang ditambahkan ke gross revenue seller.
-  const grossRevenue = sellingPrice.minus(sellerVoucher).plus(platformVoucher);
-
-  // Fee Base (DPP Fee Marketplace) = Selling Price − Seller Voucher
-  // HANYA seller voucher yang kurangi DPP fee — karena voucher toko ditanggung Penjual sendiri.
-  // Platform voucher TIDAK kurangi DPP fee karena itu subsidi marketplace, bukan diskon Penjual.
-  // Sumber: Shopee Seller Edu FAQ "Apakah biaya administrasi dihitung sebelum atau setelah promosi diterapkan":
-  //   "Biaya Administrasi Final = (Harga Asli Produk − Diskon Produk dan/atau Voucher Diskon Ditanggung Penjual) × %"
-  // Sumber: Tokopedia/TikTok Shop Academy "Biaya Komisi Platform":
-  //   "Komisi Platform = (Harga Produk − Diskon Penjual) × tarif. Ongkir dan diskon platform tidak termasuk"
-  const feeBase = sellingPrice.minus(sellerVoucher);
+  // Net Revenue = Selling Price − Seller Voucher
+  // Platform voucher adalah subsidi dari marketplace ke buyer — seller NET menerima SP dikurangi seller voucher saja.
+  // Realita: Shopee Seller Edu FAQ — fee admin dihitung dari harga etalase dikurangi diskon seller.
+  //           Platform voucher tidak menambah revenue seller (subsidi marketplace ke buyer, bukan ke seller).
+  const netRevenue = sellingPrice.minus(sellerVoucher);
+  const grossRevenue = netRevenue.plus(platformVoucher); // kept for breakdown display only
+  // feeBase (DPP Fee Marketplace) = Selling Price − Seller Voucher (realitas fee basis)
+  const feeBase = netRevenue;
   if (feeBase.lessThan(0)) throw new Error('Seller voucher cannot exceed selling price');
-  // netSale (backward-compat alias for breakdown field) = gross revenue (seller receives full price + platform subsidy)
-  const netSale = grossRevenue;
+  // netSale (backward-compat alias) = net revenue (basis margin — tidak termasuk subsidi platform)
+  // grossRevenue = basis breakdown display (termasuk subsidi platform voucher)
+  const netSale = netRevenue;
   
   // Platform Commission Fee
   const platformFee = feeBase.times(config.platformCommissionRate);
@@ -489,15 +492,17 @@ function computeFees(
     .plus(freeShippingFee)
     .plus(promoFee)
     .plus(taxFee);
-  // Seller Costs (costs borne by seller)
+  // Seller Costs (costs borne by seller, NOT including marketplace fees like promo/freeShip — those are in marketplaceDeduction)
+  // sellerVoucher included: it's part of SP that seller forgoes as discount subsidy to buyer
   const sellerCost = hpp
     .plus(packingCost)
     .plus(adFee)
-    .plus(sellerVoucher)
-    .plus(promoFee); // Promo is often seller-borne
+    .plus(sellerVoucher);
   
   // Net Profit
-  const netProfit = grossRevenue.minus(marketplaceDeduction).minus(hpp).minus(packingCost).minus(adFee);
+  // Net Profit = (SP - sellerVoucher) - marketplaceDeduction - hpp - packing - adFee
+  // (= netRevenue - all costs borne by seller; platform voucher tidak termasuk net profit seller)
+  const netProfit = netRevenue.minus(marketplaceDeduction).minus(hpp).minus(packingCost).minus(adFee);
   
   // Percentages
   const marketplaceDeductionPercent = marketplaceDeduction.div(netSale).times(100);
