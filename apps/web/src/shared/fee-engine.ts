@@ -25,7 +25,7 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   tokopedia: {
     marketplace: 'tokopedia',
     version: 2,
-    platformCommissionRate: 0.05,       // Komisi Platform 5% (unified May 2026)
+    platformCommissionRate: 0.05,       // Komisi Platform 5% (avg, 2.5-10% range per kategori)
     dynamicCommissionRates: {
       'electronics': 0.04,
       'fashion': 0.06,
@@ -39,11 +39,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.03,
       'default': 0.04,
     },
-    dynamicCommissionCap: 650000,
-    mallServiceRate: 0.02,
-    mallPaymentFeeRate: 0.018,
-    mallPaymentFeeCap: 50000,
-    orderProcessingFee: 1250,
+    dynamicCommissionCap: 650000,       // Rp650.000 cap per item
+    mallServiceRate: 0.02,              // Mall +2% (12.2% total Mall max)
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1250,           // Rp1.250 per order
     logisticsFeeConfig: {
       baseFee: 5000,
       perKgFee: 2500,
@@ -65,7 +65,7 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   shopee: {
     marketplace: 'shopee',
     version: 2,
-    platformCommissionRate: 0.10,       // Shopee Admin 10%
+    platformCommissionRate: 0.10,       // Shopee Admin 10% (per kategori dasar)
     dynamicCommissionRates: {
       'electronics': 0.04,
       'fashion': 0.05,
@@ -79,11 +79,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.025,
       'default': 0.035,
     },
-    dynamicCommissionCap: 650000,
-    mallServiceRate: 0.017,
-    mallPaymentFeeRate: 0.018,
-    mallPaymentFeeCap: 50000,
-    orderProcessingFee: 1250,
+    dynamicCommissionCap: 650000,       // Rp650.000 cap per item (Tokopedia/TikTok aligned)
+    mallServiceRate: 0.017,             // Mall rate +1.7% (Shopee Mall 11.7% total)
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1250,           // Rp1.250 per order (Biaya Proses Pesanan)
     logisticsFeeConfig: {
       baseFee: 4000,
       perKgFee: 3000,
@@ -105,7 +105,7 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
   lazada: {
     marketplace: 'lazada',
     version: 2,
-    platformCommissionRate: 0.04,       // Lazada 4%
+    platformCommissionRate: 0.04,       // Lazada Commission 4% (avg, range 2-8% per kategori)
     dynamicCommissionRates: {
       'electronics': 0.03,
       'fashion': 0.04,
@@ -119,11 +119,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.02,
       'default': 0.025,
     },
-    dynamicCommissionCap: 500000,
-    mallServiceRate: 0.015,
-    mallPaymentFeeRate: 0.018,
-    mallPaymentFeeCap: 50000,
-    orderProcessingFee: 1000,
+    dynamicCommissionCap: 500000,       // Rp500.000 cap per item (Lazada)
+    mallServiceRate: 0.015,             // Mall +1.5%
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1000,           // Rp1.000 per order
     logisticsFeeConfig: {
       baseFee: 6000,
       perKgFee: 2000,
@@ -159,11 +159,11 @@ export const DEFAULT_FEE_CONFIGS: Record<Marketplace, MarketplaceFeeConfig> = {
       'food': 0.03,
       'default': 0.04,
     },
-    dynamicCommissionCap: 650000,
-    mallServiceRate: 0.02,
-    mallPaymentFeeRate: 0.018,
-    mallPaymentFeeCap: 50000,
-    orderProcessingFee: 1250,
+    dynamicCommissionCap: 650000,       // Rp650.000 cap per item (unified Tokopedia)
+    mallServiceRate: 0.02,              // Mall +2%
+    mallPaymentFeeRate: 0.018,          // 1.8% mall payment fee
+    mallPaymentFeeCap: 50000,           // capped Rp50.000
+    orderProcessingFee: 1250,           // Rp1.250 per order (unified Tokopedia)
     logisticsFeeConfig: {
       baseFee: 3000,
       perKgFee: 1500,
@@ -206,14 +206,14 @@ export function calculateLogisticsFee(
  * Get dynamic commission rate for a category
  */
 export function getDynamicCommissionRate(config: MarketplaceFeeConfig, category: string): number {
-  return config.dynamicCommissionRates[category] ?? config.dynamicCommissionRates.default ?? 0.03;
+  return config.dynamicCommissionRates[category] ?? config.dynamicCommissionRates['default'] ?? 0.03;
 }
 
 /**
  * Calculate free shipping fee
  */
 export function calculateFreeShippingFee(
-  netSale: Decimal,
+  feeBase: Decimal,
   program: FreeShippingProgram | undefined,
   config: MarketplaceFeeConfig
 ): Decimal {
@@ -223,11 +223,11 @@ export function calculateFreeShippingFee(
   if (!programConfig) return new Decimal(0);
   
   // Check minimum order value
-  if (programConfig.minOrderValue && netSale.lessThan(programConfig.minOrderValue)) {
+  if (programConfig.minOrderValue && feeBase.lessThan(programConfig.minOrderValue)) {
     return new Decimal(0);
   }
   
-  let fee = netSale.times(programConfig.feeRate);
+  let fee = feeBase.times(programConfig.feeRate);
   
   // Apply max discount if specified
   if (programConfig.maxDiscount) {
@@ -244,7 +244,7 @@ export function calculateFreeShippingFee(
  * Calculate promo fee
  */
 export function calculatePromoFee(
-  netSale: Decimal,
+  feeBase: Decimal,
   program: PromoProgram | undefined,
   config: MarketplaceFeeConfig
 ): Decimal {
@@ -253,11 +253,11 @@ export function calculatePromoFee(
   const programConfig = config.promoPrograms.find(p => p.id === program.id);
   if (!programConfig) return new Decimal(0);
   
-  if (programConfig.minOrderValue && netSale.lessThan(programConfig.minOrderValue)) {
+  if (programConfig.minOrderValue && feeBase.lessThan(programConfig.minOrderValue)) {
     return new Decimal(0);
   }
   
-  return netSale.times(programConfig.feeRate);
+  return feeBase.times(programConfig.feeRate);
 }
 
 /**
@@ -323,6 +323,10 @@ export function calculateLivePrice(
 
 /**
  * Iteratively calculate selling price to achieve target margin
+ *
+ * Strategy: binary search between lower bound (HPP / (1 - margin)) and upper bound.
+ * Each iteration: compute fees at candidate price, measure actual margin, adjust.
+ * Converges when margin is within 0.01% of target.
  */
 function calculateSellingPriceFromMargin(
   inputs: CalculationInputs,
@@ -330,33 +334,65 @@ function calculateSellingPriceFromMargin(
   dynamicRate: number
 ): Decimal {
   const hpp = new Decimal(inputs.hpp);
-  const targetMargin = new Decimal(inputs.targetMargin ?? 0).div(100);
-  const sellerVoucher = new Decimal(inputs.sellerVoucher);
-  const platformVoucher = new Decimal(inputs.platformVoucher);
-  const adBudget = new Decimal(inputs.adBudget);
-  const packingCost = new Decimal(inputs.packingCost);
-  
-  // Initial guess: HPP / (1 - targetMargin - estimated fees)
-  let estimatedFeeRate = config.platformCommissionRate + dynamicRate;
-  if (inputs.isMallSeller) estimatedFeeRate += config.mallServiceRate;
-  estimatedFeeRate += config.amsCommissionRate + config.taxRate;
-  
-  let sellingPrice = hpp.div(new Decimal(1).minus(targetMargin).minus(estimatedFeeRate));
-  
-  // Iterate to converge
-  for (let i = 0; i < 20; i++) {
-    const testResult = computeFees(sellingPrice, inputs, config, dynamicRate);
-    const actualMargin = Number(testResult.netProfitPercent) / 100;
-    
-    const diff = actualMargin - Number(targetMargin);
-    if (Math.abs(diff) < 0.0001) break; // Converged
-    
-    // Adjust price
-    const adjustment = diff > 0 ? -0.01 : 0.01;
-    sellingPrice = sellingPrice.times(new Decimal(1).plus(adjustment));
+  const targetMargin = Number(new Decimal(inputs.targetMargin ?? 0).div(100));
+
+  // Validate target margin range
+  if (targetMargin >= 1) {
+    throw new Error('Target margin must be less than 100%');
   }
-  
-  return sellingPrice;
+  if (targetMargin < -1) {
+    throw new Error('Target margin must be greater than -100%');
+  }
+
+  // Closed-form initial upper bound estimate (effective fee rate ~50% conservative):
+  // price = HPP / (1 - targetMargin - 0.50), with safety floor 0.05 to avoid div-by-zero
+  // then multiply by 2 for headroom. This guarantees upperMargin > target for normal inputs.
+  const denominator = Math.max(0.05, 1 - targetMargin - 0.50);
+  let upper = hpp.times(2).div(new Decimal(denominator));
+  let lower = hpp;
+
+  // Quick feasibility check at lower bound: if margin already exceeds target,
+  // return lower (best we can do — increasing price only adds more margin).
+  const lowerResult = computeFees(lower, inputs, config, dynamicRate);
+  const lowerMargin = Number(lowerResult.netProfitPercent) / 100;
+  if (lowerMargin >= targetMargin) {
+    return lower;
+  }
+
+  // If upper bound doesn't reach target margin, expand until it does (or give up at 1000x).
+  let upperResult = computeFees(upper, inputs, config, dynamicRate);
+  let upperMargin = Number(upperResult.netProfitPercent) / 100;
+  while (upperMargin < targetMargin && upper.lessThan(hpp.times(1000))) {
+    upper = upper.times(2);
+    const next = computeFees(upper, inputs, config, dynamicRate);
+    upperMargin = Number(next.netProfitPercent) / 100;
+  }
+  if (upperMargin < targetMargin) {
+    // Truly impossible margin for given fee structure — return best achievable
+    return upper;
+  }
+
+  // Binary search for 50 iterations (precision ~ 1/2^50 ≈ 1e-15)
+  for (let i = 0; i < 50; i++) {
+    const mid = lower.plus(upper).div(2);
+    const testResult = computeFees(mid, inputs, config, dynamicRate);
+    const actualMargin = Number(testResult.netProfitPercent) / 100;
+    const diff = actualMargin - targetMargin;
+
+    if (Math.abs(diff) < 0.0001) {
+      return mid;
+    }
+
+    // If actual margin > target → price too high (overpriced) → lower upper bound
+    // If actual margin < target → price too low (underpriced) → raise lower bound
+    if (diff > 0) {
+      upper = mid;
+    } else {
+      lower = mid;
+    }
+  }
+
+  return lower.plus(upper).div(2);
 }
 
 /**
@@ -373,27 +409,41 @@ function computeFees(
   const platformVoucher = new Decimal(inputs.platformVoucher);
   const adBudget = new Decimal(inputs.adBudget);
   const packingCost = new Decimal(inputs.packingCost);
-  
-  // Net Sale = Selling Price - Seller Voucher - Platform Voucher
-  const netSale = sellingPrice.minus(sellerVoucher).minus(platformVoucher);
-  if (netSale.lessThan(0)) throw new Error('Vouchers cannot exceed selling price');
 
+  // Gross Revenue = Selling Price + Platform Voucher (subsidi dari platform, seller tetap terima)
+  // Sumber: Tokopedia & TikTok Shop Academy "Aturan Perhitungan Komisi" —
+  //   "Ongkir dan diskon platform TIDAK termasuk ke dalam penghitungan komisi"
+  //   Artinya platform voucher = subsidi Tokopedia yang ditambahkan ke gross revenue seller.
+  const grossRevenue = sellingPrice.minus(sellerVoucher).plus(platformVoucher);
+
+  // Fee Base (DPP Fee Marketplace) = Selling Price − Seller Voucher
+  // HANYA seller voucher yang kurangi DPP fee — karena voucher toko ditanggung Penjual sendiri.
+  // Platform voucher TIDAK kurangi DPP fee karena itu subsidi marketplace, bukan diskon Penjual.
+  // Sumber: Shopee Seller Edu FAQ "Apakah biaya administrasi dihitung sebelum atau setelah promosi diterapkan":
+  //   "Biaya Administrasi Final = (Harga Asli Produk − Diskon Produk dan/atau Voucher Diskon Ditanggung Penjual) × %"
+  // Sumber: Tokopedia/TikTok Shop Academy "Biaya Komisi Platform":
+  //   "Komisi Platform = (Harga Produk − Diskon Penjual) × tarif. Ongkir dan diskon platform tidak termasuk"
+  const feeBase = sellingPrice.minus(sellerVoucher);
+  if (feeBase.lessThan(0)) throw new Error('Seller voucher cannot exceed selling price');
+  // netSale (backward-compat alias for breakdown field) = gross revenue (seller receives full price + platform subsidy)
+  const netSale = grossRevenue;
+  
   // Platform Commission Fee
-  const platformFee = netSale.times(config.platformCommissionRate);
+  const platformFee = feeBase.times(config.platformCommissionRate);
 
   // Dynamic Commission Fee (with optional cap per item)
-  let dynamicFee = netSale.times(dynamicRate);
+  let dynamicFee = feeBase.times(dynamicRate);
   if (config.dynamicCommissionCap && dynamicFee.greaterThan(config.dynamicCommissionCap)) {
     dynamicFee = new Decimal(config.dynamicCommissionCap);
   }
 
   // Mall Service Fee (if mall seller)
-  const mallFee = inputs.isMallSeller ? netSale.times(config.mallServiceRate) : new Decimal(0);
+  const mallFee = inputs.isMallSeller ? feeBase.times(config.mallServiceRate) : new Decimal(0);
 
   // Mall Payment Fee (1.8% cap Rp50.000, only for mall sellers)
   let mallPaymentFee = new Decimal(0);
   if (inputs.isMallSeller && config.mallPaymentFeeRate) {
-    mallPaymentFee = netSale.times(config.mallPaymentFeeRate);
+    mallPaymentFee = feeBase.times(config.mallPaymentFeeRate);
     if (config.mallPaymentFeeCap && mallPaymentFee.greaterThan(config.mallPaymentFeeCap)) {
       mallPaymentFee = new Decimal(config.mallPaymentFeeCap);
     }
@@ -406,29 +456,29 @@ function computeFees(
   const logisticsFee = calculateLogisticsFee(inputs.weight, config.logisticsFeeConfig);
 
   // AMS Commission Fee
-  const amsFee = inputs.useAms ? netSale.times(config.amsCommissionRate) : new Decimal(0);
+  const amsFee = inputs.useAms ? feeBase.times(config.amsCommissionRate) : new Decimal(0);
 
   // Advertising Fee
   const adFee = adBudget;
 
   // Free Shipping Fee
   const freeShippingProgram = config.freeShippingPrograms.find(p => p.id === inputs.freeShippingProgram);
-  const freeShippingFee = calculateFreeShippingFee(netSale, freeShippingProgram, config);
+  const freeShippingFee = calculateFreeShippingFee(feeBase, freeShippingProgram, config);
 
   // Promo Fee
   const promoProgram = config.promoPrograms.find(p => p.id === inputs.promoProgram);
-  const promoFee = calculatePromoFee(netSale, promoProgram, config);
+  const promoFee = calculatePromoFee(feeBase, promoProgram, config);
 
   // Tax (PPh Final 22 / PMSE 0.5%)
   // PERATURAN: UU HPP No. 7/2021 Pasal 17B jo. PP 55/2022
   // PPh Final atas penyerahan barang oleh Pedagang Melalui Sistem Elektronik (PMSE/marketplace).
   // Tarif: 0.5% × DPP. DPP PPh Final PMSE = omset bruto transaksi (harga jual sebelum dikurangi
-  // voucher manapun). Voucher seller/platform/free shipping subsidi TIDAK mengurangi DPP pajak,
+  // voucher manapun). Voucher seller/platfrom/free shipping subsidi TIDAK mengurangi DPP pajak,
   // karena DPP adalah nilai transaksi yang tercatat di marketplace (gross transaction value).
   // Berlaku untuk orang pribadi dengan omzet bruto s.d. Rp 4.8 miliar/tahun.
   const taxFee = sellingPrice.times(config.taxRate);
 
-  // Total Marketplace Deductions
+  // Total Marketplace Deductions (fees charged by marketplace)
   const marketplaceDeduction = platformFee
     .plus(dynamicFee)
     .plus(mallFee)
@@ -439,7 +489,6 @@ function computeFees(
     .plus(freeShippingFee)
     .plus(promoFee)
     .plus(taxFee);
-  
   // Seller Costs (costs borne by seller)
   const sellerCost = hpp
     .plus(packingCost)
@@ -448,7 +497,7 @@ function computeFees(
     .plus(promoFee); // Promo is often seller-borne
   
   // Net Profit
-  const netProfit = netSale.minus(marketplaceDeduction).minus(hpp).minus(packingCost).minus(adFee);
+  const netProfit = grossRevenue.minus(marketplaceDeduction).minus(hpp).minus(packingCost).minus(adFee);
   
   // Percentages
   const marketplaceDeductionPercent = marketplaceDeduction.div(netSale).times(100);
@@ -457,31 +506,31 @@ function computeFees(
   
   // Build breakdown
   const breakdown = buildBreakdown({
-      sellingPrice,
-      netSale,
-      sellerVoucher,
-      platformVoucher,
-      hpp,
-      platformFee,
-      dynamicFee,
-      mallFee,
-      mallPaymentFee,
-      processingFee,
-      logisticsFee,
-      amsFee,
-      adFee,
-      freeShippingFee,
-      promoFee,
-      taxFee,
-      packingCost,
-      marketplaceDeduction,
-      sellerCost,
-      netProfit,
-      inputs,
-      config,
-      freeShippingProgram,
-      promoProgram,
-    });
+    sellingPrice,
+    netSale,
+    sellerVoucher,
+    platformVoucher,
+    hpp,
+    platformFee,
+    dynamicFee,
+    mallFee,
+    mallPaymentFee,
+    processingFee,
+    logisticsFee,
+    amsFee,
+    adFee,
+    freeShippingFee,
+    promoFee,
+    taxFee,
+    packingCost,
+    marketplaceDeduction,
+    sellerCost,
+    netProfit,
+    inputs,
+    config,
+    freeShippingProgram,
+    promoProgram,
+  });
   
   return {
     netSale: netSale.toNumber(),
@@ -737,14 +786,6 @@ function buildBreakdown(data: BreakdownData): FeeBreakdownItem[] {
 export function getFeeConfig(marketplace: Marketplace): MarketplaceFeeConfig {
   return DEFAULT_FEE_CONFIGS[marketplace];
 }
-
-/**
- * Format currency for Indonesian Rupiah
- */
-
-/**
- * Format percentage
- */
 
 /**
  * Validate calculation inputs

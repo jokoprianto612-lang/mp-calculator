@@ -75,7 +75,7 @@ export const useCalculatorStore = create<CalculatorState>()(
 
         try {
           // Import the fee engine dynamically
-          const { calculateMarketplacePrice, calculateLivePrice, validateInputs } = await import('@/shared');
+          const { calculateMarketplacePrice, calculateLivePrice, validateInputs } = await import('@/shared/index');
 
           // Validate
           const validation = validateInputs(inputs);

@@ -336,24 +336,44 @@ function calculateSellingPriceFromMargin(
   const hpp = new Decimal(inputs.hpp);
   const targetMargin = Number(new Decimal(inputs.targetMargin ?? 0).div(100));
 
-  // Lower bound: ignore all fees → price = hpp / (1 - margin)
-  const oneMinusMargin = new Decimal(1).minus(new Decimal(targetMargin));
-  if (oneMinusMargin.lessThanOrEqualTo(0)) {
+  // Validate target margin range
+  if (targetMargin >= 1) {
     throw new Error('Target margin must be less than 100%');
   }
-  let lower = hpp.div(oneMinusMargin);
-  // Upper bound: assume 90% total fee rate + target margin = extreme upper
-  // If fees + margin approach 100%, price explodes — handle this gracefully
-  const effectiveMax = new Decimal(0.9).minus(new Decimal(targetMargin));
-  let upper: Decimal;
-  if (effectiveMax.lessThanOrEqualTo(0)) {
-    // Target margin + 90% fees >= 100% → impossible, return lower bound
+  if (targetMargin < -1) {
+    throw new Error('Target margin must be greater than -100%');
+  }
+
+  // Closed-form initial upper bound estimate (effective fee rate ~50% conservative):
+  // price = HPP / (1 - targetMargin - 0.50), with safety floor 0.05 to avoid div-by-zero
+  // then multiply by 2 for headroom. This guarantees upperMargin > target for normal inputs.
+  const denominator = Math.max(0.05, 1 - targetMargin - 0.50);
+  let upper = hpp.times(2).div(new Decimal(denominator));
+  let lower = hpp;
+
+  // Quick feasibility check at lower bound: if margin already exceeds target,
+  // return lower (best we can do — increasing price only adds more margin).
+  const lowerResult = computeFees(lower, inputs, config, dynamicRate);
+  const lowerMargin = Number(lowerResult.netProfitPercent) / 100;
+  if (lowerMargin >= targetMargin) {
     return lower;
   }
-  upper = hpp.div(effectiveMax);
 
-  // Binary search for 30 iterations (precision ~ 1/2^30 ≈ 1e-9)
-  for (let i = 0; i < 30; i++) {
+  // If upper bound doesn't reach target margin, expand until it does (or give up at 1000x).
+  let upperResult = computeFees(upper, inputs, config, dynamicRate);
+  let upperMargin = Number(upperResult.netProfitPercent) / 100;
+  while (upperMargin < targetMargin && upper.lessThan(hpp.times(1000))) {
+    upper = upper.times(2);
+    const next = computeFees(upper, inputs, config, dynamicRate);
+    upperMargin = Number(next.netProfitPercent) / 100;
+  }
+  if (upperMargin < targetMargin) {
+    // Truly impossible margin for given fee structure — return best achievable
+    return upper;
+  }
+
+  // Binary search for 50 iterations (precision ~ 1/2^50 ≈ 1e-15)
+  for (let i = 0; i < 50; i++) {
     const mid = lower.plus(upper).div(2);
     const testResult = computeFees(mid, inputs, config, dynamicRate);
     const actualMargin = Number(testResult.netProfitPercent) / 100;
@@ -363,12 +383,12 @@ function calculateSellingPriceFromMargin(
       return mid;
     }
 
-    // If actual margin > target → price is too low → raise lower
-    // If actual margin < target → price is too high → lower upper
+    // If actual margin > target → price too high (overpriced) → lower upper bound
+    // If actual margin < target → price too low (underpriced) → raise lower bound
     if (diff > 0) {
-      lower = mid;
-    } else {
       upper = mid;
+    } else {
+      lower = mid;
     }
   }
 
