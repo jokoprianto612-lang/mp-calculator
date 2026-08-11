@@ -213,7 +213,7 @@ export function getDynamicCommissionRate(config: MarketplaceFeeConfig, category:
  * Calculate free shipping fee
  */
 export function calculateFreeShippingFee(
-  netSale: Decimal,
+  feeBase: Decimal,
   program: FreeShippingProgram | undefined,
   config: MarketplaceFeeConfig
 ): Decimal {
@@ -223,11 +223,11 @@ export function calculateFreeShippingFee(
   if (!programConfig) return new Decimal(0);
   
   // Check minimum order value
-  if (programConfig.minOrderValue && netSale.lessThan(programConfig.minOrderValue)) {
+  if (programConfig.minOrderValue && feeBase.lessThan(programConfig.minOrderValue)) {
     return new Decimal(0);
   }
   
-  let fee = netSale.times(programConfig.feeRate);
+  let fee = feeBase.times(programConfig.feeRate);
   
   // Apply max discount if specified
   if (programConfig.maxDiscount) {
@@ -244,7 +244,7 @@ export function calculateFreeShippingFee(
  * Calculate promo fee
  */
 export function calculatePromoFee(
-  netSale: Decimal,
+  feeBase: Decimal,
   program: PromoProgram | undefined,
   config: MarketplaceFeeConfig
 ): Decimal {
@@ -253,11 +253,11 @@ export function calculatePromoFee(
   const programConfig = config.promoPrograms.find(p => p.id === program.id);
   if (!programConfig) return new Decimal(0);
   
-  if (programConfig.minOrderValue && netSale.lessThan(programConfig.minOrderValue)) {
+  if (programConfig.minOrderValue && feeBase.lessThan(programConfig.minOrderValue)) {
     return new Decimal(0);
   }
   
-  return netSale.times(programConfig.feeRate);
+  return feeBase.times(programConfig.feeRate);
 }
 
 /**
@@ -389,27 +389,41 @@ function computeFees(
   const platformVoucher = new Decimal(inputs.platformVoucher);
   const adBudget = new Decimal(inputs.adBudget);
   const packingCost = new Decimal(inputs.packingCost);
-  
-  // Net Sale = Selling Price - Seller Voucher - Platform Voucher
-  const netSale = sellingPrice.minus(sellerVoucher).minus(platformVoucher);
-  if (netSale.lessThan(0)) throw new Error('Vouchers cannot exceed selling price');
+
+  // Gross Revenue = Selling Price + Platform Voucher (subsidi dari platform, seller tetap terima)
+  // Sumber: Tokopedia & TikTok Shop Academy "Aturan Perhitungan Komisi" —
+  //   "Ongkir dan diskon platform TIDAK termasuk ke dalam penghitungan komisi"
+  //   Artinya platform voucher = subsidi Tokopedia yang ditambahkan ke gross revenue seller.
+  const grossRevenue = sellingPrice.minus(sellerVoucher).plus(platformVoucher);
+
+  // Fee Base (DPP Fee Marketplace) = Selling Price − Seller Voucher
+  // HANYA seller voucher yang kurangi DPP fee — karena voucher toko ditanggung Penjual sendiri.
+  // Platform voucher TIDAK kurangi DPP fee karena itu subsidi marketplace, bukan diskon Penjual.
+  // Sumber: Shopee Seller Edu FAQ "Apakah biaya administrasi dihitung sebelum atau setelah promosi diterapkan":
+  //   "Biaya Administrasi Final = (Harga Asli Produk − Diskon Produk dan/atau Voucher Diskon Ditanggung Penjual) × %"
+  // Sumber: Tokopedia/TikTok Shop Academy "Biaya Komisi Platform":
+  //   "Komisi Platform = (Harga Produk − Diskon Penjual) × tarif. Ongkir dan diskon platform tidak termasuk"
+  const feeBase = sellingPrice.minus(sellerVoucher);
+  if (feeBase.lessThan(0)) throw new Error('Seller voucher cannot exceed selling price');
+  // netSale (backward-compat alias for breakdown field) = gross revenue (seller receives full price + platform subsidy)
+  const netSale = grossRevenue;
   
   // Platform Commission Fee
-  const platformFee = netSale.times(config.platformCommissionRate);
+  const platformFee = feeBase.times(config.platformCommissionRate);
 
   // Dynamic Commission Fee (with optional cap per item)
-  let dynamicFee = netSale.times(dynamicRate);
+  let dynamicFee = feeBase.times(dynamicRate);
   if (config.dynamicCommissionCap && dynamicFee.greaterThan(config.dynamicCommissionCap)) {
     dynamicFee = new Decimal(config.dynamicCommissionCap);
   }
 
   // Mall Service Fee (if mall seller)
-  const mallFee = inputs.isMallSeller ? netSale.times(config.mallServiceRate) : new Decimal(0);
+  const mallFee = inputs.isMallSeller ? feeBase.times(config.mallServiceRate) : new Decimal(0);
 
   // Mall Payment Fee (1.8% cap Rp50.000, only for mall sellers)
   let mallPaymentFee = new Decimal(0);
   if (inputs.isMallSeller && config.mallPaymentFeeRate) {
-    mallPaymentFee = netSale.times(config.mallPaymentFeeRate);
+    mallPaymentFee = feeBase.times(config.mallPaymentFeeRate);
     if (config.mallPaymentFeeCap && mallPaymentFee.greaterThan(config.mallPaymentFeeCap)) {
       mallPaymentFee = new Decimal(config.mallPaymentFeeCap);
     }
@@ -422,18 +436,18 @@ function computeFees(
   const logisticsFee = calculateLogisticsFee(inputs.weight, config.logisticsFeeConfig);
 
   // AMS Commission Fee
-  const amsFee = inputs.useAms ? netSale.times(config.amsCommissionRate) : new Decimal(0);
+  const amsFee = inputs.useAms ? feeBase.times(config.amsCommissionRate) : new Decimal(0);
 
   // Advertising Fee
   const adFee = adBudget;
 
   // Free Shipping Fee
   const freeShippingProgram = config.freeShippingPrograms.find(p => p.id === inputs.freeShippingProgram);
-  const freeShippingFee = calculateFreeShippingFee(netSale, freeShippingProgram, config);
+  const freeShippingFee = calculateFreeShippingFee(feeBase, freeShippingProgram, config);
 
   // Promo Fee
   const promoProgram = config.promoPrograms.find(p => p.id === inputs.promoProgram);
-  const promoFee = calculatePromoFee(netSale, promoProgram, config);
+  const promoFee = calculatePromoFee(feeBase, promoProgram, config);
 
   // Tax (PPh Final 22 / PMSE 0.5%)
   // PERATURAN: UU HPP No. 7/2021 Pasal 17B jo. PP 55/2022
@@ -463,7 +477,7 @@ function computeFees(
     .plus(promoFee); // Promo is often seller-borne
   
   // Net Profit
-  const netProfit = netSale.minus(marketplaceDeduction).minus(hpp).minus(packingCost).minus(adFee);
+  const netProfit = grossRevenue.minus(marketplaceDeduction).minus(hpp).minus(packingCost).minus(adFee);
   
   // Percentages
   const marketplaceDeductionPercent = marketplaceDeduction.div(netSale).times(100);
