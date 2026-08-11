@@ -71,7 +71,7 @@ export const useCalculatorStore = create<CalculatorState>()(
 
       calculate: async () => {
         const { inputs, setIsCalculating, setMarketplacePrice, setLivePrice, setLastCalculated } = get();
-setIsCalculating(true);
+        setIsCalculating(true);
 
         try {
           // Import the fee engine dynamically
@@ -114,3 +114,4 @@ setIsCalculating(true);
     }
   )
 );
+

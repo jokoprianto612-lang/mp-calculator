@@ -323,6 +323,10 @@ export function calculateLivePrice(
 
 /**
  * Iteratively calculate selling price to achieve target margin
+ *
+ * Strategy: binary search between lower bound (HPP / (1 - margin)) and upper bound.
+ * Each iteration: compute fees at candidate price, measure actual margin, adjust.
+ * Converges when margin is within 0.01% of target.
  */
 function calculateSellingPriceFromMargin(
   inputs: CalculationInputs,
@@ -330,33 +334,45 @@ function calculateSellingPriceFromMargin(
   dynamicRate: number
 ): Decimal {
   const hpp = new Decimal(inputs.hpp);
-  const targetMargin = new Decimal(inputs.targetMargin ?? 0).div(100);
-  const sellerVoucher = new Decimal(inputs.sellerVoucher);
-  const platformVoucher = new Decimal(inputs.platformVoucher);
-  const adBudget = new Decimal(inputs.adBudget);
-  const packingCost = new Decimal(inputs.packingCost);
-  
-  // Initial guess: HPP / (1 - targetMargin - estimated fees)
-  let estimatedFeeRate = config.platformCommissionRate + dynamicRate;
-  if (inputs.isMallSeller) estimatedFeeRate += config.mallServiceRate;
-  estimatedFeeRate += config.amsCommissionRate + config.taxRate;
-  
-  let sellingPrice = hpp.div(new Decimal(1).minus(targetMargin).minus(estimatedFeeRate));
-  
-  // Iterate to converge
-  for (let i = 0; i < 20; i++) {
-    const testResult = computeFees(sellingPrice, inputs, config, dynamicRate);
-    const actualMargin = Number(testResult.netProfitPercent) / 100;
-    
-    const diff = actualMargin - Number(targetMargin);
-    if (Math.abs(diff) < 0.0001) break; // Converged
-    
-    // Adjust price
-    const adjustment = diff > 0 ? -0.01 : 0.01;
-    sellingPrice = sellingPrice.times(new Decimal(1).plus(adjustment));
+  const targetMargin = Number(new Decimal(inputs.targetMargin ?? 0).div(100));
+
+  // Lower bound: ignore all fees → price = hpp / (1 - margin)
+  const oneMinusMargin = new Decimal(1).minus(new Decimal(targetMargin));
+  if (oneMinusMargin.lessThanOrEqualTo(0)) {
+    throw new Error('Target margin must be less than 100%');
   }
-  
-  return sellingPrice;
+  let lower = hpp.div(oneMinusMargin);
+  // Upper bound: assume 90% total fee rate + target margin = extreme upper
+  // If fees + margin approach 100%, price explodes — handle this gracefully
+  const effectiveMax = new Decimal(0.9).minus(new Decimal(targetMargin));
+  let upper: Decimal;
+  if (effectiveMax.lessThanOrEqualTo(0)) {
+    // Target margin + 90% fees >= 100% → impossible, return lower bound
+    return lower;
+  }
+  upper = hpp.div(effectiveMax);
+
+  // Binary search for 30 iterations (precision ~ 1/2^30 ≈ 1e-9)
+  for (let i = 0; i < 30; i++) {
+    const mid = lower.plus(upper).div(2);
+    const testResult = computeFees(mid, inputs, config, dynamicRate);
+    const actualMargin = Number(testResult.netProfitPercent) / 100;
+    const diff = actualMargin - targetMargin;
+
+    if (Math.abs(diff) < 0.0001) {
+      return mid;
+    }
+
+    // If actual margin > target → price is too low → raise lower
+    // If actual margin < target → price is too high → lower upper
+    if (diff > 0) {
+      lower = mid;
+    } else {
+      upper = mid;
+    }
+  }
+
+  return lower.plus(upper).div(2);
 }
 
 /**
@@ -433,7 +449,6 @@ function computeFees(
     .plus(freeShippingFee)
     .plus(promoFee)
     .plus(taxFee);
-  
   // Seller Costs (costs borne by seller)
   const sellerCost = hpp
     .plus(packingCost)
