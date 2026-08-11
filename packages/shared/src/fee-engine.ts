@@ -435,8 +435,14 @@ function computeFees(
   const promoProgram = config.promoPrograms.find(p => p.id === inputs.promoProgram);
   const promoFee = calculatePromoFee(netSale, promoProgram, config);
 
-  // Tax (PPh 22)
-  const taxFee = netSale.times(config.taxRate);
+  // Tax (PPh Final 22 / PMSE 0.5%)
+  // PERATURAN: UU HPP No. 7/2021 Pasal 17B jo. PP 55/2022
+  // PPh Final atas penyerahan barang oleh Pedagang Melalui Sistem Elektronik (PMSE/marketplace).
+  // Tarif: 0.5% × DPP. DPP PPh Final PMSE = omset bruto transaksi (harga jual sebelum dikurangi
+  // voucher manapun). Voucher seller/platfrom/free shipping subsidi TIDAK mengurangi DPP pajak,
+  // karena DPP adalah nilai transaksi yang tercatat di marketplace (gross transaction value).
+  // Berlaku untuk orang pribadi dengan omzet bruto s.d. Rp 4.8 miliar/tahun.
+  const taxFee = sellingPrice.times(config.taxRate);
 
   // Total Marketplace Deductions (fees charged by marketplace)
   const marketplaceDeduction = platformFee
@@ -702,15 +708,15 @@ function buildBreakdown(data: BreakdownData): FeeBreakdownItem[] {
     });
   }
   
-  // Tax
+  // Tax (PPh Final 22 / PMSE — UU HPP Pasal 17B jo. PP 55/2022)
   items.push({
-    label: 'Pajak (PPh 22)',
+    label: 'Pajak (PPh 22 Final PMSE)',
     amount: taxFee.neg().toNumber(),
     type: 'expense',
-    tooltip: `PPh 22 sebesar ${(config.taxRate * 100).toFixed(2)}% dari Net Sale`,
+    tooltip: `PPh Final 22 PMSE sebesar ${(config.taxRate * 100).toFixed(2)}% dari harga jual bruto (DPP omset bruto per PP 55/2022). Berlaku untuk pedagang orang pribadi melalui marketplace dengan omzet ≤ Rp 4,8 miliar/tahun.`,
     children: [
       {
-        label: `PPh 22 (${(config.taxRate * 100).toFixed(2)}%)`,
+        label: `PPh 22 Final (${(config.taxRate * 100).toFixed(2)}%)`,
         amount: taxFee.neg().toNumber(),
         type: 'expense',
         indent: 1,
