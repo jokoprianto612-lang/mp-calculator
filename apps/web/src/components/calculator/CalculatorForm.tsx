@@ -51,61 +51,37 @@ const calculatorSchema = z.object({
 type CalculatorFormData = z.infer<typeof calculatorSchema>;
 
 const MARKETPLACES = [
-  { value: 'tokopedia', label: 'Tokopedia', color: '#00A651' },
-  { value: 'shopee', label: 'Shopee', color: '#EE4D2D' },
-  { value: 'lazada', label: 'Lazada', color: '#FF6B00' },
-  { value: 'tiktok', label: 'TikTok Shop', color: '#000000' },
+  { value: 'tokopedia', color: '#00A651' },
+  { value: 'shopee', color: '#EE4D2D' },
+  { value: 'lazada', color: '#FF6B00' },
+  { value: 'tiktok', color: '#000000' },
 ];
 
 const CATEGORIES = [
-  { value: 'electronics', label: 'Elektronik' },
-  { value: 'fashion', label: 'Fashion' },
-  { value: 'home', label: 'Rumah Tangga' },
-  { value: 'beauty', label: 'Kecantikan' },
-  { value: 'health', label: 'Kesehatan' },
-  { value: 'sports', label: 'Olahraga' },
-  { value: 'automotive', label: 'Otomotif' },
-  { value: 'books', label: 'Buku' },
-  { value: 'toys', label: 'Mainan' },
-  { value: 'food', label: 'Makanan & Minuman' },
+  { value: 'electronics' },
+  { value: 'fashion' },
+  { value: 'home' },
+  { value: 'beauty' },
+  { value: 'health' },
+  { value: 'sports' },
+  { value: 'automotive' },
+  { value: 'books' },
+  { value: 'toys' },
+  { value: 'food' },
 ];
 
-const FREE_SHIPPING_PROGRAMS: Record<string, Array<{ value: string; label: string }>> = {
-  tokopedia: [
-    { value: 'xtra', label: 'Gratis Ongkir XTRA' },
-    { value: 'spesial', label: 'Gratis Ongkir Spesial' },
-  ],
-  shopee: [
-    { value: 'freeship', label: 'Gratis Ongkir' },
-    { value: 'freeship-plus', label: 'Gratis Ongkir Plus' },
-  ],
-  lazada: [
-    { value: 'lazada-freeship', label: 'Lazada Free Shipping' },
-    { value: 'lazada-freeship-plus', label: 'Lazada Free Shipping Plus' },
-  ],
-  tiktok: [
-    { value: 'tiktok-freeship', label: 'TikTok Free Shipping' },
-    { value: 'live-freeship', label: 'Live Free Shipping' },
-  ],
+const FREE_SHIPPING_PROGRAMS: Record<string, string[]> = {
+  tokopedia: ['xtra', 'spesial'],
+  shopee: ['freeship', 'freeship-plus'],
+  lazada: ['lazada-freeship', 'lazada-freeship-plus'],
+  tiktok: ['tiktok-freeship', 'live-freeship'],
 };
 
-const PROMO_PROGRAMS: Record<string, Array<{ value: string; label: string }>> = {
-  tokopedia: [
-    { value: 'promo-xtra', label: 'Promo Xtra' },
-    { value: 'flash-sale', label: 'Flash Sale' },
-  ],
-  shopee: [
-    { value: 'shopee-promo', label: 'Shopee Promo' },
-    { value: 'mall-promo', label: 'Mall Promo' },
-  ],
-  lazada: [
-    { value: 'lazada-promo', label: 'Lazada Promo' },
-    { value: 'mall-promo', label: 'Mall Promo' },
-  ],
-  tiktok: [
-    { value: 'live-promo', label: 'Live Promo' },
-    { value: 'shop-promo', label: 'Shop Promo' },
-  ],
+const PROMO_PROGRAMS: Record<string, string[]> = {
+  tokopedia: ['promo-xtra', 'flash-sale'],
+  shopee: ['shopee-promo', 'mall-promo'],
+  lazada: ['lazada-promo', 'mall-promo'],
+  tiktok: ['live-promo', 'shop-promo'],
 };
 
 export function CalculatorForm() {
@@ -180,7 +156,7 @@ export function CalculatorForm() {
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: mp.color }}>
                     <ShoppingBagIcon className="h-5 w-5 text-white" />
                   </div>
-                  <span className="font-medium text-sm text-slate-900 dark:text-white">{mp.label}</span>
+                  <span className="font-medium text-sm text-slate-900 dark:text-white">{t(`marketplaces.${mp.value}`)}</span>
                 </div>
                 {inputs.marketplace === mp.value && (
                   <div className="absolute top-1 right-1 w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: mp.color }}>
@@ -230,7 +206,7 @@ export function CalculatorForm() {
           className={clsx('input', errors.category && 'input-error')}
         >
           {CATEGORIES.map(cat => (
-            <option key={cat.value} value={cat.value}>{cat.label}</option>
+            <option key={cat.value} value={cat.value}>{t(`categories.${cat.value}`)}</option>
           ))}
         </select>
         {errors.category && <p className="form-error">{errors.category.message}</p>}
@@ -445,8 +421,8 @@ export function CalculatorForm() {
               className="input"
             >
               <option value="">{t('common.optional')}</option>
-              {FREE_SHIPPING_PROGRAMS[marketplace]?.map(p => (
-                <option key={p.value} value={p.value}>{p.label}</option>
+              {FREE_SHIPPING_PROGRAMS[marketplace]?.map(key => (
+                <option key={key} value={key}>{t(`freeShippingPrograms.${key}`)}</option>
               ))}
             </select>
           </div>
@@ -459,8 +435,8 @@ export function CalculatorForm() {
               className="input"
             >
               <option value="">{t('common.optional')}</option>
-              {PROMO_PROGRAMS[marketplace]?.map(p => (
-                <option key={p.value} value={p.value}>{p.label}</option>
+              {PROMO_PROGRAMS[marketplace]?.map(key => (
+                <option key={key} value={key}>{t(`promoPrograms.${key}`)}</option>
               ))}
             </select>
           </div>
@@ -516,7 +492,7 @@ export function CalculatorForm() {
                 className="input"
                 placeholder="20"
               />
-              <p className="form-hint">Persentase diskon dari Harga Jual Marketplace untuk Live Selling</p>
+              <p className="form-hint">{t('calculator.discountHelper')}</p>
             </div>
           )}
         </div>

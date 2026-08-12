@@ -27,12 +27,12 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
-            <p className="text-sm text-slate-400">Klik tombol Hitung untuk melihat hasil</p>
+            <p className="text-sm text-slate-400">{t('calculator.emptyHint')}</p>
          </div>
        </div>
         <div className="bg-[#0a0e0a]/60 rounded-xl p-8 text-center border border-primary-900/20">
           <ArrowPathIcon className="h-12 w-12 mx-auto text-primary-700/50 mb-3" />
-          <p className="text-slate-400">Belum ada perhitungan</p>
+          <p className="text-slate-400">{t('calculator.emptyState')}</p>
        </div>
      </div>
     );
@@ -70,12 +70,12 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
           <div className="flex items-center gap-2 mb-1">
             {isMarketplace ? (
               <span className="inline-flex items-center px-2 py-0.5 rounded text-2xs font-semibold uppercase tracking-wider bg-primary-500/20 text-primary-300 border border-primary-500/30">
-                Marketplace
-             </span>
+                {t('calculator.modeBadge.marketplace')}
+            </span>
             ) : (
               <span className="inline-flex items-center px-2 py-0.5 rounded text-2xs font-semibold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                Live Selling
-             </span>
+                {t('calculator.modeBadge.live')}
+            </span>
             )}
          </div>
           <h3 className="text-base font-semibold text-slate-100">{title}</h3>
@@ -90,7 +90,7 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
             <button
               onClick={onRefresh}
               className="p-2 rounded-lg text-slate-400 hover:text-primary-400 hover:bg-primary-900/20 transition-colors"
-              aria-label="Hitung ulang"
+              aria-label={t('calculator.refreshLabel')}
             >
               <ArrowPathIcon className="h-5 w-5" />
            </button>
@@ -98,7 +98,7 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
           <button
             onClick={() => setShowPrice(!showPrice)}
             className="p-2 rounded-lg text-slate-400 hover:text-primary-400 hover:bg-primary-900/20 transition-colors"
-            aria-label={showPrice ? 'Sembunyikan harga' : 'Tampilkan harga'}
+            aria-label={showPrice ? t('calculator.hidePrice') : t('calculator.showPrice')}
           >
             {showPrice ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
          </button>
@@ -125,7 +125,7 @@ export function CalculatorResults({ mode, title, data, isCalculating, onEdit, on
                </p>
                 {data.netSale && data.netSale !== (data.sellingPrice || data.marketplacePrice || data.livePrice) && (
                   <p className="relative text-sm mt-2 text-slate-400">
-                    Net Sale: <span className="font-mono text-slate-300">{formatIDR(data.netSale)}</span>
+                    {t('calculator.netSalePrefix')} <span className="font-mono text-slate-300">{formatIDR(data.netSale)}</span>
                  </p>
                 )}
              </div>
