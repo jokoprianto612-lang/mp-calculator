@@ -10,7 +10,7 @@ import { config } from '../config';
 import type { RegisterInput, LoginInput, OAuthCallbackInput } from '@mp-calculator/shared';
 import type { User } from '@prisma/client';
 
-const REFRESH_TOKEN_PREFIX = 'refresh_token:';
+const REFRESH_TOKEN_PREFIX = 'refresh_token_set:';
 const REFRESH_TOKEN_TTL = 7 * 24 * 60 * 60; // 7 days
 
 export class AuthService {
@@ -27,7 +27,7 @@ export class AuthService {
     // Check if user exists
     const existing = await prisma.user.findUnique({ where: { email: data.email } });
     if (existing) {
-      throw new Error('Email already registered');
+      throw new Error('Registration failed. Please check your details and try again.');
     }
 
     // Hash password
@@ -57,13 +57,11 @@ export class AuthService {
    */
   async login(data: LoginInput) {
     const user = await prisma.user.findUnique({ where: { email: data.email } });
-    if (!user || !user.passwordHash) {
-      throw new Error('Invalid email or password');
-    }
-
-    // Verify password
-    const valid = await verifyPassword(user.passwordHash, data.password);
-    if (!valid) {
+    // Always run a dummy hash to prevent timing-based user enumeration
+    const dummyHash = '$argon2id$v=19$m=65536,t=3,p=4$ZGVjb3lzYWx0c2FsdA$5n5M6DpQ3x9L1QFqKvKqvKt5QwJ7h3n9RkF1M8sZT6M';
+    const hashToVerify = user?.passwordHash ?? dummyHash;
+    const valid = await verifyPassword(hashToVerify, data.password);
+    if (!user || !valid) {
       throw new Error('Invalid email or password');
     }
 
@@ -94,9 +92,9 @@ export class AuthService {
       throw new Error('Invalid or expired refresh token');
     }
 
-    // Check if token exists in Redis
-    const stored = await redis.get(`${REFRESH_TOKEN_PREFIX}${payload.sub}`);
-    if (stored !== refreshToken) {
+    // Check if token exists in Redis (multi-device: token must be a member of user's set)
+    const member = await redis.sismember(`${REFRESH_TOKEN_PREFIX}${payload.sub}`, refreshToken);
+    if (!member) {
       throw new Error('Refresh token revoked');
     }
 
@@ -116,10 +114,16 @@ export class AuthService {
   }
 
   /**
-   * Logout - revoke refresh token
+   * Logout - revoke refresh token (single device)
    */
-  async logout(userId: string) {
-    await redis.del(`${REFRESH_TOKEN_PREFIX}${userId}`);
+  async logout(userId: string, refreshToken?: string) {
+    if (refreshToken) {
+      // Remove only this token from the set (single-device logout)
+      await redis.srem(`${REFRESH_TOKEN_PREFIX}${userId}`, refreshToken);
+    } else {
+      // Fallback: clear all tokens for user
+      await redis.del(`${REFRESH_TOKEN_PREFIX}${userId}`);
+    }
   }
 
   /**
@@ -171,7 +175,7 @@ export class AuthService {
       data: { passwordHash },
     });
 
-    // Revoke all refresh tokens (force re-login)
+    // Revoke all refresh tokens (force re-login on all devices)
     await redis.del(`${REFRESH_TOKEN_PREFIX}${userId}`);
 
     return { success: true };
@@ -207,10 +211,12 @@ export class AuthService {
   }
 
   /**
-   * Store refresh token in Redis
+   * Store refresh token in Redis (multi-device: add to set with TTL)
    */
   private async storeRefreshToken(userId: string, refreshToken: string) {
-    await redis.setex(`${REFRESH_TOKEN_PREFIX}${userId}`, REFRESH_TOKEN_TTL, refreshToken);
+    const key = `${REFRESH_TOKEN_PREFIX}${userId}`;
+    await redis.sadd(key, refreshToken);
+    await redis.expire(key, REFRESH_TOKEN_TTL);
   }
 
   /**

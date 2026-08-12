@@ -25,6 +25,13 @@ export async function registerRoutes(app: FastifyInstance) {
   // Auth routes
   app.post('/api/v1/auth/register', {
     schema: { body: RegisterSchema },
+    config: {
+      rateLimit: {
+        max: 10,
+        timeWindow: '1 minute',
+        keyGenerator: (req: any) => `${req.ip}:${req.body?.email ?? 'unknown'}`,
+      },
+    },
   }, async (request: any, reply: any) => {
     const result = await authService.register(request.body as any);
     reply.setCookie('access_token', result.accessToken, {
@@ -44,6 +51,13 @@ export async function registerRoutes(app: FastifyInstance) {
 
   app.post('/api/v1/auth/login', {
     schema: { body: LoginSchema },
+    config: {
+      rateLimit: {
+        max: 10,
+        timeWindow: '1 minute',
+        keyGenerator: (req: any) => `${req.ip}:${req.body?.email ?? 'unknown'}`,
+      },
+    },
   }, async (request: any, reply: any) => {
     const result = await authService.login(request.body as any);
     reply.setCookie('access_token', result.accessToken, {
@@ -85,7 +99,8 @@ export async function registerRoutes(app: FastifyInstance) {
 
   app.post('/api/v1/auth/logout', async (request: any, reply: any) => {
     if (request.user) {
-      await authService.logout((request.user as any).id);
+      const refreshToken = request.cookies?.['refresh_token'];
+      await authService.logout((request.user as any).id, refreshToken);
     }
     reply.clearCookie('access_token');
     reply.clearCookie('refresh_token');

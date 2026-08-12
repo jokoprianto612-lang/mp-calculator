@@ -34,6 +34,8 @@ function ttlSeconds(duration: string): number {
 
 const ENCODER = new TextEncoder();
 const SECRET = config.jwt.secret;
+const ISSUER = 'mp-calculator';
+const AUDIENCE = 'mp-calculator-api';
 
 function base64url(input: string | Buffer): string {
   const buf = typeof input === 'string' ? Buffer.from(input, 'utf-8') : Buffer.from(input);
@@ -50,7 +52,7 @@ export function signAccessToken(payload: Omit<AccessTokenPayload, 'type'>): stri
   const header = { alg: 'HS256', typ: 'JWT' };
   const now = Math.floor(Date.now() / 1000);
   const exp = now + ttlSeconds(config.jwt.accessExpiresIn);
-  const body = { ...payload, type: 'access' as const, iat: now, exp };
+  const body = { ...payload, type: 'access' as const, iat: now, exp, iss: ISSUER, aud: AUDIENCE };
   const headerB64 = base64url(JSON.stringify(header));
   const bodyB64 = base64url(JSON.stringify(body));
   const sig = sign(`${headerB64}.${bodyB64}`);
@@ -61,7 +63,7 @@ export function signRefreshToken(payload: Omit<RefreshTokenPayload, 'type'>): st
   const header = { alg: 'HS256', typ: 'JWT' };
   const now = Math.floor(Date.now() / 1000);
   const exp = now + ttlSeconds(config.jwt.refreshExpiresIn);
-  const body = { ...payload, type: 'refresh' as const, iat: now, exp };
+  const body = { ...payload, type: 'refresh' as const, iat: now, exp, iss: ISSUER, aud: AUDIENCE };
   const headerB64 = base64url(JSON.stringify(header));
   const bodyB64 = base64url(JSON.stringify(body));
   const sig = sign(`${headerB64}.${bodyB64}`);
@@ -83,7 +85,9 @@ export function verifyToken<T extends JwtPayload = JwtPayload>(token: string): T
   const sig = parts[2]!;
   const expected = sign(`${headerB64}.${payloadB64}`);
   if (!safeEqual(expected, sig)) throw new Error('Invalid signature');
-  const body = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf-8')) as JwtPayload & { exp: number; iat: number };
+  const body = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf-8')) as JwtPayload & { exp: number; iat: number; iss?: string; aud?: string };
   if (body.exp && body.exp * 1000 < Date.now()) throw new Error('Token expired');
+  if (body.iss !== ISSUER) throw new Error('Invalid issuer');
+  if (body.aud !== AUDIENCE) throw new Error('Invalid audience');
   return body as unknown as T;
 }
