@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "preinstall": "node -e \"if(process.env.CF_PAGES==='1'){try{require('child_process').execSync('rm -rf node_modules apps/*/node_modules packages/*/node_modules bun.lock bun.lockb',{stdio:'inherit'})}catch(e){console.error('preinstall cleanup skipped:',e.message)}}\"",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",

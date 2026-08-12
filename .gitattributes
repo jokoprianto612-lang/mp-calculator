@@ -1,0 +1,22 @@
+# Normalize line endings to LF for cross-platform consistency
+# (CF Pages builds on Linux where CRLF can break YAML/config parsing)
+*                 text=auto eol=lf
+*.yaml            text eol=lf
+*.yml             text eol=lf
+*.json            text eol=lf
+*.md              text eol=lf
+*.ts              text eol=lf
+*.tsx             text eol=lf
+*.js              text eol=lf
+*.cjs             text eol=lf
+*.mjs             text eol=lf
+*.css             text eol=lf
+*.html            text eol=lf
+
+# Shell scripts must stay LF (executable bit)
+*.sh              text eol=lf
+
+# Git keeps Windows-style CRLF for these platform-specific files
+*.bat             text eol=crlf
+*.cmd             text eol=crlf
+*.ps1             text eol=crlf

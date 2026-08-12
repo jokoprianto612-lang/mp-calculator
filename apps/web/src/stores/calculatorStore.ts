@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { CalculationInputs, CalculationResult } from '@/shared';
+import type { CalculationInputs, CalculationResult, LiveSellingInputs } from '@/shared';
 
 interface CalculatorState {
-  // Form inputs
-  inputs: CalculationInputs;
-  setInputs: (inputs: Partial<CalculationInputs>) => void;
+  // Form inputs (LiveSellingInputs extends CalculationInputs — adds live* fields)
+  inputs: LiveSellingInputs;
+  setInputs: (inputs: Partial<LiveSellingInputs>) => void;
   resetInputs: () => void;
 
   // Results
@@ -24,7 +24,7 @@ interface CalculatorState {
   calculate: () => Promise<void>;
 }
 
-const defaultInputs: CalculationInputs = {
+const defaultInputs: LiveSellingInputs = {
   marketplace: 'tokopedia',
   mode: 'marketplace',
   category: 'electronics',

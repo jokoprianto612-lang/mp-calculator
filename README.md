@@ -319,14 +319,25 @@ The web app is self-contained and deployable to Cloudflare Pages without the API
 
 **Dashboard configuration:**
 - **Branch to deploy:** `feature/web-redesign`
-- **Build command:** `pnpm install --no-frozen-lockfile && pnpm --filter @mp-calculator/web run build`
+- **Build command:**
+  ```bash
+  pnpm install --no-frozen-lockfile && pnpm --filter @mp-calculator/web run build
+  ```
 - **Build output directory:** `apps/web/dist`
 - **Root directory:** *(leave empty / blank)*
 - **Environment variables:**
   - `VITE_API_URL` — leave empty (offline mode) or set to API URL
   - `NODE_VERSION` — `20`
+  - `SKIP_DEPENDENCY_INSTALL=1` — **recommended**: disables CF Pages' auto `bun install` so pnpm handles everything from scratch (fixes `@mp-calculator/shared` 404 caused by bun→pnpm workspace symlink corruption)
 
 **Important:** Root directory MUST be empty. Setting it to `/` causes "root directory not found" error because the build expects to run pnpm workspace commands from project root.
+
+**Why `SKIP_DEPENDENCY_INSTALL=1`?** The CF Pages Workers Builds image runs `bun install` before the user build command to warm a dependency cache. When `pnpm install` then runs, it detects the bun-installed packages, moves them to `node_modules/.ignored`, and re-installs. During this transition the `@mp-calculator/shared` workspace link breaks and pnpm tries to fetch it from the npm registry → 404. Setting `SKIP_DEPENDENCY_INSTALL=1` skips the bun phase entirely so pnpm installs cleanly from scratch.
+
+**Alternative (no env var):** add `--filter @mp-calculator/web --filter @mp-calculator/shared` to the `pnpm install` command so it skips `apps/api` and never trips the broken workspace lookup:
+```bash
+pnpm install --no-frozen-lockfile --filter @mp-calculator/web --filter @mp-calculator/shared && pnpm --filter @mp-calculator/web run build
+```
 
 **SPA routing:** Handled by `apps/web/public/_redirects` (all routes → `/index.html`).
 

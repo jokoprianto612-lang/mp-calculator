@@ -2,6 +2,12 @@
 node_modules/
 .pnpm-store/
 
+# Bun lockfiles (repo uses pnpm — bun.lock* would confuse CF Pages build image
+# into running bun install before pnpm and breaking workspace symlinks)
+bun.lock
+bun.lockb
+bun.lockb.txt
+
 # Build outputs
 dist/
 build/
