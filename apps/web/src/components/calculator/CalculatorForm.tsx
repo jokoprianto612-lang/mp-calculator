@@ -13,27 +13,26 @@ const calculatorSchema = z.object({
   marketplace: z.enum(['tokopedia', 'shopee', 'lazada', 'tiktok']),
   mode: z.enum(['marketplace', 'live']),
   category: z.string().min(1, 'Kategori wajib dipilih'),
-  hpp: z.number().min(1, 'HPP minimal 1'),
-  targetMargin: z.number().min(-100).max(1000).optional(),
+  hpp: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(1, 'HPP minimal 1')),
+  targetMargin: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? undefined : v, z.number().min(-100).max(1000).optional()),
   sellingPrice: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? undefined : v, z.number().nonnegative().optional()),
-  sellerVoucher: z.number().min(0).default(0),
-  platformVoucher: z.number().min(0).default(0),
+  sellerVoucher: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(0).default(0)),
+  platformVoucher: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(0).default(0)),
   isMallSeller: z.boolean().default(false),
   useAds: z.boolean().default(false),
-  adBudget: z.number().min(0).default(0),
+  adBudget: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(0).default(0)),
   useAms: z.boolean().default(false),
-  weight: z.number().min(0).default(0),
+  weight: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(0).default(0)),
   originCity: z.string().min(1, 'Kota asal wajib diisi'),
   destinationCity: z.string().min(1, 'Kota tujuan wajib diisi'),
-  packingCost: z.number().min(0).default(0),
+  packingCost: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(0).default(0)),
   freeShippingProgram: z.string().optional(),
   promoProgram: z.string().optional(),
-  liveDiscountPercent: z.number().min(0).max(100).default(20),
-  liveAdBudget: z.number().min(0).default(0),
-  livePackingCost: z.number().min(0).default(0),
+  liveDiscountPercent: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 20 : v, z.number().min(0).max(100).default(20)),
+  liveAdBudget: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(0).default(0)),
+  livePackingCost: z.preprocess((v) => (typeof v === 'number' && Number.isNaN(v)) ? 0 : v, z.number().min(0).default(0)),
 }).refine(
   (data) => {
-    // Treat 0, NaN, null, undefined as 'not set'
     const hasSP = typeof data.sellingPrice === 'number' && data.sellingPrice > 0;
     const hasTM = typeof data.targetMargin === 'number' && data.targetMargin > 0;
     return hasSP || hasTM;

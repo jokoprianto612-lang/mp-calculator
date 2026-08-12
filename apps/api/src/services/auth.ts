@@ -127,6 +127,39 @@ export class AuthService {
   }
 
   /**
+   * Find or create user via OTP login (passwordless).
+   */
+  async loginWithOtp(email: string) {
+    const normalized = email.toLowerCase().trim();
+    let user = await prisma.user.findUnique({ where: { email: normalized } });
+    let isNew = false;
+
+    if (!user) {
+      // Auto-create user on first OTP login (passwordless)
+      user = await prisma.user.create({
+        data: {
+          email: normalized,
+          name: normalized.split('@')[0], // Default name from email
+          provider: 'email',
+          emailVerified: new Date(), // OTP proves email ownership
+        },
+      });
+      isNew = true;
+    } else if (!user.emailVerified) {
+      // Mark email verified since OTP proves ownership
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    }
+
+    const tokens = await this.generateTokens(user.id, user.email);
+    await this.storeRefreshToken(user.id, tokens.refreshToken);
+
+    return { user: this.sanitizeUser(user), isNew, ...tokens };
+  }
+
+  /**
    * Get current user from access token
    */
   async getCurrentUser(accessToken: string) {

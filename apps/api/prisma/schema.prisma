@@ -146,3 +146,16 @@ model AuditLog {
   @@index([entity, entityId])
   @@index([createdAt])
 }
+
+model EmailOtp {
+  id        String   @id @default(cuid())
+  email     String
+  code      String   // hashed (HMAC-SHA256)
+  attempts  Int      @default(0)
+  consumed  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([email])
+  @@index([expiresAt])
+}

@@ -35,6 +35,10 @@ const envSchema = z.object({
   DEEPL_API_KEY: z.string().optional(),
   DEEPL_API_URL: z.string().url().default('https://api-free.deepl.com/v2'),
 
+  // Email OTP (Resend)
+  RESEND_API_KEY: z.string().optional(),
+  RESEND_FROM_EMAIL: z.string().email().default('noreply@mp-calculator.app'),
+
   // OAuth - Google
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
@@ -94,6 +98,11 @@ export const config = {
   deepl: {
     apiKey: env.DEEPL_API_KEY,
     apiUrl: env.DEEPL_API_URL,
+  },
+
+  resend: {
+    apiKey: env.RESEND_API_KEY,
+    fromEmail: env.RESEND_FROM_EMAIL,
   },
 
   oauth: {

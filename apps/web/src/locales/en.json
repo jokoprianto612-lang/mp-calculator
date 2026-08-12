@@ -24,7 +24,32 @@
     "hidePrice": "Hide price",
     "showPrice": "Show price",
     "netSalePrefix": "Net Sale:",
-    "discountHelper": "Discount percentage from Marketplace Selling Price for Live Selling"
+    "discountHelper": "Discount percentage from Marketplace Selling Price for Live Selling",
+    "inputs": {
+      "marketplace": "Marketplace",
+      "mode": "Mode",
+      "modeMarketplace": "Marketplace",
+      "modeLive": "Live Selling",
+      "category": "Category",
+      "hpp": "Cost of Goods (HPP)",
+      "targetMargin": "Target Margin (%)",
+      "sellingPrice": "Selling Price",
+      "sellerVoucher": "Seller Voucher",
+      "platformVoucher": "Platform Voucher",
+      "isMallSeller": "Mall Seller",
+      "useAms": "Use AMS",
+      "adBudget": "Ad Budget",
+      "weight": "Weight (kg)",
+      "originCity": "Origin City",
+      "destinationCity": "Destination City",
+      "freeShippingProgram": "Free Shipping Program",
+      "promoProgram": "Promo Program",
+      "packingCost": "Packing Cost",
+      "liveDiscountPercent": "Live Discount (%)",
+      "liveAdBudget": "Live Ad Budget",
+      "livePackingCost": "Live Packing Cost"
+    },
+    "calculate": "Calculate"
   },
   "auth": {
     "registerSuccess": "Account created successfully!",
@@ -33,8 +58,24 @@
     "emailPlaceholder": "you@email.com",
     "withGoogle": "Continue with Google",
     "withGitHub": "Continue with GitHub",
-    "appName": "MP Calculator",
-    "brandTagline": "Marketplace Profit Calculator"
+    "appName": "OkongzINC",
+    "brandTagline": "OkongzINC Marketplace Profit Calculator",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "hasAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "rememberMe": "Remember Me",
+    "or": "Or",
+    "validation": {
+      "emailInvalid": "Invalid email format"
+    }
   },
   "settings": {
     "profile": "Profile",
@@ -104,7 +145,8 @@
     "historyEmpty": "{{title}} is empty"
   },
   "common": {
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "loading": "Loading..."
   },
   "currency": {
     "format": "Rp{{value}}",
@@ -209,13 +251,45 @@
     "calculatorPreview": "Calculator Preview",
     "calculatorPreviewDesc": "Clean, responsive interface, easy to use on desktop and mobile",
     "detailedBreakdown": "Includes complete fee breakdown",
-    "ctaTitle": "Start Calculating Your Profit Now"
+    "ctaTitle": "Start Calculating Your Profit Now",
+    "subtitle": "The most complete marketplace profit calculator for Indonesian sellers. Supports Tokopedia, Shopee, Lazada, & TikTok Shop with real-time fee breakdowns.",
+    "featuresSubtitle": "Everything you need to optimize your online selling profit"
   },
-  "languageDisplay": {
-    "id": "Indonesian",
-    "en": "English",
-    "zh": "Chinese",
-    "ja": "Japanese",
-    "ko": "Korean"
+  "home.features": {
+    "calculator": {
+      "title": "Real-time Calculator",
+      "description": "Calculate selling price, profit margin, and marketplace fee breakdowns in real-time for Tokopedia, Shopee, Lazada, and TikTok Shop."
+    },
+    "dualMode": {
+      "title": "Dual Mode Calculation",
+      "description": "Calculation support for Marketplace Selling Price (Store) and Live Selling Price with automatic discounts."
+    },
+    "translation": {
+      "title": "Integrated Translation",
+      "description": "Integrated translation feature powered by DeepL API supporting 5 languages: Indonesian, English, 中文, 日本語, 한국어."
+    },
+    "breakdown": {
+      "title": "Detailed Fee Breakdown",
+      "description": "High-precision breakdown of platform fees, transaction fees, shipping, AMS, taxes, and packing costs."
+    },
+    "presets": {
+      "title": "Store Presets",
+      "description": "Save your favorite store configurations as presets for faster future calculations."
+    },
+    "history": {
+      "title": "Calculation History",
+      "description": "Access full history of all calculations with duplication and edit options."
+    }
+  },
+  "home.preview": {
+    "breakdown_1": "Platform commission & service fee",
+    "breakdown_2": "Transaction & order processing fees",
+    "breakdown_3": "Logistics fees (shipping) per kg/km",
+    "breakdown_4": "Free shipping & platform promo programs",
+    "breakdown_5": "AMS (Advertising) & ad budget",
+    "breakdown_6": "Taxes & packing costs",
+    "cta_secondary": "Start Calculating Now",
+    "cta_register": "Create Free Account",
+    "subtitle_cta": "Start calculating your online store profit now. Free, fast, and accurate."
   }
 }

@@ -1,7 +1,6 @@
-import { createRoute } from '@tanstack/react-router';
-import { rootRoute } from './__root';
+import { createFileRoute } from '@tanstack/react-router';
 import { HistoryPage } from '../components/history/HistoryPage';
 
-export const historyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/history',
+export const historyRoute = createFileRoute('/history')({
   component: () => <HistoryPage />,
 });

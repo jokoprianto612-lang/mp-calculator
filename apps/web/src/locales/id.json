@@ -24,7 +24,32 @@
     "hidePrice": "Sembunyikan harga",
     "showPrice": "Tampilkan harga",
     "netSalePrefix": "Net Sale:",
-    "discountHelper": "Persentase diskon dari Harga Jual Marketplace untuk Live Selling"
+    "discountHelper": "Persentase diskon dari Harga Jual Marketplace untuk Live Selling",
+    "inputs": {
+      "marketplace": "Marketplace",
+      "mode": "Mode",
+      "modeMarketplace": "Marketplace",
+      "modeLive": "Live Selling",
+      "category": "Kategori",
+      "hpp": "HPP (Harga Pokok Produksi)",
+      "targetMargin": "Target Margin (%)",
+      "sellingPrice": "Harga Jual",
+      "sellerVoucher": "Voucher Penjual",
+      "platformVoucher": "Voucher Platform",
+      "isMallSeller": "Penjual Mall",
+      "useAms": "Gunakan AMS",
+      "adBudget": "Anggaran Iklan",
+      "weight": "Berat (kg)",
+      "originCity": "Kota Asal",
+      "destinationCity": "Kota Tujuan",
+      "freeShippingProgram": "Program Gratis Ongkir",
+      "promoProgram": "Program Promo",
+      "packingCost": "Biaya Packing",
+      "liveDiscountPercent": "Diskon Live (%)",
+      "liveAdBudget": "Anggaran Iklan Live",
+      "livePackingCost": "Biaya Packing Live"
+    },
+    "calculate": "Hitung"
   },
   "auth": {
     "registerSuccess": "Akun berhasil dibuat!",
@@ -33,8 +58,24 @@
     "emailPlaceholder": "anda@email.com",
     "withGoogle": "Lanjutkan dengan Google",
     "withGitHub": "Lanjutkan dengan GitHub",
-    "appName": "MP Calculator",
-    "brandTagline": "Kalkulator Profit Marketplace"
+    "appName": "OkongzINC",
+    "brandTagline": "Kalkulator Profit Marketplace OkongzINC",
+    "login": "Masuk",
+    "register": "Daftar",
+    "email": "Email",
+    "password": "Password",
+    "name": "Nama Lengkap",
+    "confirmPassword": "Konfirmasi Password",
+    "forgotPassword": "Lupa Password?",
+    "hasAccount": "Sudah punya akun?",
+    "noAccount": "Belum punya akun?",
+    "signIn": "Masuk",
+    "signUp": "Daftar",
+    "rememberMe": "Ingat Saya",
+    "or": "Atau",
+    "validation": {
+      "emailInvalid": "Format email tidak valid"
+    }
   },
   "settings": {
     "profile": "Profil",
@@ -104,7 +145,8 @@
     "historyEmpty": "{{title}} kosong"
   },
   "common": {
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "loading": "Memuat..."
   },
   "currency": {
     "format": "Rp{{value}}",
@@ -209,13 +251,45 @@
     "calculatorPreview": "Pratinjau Kalkulator",
     "calculatorPreviewDesc": "Antarmuka yang bersih, responsif, dan mudah digunakan di desktop maupun mobile",
     "detailedBreakdown": "Termasuk rincian biaya lengkap",
-    "ctaTitle": "Mulai Hitung Keuntungan Anda Sekarang"
+    "ctaTitle": "Mulai Hitung Keuntungan Anda Sekarang",
+    "subtitle": "Kalkulator profit marketplace terlengkap untuk seller Indonesia. Dukung Tokopedia, Shopee, Lazada, & TikTok Shop dengan breakdown biaya real-time.",
+    "featuresSubtitle": "Semua fitur yang Anda butuhkan untuk mengoptimalkan profit penjualan online"
   },
-  "languageDisplay": {
-    "id": "Indonesian",
-    "en": "Inggris",
-    "zh": "Tiongkok",
-    "ja": "Jepang",
-    "ko": "Korea"
+  "home.features": {
+    "calculator": {
+      "title": "Kalkulator Real-time",
+      "description": "Hitung harga jual, margin keuntungan, dan rincian biaya marketplace secara real-time untuk Tokopedia, Shopee, Lazada, dan TikTok Shop."
+    },
+    "dualMode": {
+      "title": "Dual Mode Calculation",
+      "description": "Dukungan perhitungan untuk Harga Jual Marketplace (toko) dan Harga Jual Live (live selling) dengan diskon otomatis."
+    },
+    "translation": {
+      "title": "Terjemahan Terintegrasi",
+      "description": "Fitur terjemahan terintegrasi dengan DeepL API untuk mendukung 5 bahasa: Indonesia, English, 中文, 日本語, 한국어."
+    },
+    "breakdown": {
+      "title": "Rincian Biaya Lengkap",
+      "description": "Breakdown biaya platform fee, biaya transaksi, ongkir, AMS, pajak, dan biaya packing dengan presisi tinggi."
+    },
+    "presets": {
+      "title": "Preset Toko",
+      "description": "Simpan konfigurasi toko favorit sebagai preset untuk perhitungan cepat di masa mendatang."
+    },
+    "history": {
+      "title": "Riwayat Perhitungan",
+      "description": "Akses riwayat lengkap semua perhitungan yang pernah dilakukan dengan opsi duplikasi dan edit."
+    }
+  },
+  "home.preview": {
+    "breakdown_1": "Platform commission & service fee",
+    "breakdown_2": "Biaya transaksi & order processing",
+    "breakdown_3": "Biaya logistik (ongkir) per kg/km",
+    "breakdown_4": "Program gratis ongkir & promo platform",
+    "breakdown_5": "AMS (Advertising) & biaya iklan",
+    "breakdown_6": "Pajak & biaya packing",
+    "cta_secondary": "Mulai Hitung Sekarang",
+    "cta_register": "Buat Akun Gratis",
+    "subtitle_cta": "Mulai hitung keuntungan toko online Anda sekarang. Gratis, cepat, dan akurat."
   }
 }

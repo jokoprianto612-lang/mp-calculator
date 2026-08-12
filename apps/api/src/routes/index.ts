@@ -7,9 +7,14 @@ import { authService } from '../services/auth';
 import { calculationService } from '../services/calculation';
 import { presetService } from '../services/preset';
 import { translationService } from '../services/translation';
-import { 
-  RegisterSchema, 
-  LoginSchema, 
+import { otpService } from '../services/otp';
+import { googleOAuthService } from '../services/google-oauth';
+import { z } from 'zod';
+import { redis } from '../lib/redis';
+import { config } from '../config';
+import {
+  RegisterSchema,
+  LoginSchema,
   RefreshTokenSchema,
   CreateCalculationSchema,
   UpdateCalculationSchema,
@@ -20,6 +25,12 @@ import {
   UpdateUserSettingsSchema,
   ChangePasswordSchema,
 } from '@mp-calculator/shared';
+
+const OTPRequestSchema = z.object({ email: z.string().email() });
+const OTPVerifySchema = z.object({ email: z.string().email(), code: z.string().length(6) });
+
+const OAUTH_STATE_PREFIX = 'oauth_state:';
+const OAUTH_STATE_TTL = 10 * 60; // 10 minutes
 
 export async function registerRoutes(app: FastifyInstance) {
   // Auth routes
@@ -60,6 +71,56 @@ export async function registerRoutes(app: FastifyInstance) {
     },
   }, async (request: any, reply: any) => {
     const result = await authService.login(request.body as any);
+    reply.setCookie('access_token', result.accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 15 * 60,
+    });
+    reply.setCookie('refresh_token', result.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60,
+    });
+    return { success: true, data: result };
+  });
+
+  // OTP - request code (passwordless login)
+  app.post('/api/v1/auth/otp/request', {
+    schema: { body: OTPRequestSchema },
+    config: {
+      rateLimit: {
+        max: 5,
+        timeWindow: '1 minute',
+        keyGenerator: (req: any) => `${req.ip}:${req.body?.email ?? 'unknown'}`,
+      },
+    },
+  }, async (request: any) => {
+    const { email } = request.body as { email: string };
+    const result = await otpService.requestOtp(email);
+    return {
+      success: true,
+      data: { sent: true, devMode: result.devMode },
+    };
+  });
+
+  // OTP - verify code and login (passwordless)
+  app.post('/api/v1/auth/otp/verify', {
+    schema: { body: OTPVerifySchema },
+    config: {
+      rateLimit: {
+        max: 10,
+        timeWindow: '1 minute',
+        keyGenerator: (req: any) => req.ip,
+      },
+    },
+  }, async (request: any, reply: any) => {
+    const { email, code } = request.body as { email: string; code: string };
+    const valid = await otpService.verifyOtp(email, code);
+    if (!valid) throw new Error('Invalid or expired code');
+
+    const result = await authService.loginWithOtp(email);
     reply.setCookie('access_token', result.accessToken, {
       httpOnly: true,
       secure: true,
@@ -128,16 +189,66 @@ export async function registerRoutes(app: FastifyInstance) {
     return { success: true };
   });
 
-  // OAuth routes (placeholder)
+  // OAuth - initiate (redirect to Google)
   app.get('/api/v1/auth/oauth/:provider', async (request: any, reply: any) => {
-    const { provider } = request.params as { provider: 'google' | 'github' };
-    // Redirect to OAuth provider
-    return reply.redirect(`https://example.com/oauth/${provider}`);
+    const { provider } = request.params as { provider: string };
+    if (provider !== 'google') {
+      return reply.code(400).send({ success: false, error: 'Unsupported provider' });
+    }
+    if (!googleOAuthService.isConfigured()) {
+      return reply.code(503).send({ success: false, error: 'Google OAuth not configured' });
+    }
+    // Generate CSRF state and store in Redis (10 min TTL)
+    const state = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    await redis.setex(`${OAUTH_STATE_PREFIX}${state}`, OAUTH_STATE_TTL, '1');
+    const url = googleOAuthService.buildAuthUrl(state);
+    return reply.redirect(url);
   });
 
+  // OAuth - callback (exchange code, create/login user)
   app.get('/api/v1/auth/oauth/:provider/callback', async (request: any, reply: any) => {
-    // Handle OAuth callback
-    return { success: false, error: 'OAuth not implemented' };
+    const { provider } = request.params as { provider: string };
+    const { code, state } = request.query as { code?: string; state?: string };
+    const frontendUrl = (config as any).frontendUrl ?? 'http://localhost:5173';
+
+    if (provider !== 'google') {
+      return reply.redirect(`${frontendUrl}/login?error=unsupported_provider`);
+    }
+    if (!code || !state) {
+      return reply.redirect(`${frontendUrl}/login?error=missing_params`);
+    }
+    // Verify CSRF state
+    const stored = await redis.get(`${OAUTH_STATE_PREFIX}${state}`);
+    if (!stored) {
+      return reply.redirect(`${frontendUrl}/login?error=invalid_state`);
+    }
+    await redis.del(`${OAUTH_STATE_PREFIX}${state}`);
+
+    try {
+      const tokens = await googleOAuthService.exchangeCode(code);
+      const profile = await googleOAuthService.fetchProfile(tokens.accessToken);
+      const { user } = await googleOAuthService.findOrCreateUser(profile);
+
+      const authTokens = await authService['generateTokens'](user.id, user.email);
+      await authService['storeRefreshToken'](user.id, authTokens.refreshToken);
+
+      reply.setCookie('access_token', authTokens.accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 15 * 60,
+      });
+      reply.setCookie('refresh_token', authTokens.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60,
+      });
+      return reply.redirect(`${frontendUrl}/dashboard?login=google`);
+    } catch (err) {
+      console.error('[OAuth callback]', err);
+      return reply.redirect(`${frontendUrl}/login?error=oauth_failed`);
+    }
   });
 
   // Calculation routes

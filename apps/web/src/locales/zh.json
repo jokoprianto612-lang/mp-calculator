@@ -24,7 +24,32 @@
     "hidePrice": "隐藏价格",
     "showPrice": "显示价格",
     "netSalePrefix": "净销售额：",
-    "discountHelper": "直播相对电商售价的折扣百分比"
+    "discountHelper": "直播相对电商售价的折扣百分比",
+    "inputs": {
+      "marketplace": "电商平台",
+      "mode": "模式",
+      "modeMarketplace": "电商",
+      "modeLive": "直播",
+      "category": "分类",
+      "hpp": "成本 (HPP)",
+      "targetMargin": "目标利润率 (%)",
+      "sellingPrice": "售价",
+      "sellerVoucher": "卖家优惠券",
+      "platformVoucher": "平台优惠券",
+      "isMallSeller": "商城卖家",
+      "useAms": "使用 AMS",
+      "adBudget": "广告预算",
+      "weight": "重量 (kg)",
+      "originCity": "发货城市",
+      "destinationCity": "收货城市",
+      "freeShippingProgram": "免运费计划",
+      "promoProgram": "促销计划",
+      "packingCost": "包装费",
+      "liveDiscountPercent": "直播折扣 (%)",
+      "liveAdBudget": "直播广告预算",
+      "livePackingCost": "直播包装费"
+    },
+    "calculate": "计算"
   },
   "auth": {
     "registerSuccess": "账户创建成功！",
@@ -33,8 +58,24 @@
     "emailPlaceholder": "you@email.com",
     "withGoogle": "使用 Google 继续",
     "withGitHub": "使用 GitHub 继续",
-    "appName": "MP Calculator",
-    "brandTagline": "电商利润计算器"
+    "appName": "OkongzINC",
+    "brandTagline": "OkongzINC 电商平台利润计算器",
+    "login": "登录",
+    "register": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "name": "全名",
+    "confirmPassword": "确认密码",
+    "forgotPassword": "忘记密码？",
+    "hasAccount": "已有账号？",
+    "noAccount": "还没有账号？",
+    "signIn": "登录",
+    "signUp": "注册",
+    "rememberMe": "记住我",
+    "or": "或",
+    "validation": {
+      "emailInvalid": "邮箱格式无效"
+    }
   },
   "settings": {
     "profile": "个人资料",
@@ -104,7 +145,8 @@
     "historyEmpty": "{{title}} 为空"
   },
   "common": {
-    "toggleMenu": "切换菜单"
+    "toggleMenu": "切换菜单",
+    "loading": "加载中..."
   },
   "currency": {
     "format": "Rp{{value}}",
@@ -175,7 +217,7 @@
   },
   "languages": {
     "id": {
-      "name": "印度尼西亚语",
+      "name": "印尼语",
       "nativeName": "Bahasa Indonesia"
     },
     "en": {
@@ -210,12 +252,5 @@
     "calculatorPreviewDesc": "界面简洁、响应式，桌面和移动设备都易用",
     "detailedBreakdown": "包含完整的费用明细",
     "ctaTitle": "立即开始计算您的利润"
-  },
-  "languageDisplay": {
-    "id": "印尼语",
-    "en": "英语",
-    "zh": "中文",
-    "ja": "日语",
-    "ko": "韩语"
   }
 }

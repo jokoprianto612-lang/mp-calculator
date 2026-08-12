@@ -1,71 +1,26 @@
-# Dependencies
-node_modules/
-.pnpm-store/
-
-# Bun lockfiles (repo uses pnpm — bun.lock* would confuse CF Pages build image
-# into running bun install before pnpm and breaking workspace symlinks)
-bun.lock
-bun.lockb
-bun.lockb.txt
-
-# Build outputs
-dist/
-build/
-*.tsbuildinfo
-
-# Environment files
+node_modules
+dist
 .env
 .env.local
-.env.*.local
-!.env.example
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
 *.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+.DS_Store
+.turbo
+.pnpm-store
 
-# Test coverage
-coverage/
-.nyc_output/
+# TanStack Router CLI generated files (routeTree.gen.ts)
+.tanstack/
+apps/web/src/routeTree.gen.ts
 
-# Turbo
-.turbo/
+# Local dev test scripts / backup folders
+.backup-*/
+packages/shared/test-*.js
+packages/shared/test-*.cjs
+packages/shared/test-*.mjs
 
-# Docker
-.docker/
+# Build outputs
+apps/*/dist
+apps/*/.vercel
+apps/*/.cloudflare
 
 # Prisma
-prisma/migrations/
-!prisma/migrations/.gitkeep
-
-# Generated files
-*.generated.ts
-routeTree.gen.ts
-
-# Cache
-.cache/
-.eslintcache
-
-# Misc
-*.pem
-.vercel
-.netlify/usr/bin/bash: line 7: /c/Users/asusv/AppData/Local/hermes/cache/terminal/hermes-cwd-2819669c4129.txt: Device or resource busy
-.backup-*
-# Test scripts (local development only)
-packages/shared/test-*.js
-
-# Bash terminal artifacts (defensive)
-*-cwd-*.txt
+apps/api/prisma/migrations/dev.db*
