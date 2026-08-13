@@ -1,0 +1,14 @@
+{
+  "name": "mp-calculator",
+  "compatibility_date": "2026-08-13",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "html_handling": "auto-trailing-slash"
+  },
+  "vars": {
+    "SKIP_DEPENDENCY_INSTALL": "1",
+    "VITE_API_URL": "https://api.yourdomain.com"
+  }
+}
