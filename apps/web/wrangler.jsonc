@@ -10,5 +10,9 @@
   "vars": {
     "SKIP_DEPENDENCY_INSTALL": "1",
     "VITE_API_URL": "https://api.yourdomain.com"
+  },
+  "build": {
+    "command": "pnpm run build:web"
   }
 }
+/usr/bin/bash: line 7: /c/Users/asusv/AppData/Local/hermes/cache/terminal/hermes-cwd-525651c3c722.txt: Device or resource busy
