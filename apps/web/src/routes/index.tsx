@@ -137,7 +137,7 @@ function HomePage() {
             ))
           }
         </div>
-      </section>
+      </div>
 
       {/* Calculator Preview */}
       <section className="py-20 lg:py-28">
@@ -234,6 +234,6 @@ function HomePage() {
           </div>
         </div>
       </footer>
-    </div>
+    </section>
   );
 }
