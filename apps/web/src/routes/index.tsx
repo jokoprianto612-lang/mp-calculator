@@ -71,8 +71,7 @@ function HomePage() {
 
             {/* Subtitle */}
             <p className="text-xl sm:text-2xl text-slate-300 max-w-3xl mx-auto mb-12 animate-in slide-in-from-bottom-4 duration-500 delay-200">
-              Kalkulator profit marketplace terlengkap untuk seller Indonesia. 
-              Dukung Tokopedia, Shopee, Lazada, & TikTok Shop dengan breakdown biaya real-time.
+              {t('home.subtitle')}
             </p>
 
             {/* CTA Buttons */}
@@ -121,7 +120,6 @@ function HomePage() {
               Semua fitur yang Anda butuhkan untuk mengoptimalkan profit penjualan online
             </p>
           </div>
-
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
             {features.map((feature, index) => (
               <div
@@ -150,7 +148,6 @@ function HomePage() {
             </h2>
             <p className="text-slate-400 text-lg">{t('home.calculatorPreviewDesc')}</p>
           </div>
-
           <div className="relative overflow-hidden rounded-2xl border border-primary-900/30 bg-[#121812]/60 backdrop-blur-sm p-8">
             <div className="grid gap-8 lg:grid-cols-2 items-start">
               <div className="text-left">
@@ -209,7 +206,7 @@ function HomePage() {
                 <CalculatorIcon className="h-6 w-6 mr-2" />
                 Mulai Hitung Sekarang
               </Link>
-              <Link to="/register" className="btn-outline btn-lg px-10 py-4 text-lg font-semibold">
+              <Link to="/auth/register" className="btn-outline btn-lg px-10 py-4 text-lg font-semibold">
                 <UserIcon className="h-6 w-6 mr-2" />
                 Buat Akun Gratis
               </Link>
