@@ -21,13 +21,13 @@
     }
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "lint": "eslint src --ext .ts",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
-  },
+      "build": "pnpm exec tsc",
+      "dev": "pnpm exec tsc --watch",
+      "lint": "eslint src --ext .ts",
+      "test": "vitest run",
+      "typecheck": "pnpm exec tsc --noEmit",
+      "clean": "rm -rf dist"
+    },
   "dependencies": {
     "zod": "^3.22.0",
     "decimal.js": "^10.4.0"

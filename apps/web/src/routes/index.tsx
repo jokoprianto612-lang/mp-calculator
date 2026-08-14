@@ -1,9 +1,12 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createRoute, Link } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { CalculatorIcon, ArrowRightIcon, CheckCircleIcon, GlobeAltIcon, SparklesIcon, BoltIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/outline';
 import { OkongzINCLogo } from '../components/brand/OkongzINCLogo';
+import { rootRoute } from './__root';
 
-export const indexRoute = createFileRoute('/')({
+export const Route = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
   component: HomePage,
 });
 
@@ -114,7 +117,7 @@ function HomePage() {
         <div className="container-main">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              {t('home.features')}
+              {t('home.featuresSubtitle')}
             </h2>
             <p className="text-slate-400 text-lg">
               Semua fitur yang Anda butuhkan untuk mengoptimalkan profit penjualan online

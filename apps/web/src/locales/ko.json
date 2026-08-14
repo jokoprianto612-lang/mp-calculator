@@ -14,18 +14,25 @@
     "profile": "프로필"
   },
   "calculator": {
-    "emptyTitle": "결과를 보려면 계산 버튼을 클릭하세요",
-    "emptyState": "계산이 없습니다",
-    "modeBadge": {
-      "marketplace": "마켓플레이스",
-      "live": "라이브 판매"
-    },
-    "refreshLabel": "다시 계산",
-    "hidePrice": "가격 숨기기",
-    "showPrice": "가격 표시",
-    "netSalePrefix": "순매출:",
-    "discountHelper": "라이브 판매의 마켓플레이스 가격 대비 할인율",
-    "inputs": {
+      "emptyTitle": "결과를 보려면 계산 버튼을 클릭하세요",
+      "emptyState": "계산이 없습니다",
+      "emptyHint": "양식을 작성하고 계산 버튼을 클릭하여 결과를 확인하세요",
+      "modeBadge": {
+        "marketplace": "마켓플레이스",
+        "live": "라이브 판매"
+      },
+      "refreshLabel": "다시 계산",
+      "hidePrice": "가격 숨기기",
+      "showPrice": "가격 표시",
+      "netSalePrefix": "순매출:",
+      "discountHelper": "라이브 판매의 마켓플레이스 가격 대비 할인율",
+      "title": "계산기",
+      "subtitle": "실시간 수수료 명세로 마켓플레이스 수익 계산",
+      "marketplacePrice": "마켓플레이스 가격",
+      "livePrice": "라이브 판매가",
+      "marketplaceDeduction": "마켓플레이스 공제",
+      "sellerCost": "셀러 비용",
+      "inputs": {
       "marketplace": "마켓플레이스",
       "mode": "모드",
       "modeMarketplace": "마켓플레이스",
@@ -101,27 +108,47 @@
     "defaultUser": "사용자"
   },
   "history": {
-    "subtitle": "계산 기록 관리 및 보기",
-    "marketplace": "TikTok Shop",
-    "newCalculation": "새 계산",
-    "duplicateSuccess": "계산이 복제되었습니다",
-    "viewDetail": "세부 정보 보기",
-    "duplicate": "복제",
-    "delete": "삭제"
-  },
+      "subtitle": "계산 기록 관리 및 보기",
+      "marketplace": "TikTok Shop",
+      "newCalculation": "새 계산",
+      "duplicateSuccess": "계산이 복제되었습니다",
+      "viewDetail": "세부 정보 보기",
+      "duplicate": "복제",
+      "delete": "삭제",
+      "title": "기록",
+      "empty": "계산이 없습니다",
+      "allMarketplaces": "모든 마켓플레이스",
+      "allModes": "모든 모드",
+      "newest": "최신순",
+      "oldest": "오래된순",
+      "highestProfit": "수익 높은순",
+      "lowestProfit": "수익 낮은순",
+      "deleteConfirm": "이 계산을 삭제하시겠습니까?"
+    },
   "presets": {
-    "editPreset": "프리셋 편집",
-    "createNew": "새 프리셋 만들기",
-    "deleteFailed": "프리셋 삭제 실패",
-    "createFailed": "프리셋 생성 실패",
-    "updateFailed": "프리셋 업데이트 실패",
-    "loadFailed": "프리셋 불러오기 실패",
-    "setAsDefaultHint": "마켓플레이스당 기본 프리셋은 하나만",
-    "categoryAndParams": "카테고리 및 기타 매개변수",
-    "presetSavesAllParams": "프리셋은 현재 계산기 양식의 모든 매개변수를 저장합니다.",
-    "goToCalculator": "{{link}} 페이지로 이동하여 원하는 매개변수를 설정한 다음 여기로 돌아와 프리셋으로 저장하세요.",
-    "namePlaceholder": "예: Tokopedia 전자제품 표준"
-  },
+      "editPreset": "프리셋 편집",
+      "createNew": "새 프리셋 만들기",
+      "deleteFailed": "프리셋 삭제 실패",
+      "createFailed": "프리셋 생성 실패",
+      "updateFailed": "프리셋 업데이트 실패",
+      "loadFailed": "프리셋 불러오기 실패",
+      "setAsDefaultHint": "마켓플레이스당 기본 프리셋은 하나만",
+      "categoryAndParams": "카테고리 및 기타 매개변수",
+      "presetSavesAllParams": "프리셋은 현재 계산기 양식의 모든 매개변수를 저장합니다.",
+      "goToCalculator": "{{link}} 페이지로 이동하여 원하는 매개변수를 설정한 다음 여기로 돌아와 프리셋으로 저장하세요.",
+      "namePlaceholder": "예: Tokopedia 전자제품 표준",
+      "title": "프리셋",
+      "empty": "프리셋이 없습니다",
+      "name": "이름",
+      "marketplace": "마켓플레이스",
+      "mode": "모드",
+      "category": "카테고리",
+      "actions": "작업",
+      "save": "저장",
+      "cancel": "취소",
+      "deleteConfirm": "이 프리셋을 삭제하시겠습니까?",
+      "setAsDefault": "기본값으로 설정"
+    },
   "translation": {
     "subtitle": "DeepL API로 텍스트 번역 - 5개 언어 지원",
     "swapWhileAuto": "자동 감지 중에는 언어를 바꿀 수 없습니다",
@@ -251,6 +278,45 @@
     "calculatorPreview": "계산기 미리보기",
     "calculatorPreviewDesc": "데스크톱과 모바일 모두에서 사용하기 쉬운 깔끔하고 반응형 인터페이스",
     "detailedBreakdown": "상세 수수료 명세서 포함",
-    "ctaTitle": "지금 수익 계산 시작하기"
+    "ctaTitle": "지금 수익 계산 시작하기",
+    "subtitle": "인도네시아 셀러를 위한 가장 완벽한 마켓플레이스 수익 계산기. Tokopedia, Shopee, Lazada, TikTok Shop을 지원하며 실시간 수수료 명세를 제공합니다.",
+    "featuresSubtitle": "온라인 판매 수익 최적화에 필요한 모든 기능",
+    "features": {
+      "calculator": {
+        "title": "실시간 계산기",
+        "description": "Tokopedia, Shopee, Lazada, TikTok Shop의 판매가, 수익률, 마켓플레이스 수수료 명세를 실시간으로 계산합니다."
+      },
+      "dualMode": {
+        "title": "듀얼 모드 계산",
+        "description": "마켓플레이스 판매가(스토어)와 라이브 판매가의 계산을 지원하며 자동 할인이 적용됩니다."
+      },
+      "translation": {
+        "title": "통합 번역",
+        "description": "DeepL API 기반 통합 번역 기능으로 인도네시아어, 영어, 중국어, 일본어, 한국어 5개 언어를 지원합니다."
+      },
+      "breakdown": {
+        "title": "상세 수수료 명세",
+        "description": "플랫폼 수수료, 거래 수수료, 배송비, AMS, 세금, 포장비의 고정밀 명세."
+      },
+      "presets": {
+        "title": "스토어 프리셋",
+        "description": "즐겨찾는 스토어 설정을 프리셋으로 저장하여 향후 빠른 계산을 지원합니다."
+      },
+      "history": {
+        "title": "계산 기록",
+        "description": "복제 및 편집 옵션과 함께 모든 계산의 전체 기록에 액세스합니다."
+      }
+    },
+    "preview": {
+      "breakdown_1": "플랫폼 수수료 및 서비스 요금",
+      "breakdown_2": "거래 및 주문 처리 수수료",
+      "breakdown_3": "물류비(배송비) kg/km 단위",
+      "breakdown_4": "무료 배송 및 플랫폼 프로모 프로그램",
+      "breakdown_5": "AMS (광고) 및 광고 예산",
+      "breakdown_6": "세금 및 포장 비용",
+      "cta_secondary": "지금 계산 시작",
+      "cta_register": "무료 계정 만들기",
+      "subtitle_cta": "지금 온라인 스토어 수익을 계산하세요. 무료, 빠르고 정확합니다."
+    }
   }
 }

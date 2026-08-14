@@ -1,11 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { CalculatorForm } from '../components/calculator/CalculatorForm';
 import { CalculatorResults } from '../components/calculator/CalculatorResults';
 import { CalculatorBreakdown } from '../components/calculator/CalculatorBreakdown';
 import { useCalculatorStore } from '../stores/calculatorStore';
+import { rootRoute } from '../routes/__root';
 
-export const calculatorRoute = createFileRoute('/calculator/')({
+export const Route = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/calculator',
   component: CalculatorPage,
 });
 

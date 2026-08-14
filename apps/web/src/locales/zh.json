@@ -14,18 +14,25 @@
     "profile": "个人资料"
   },
   "calculator": {
-    "emptyTitle": "点击计算按钮查看结果",
-    "emptyState": "暂无计算",
-    "modeBadge": {
-      "marketplace": "电商",
-      "live": "直播"
-    },
-    "refreshLabel": "重新计算",
-    "hidePrice": "隐藏价格",
-    "showPrice": "显示价格",
-    "netSalePrefix": "净销售额：",
-    "discountHelper": "直播相对电商售价的折扣百分比",
-    "inputs": {
+      "emptyTitle": "点击计算按钮查看结果",
+      "emptyState": "暂无计算",
+      "emptyHint": "填写表单并点击计算查看结果",
+      "modeBadge": {
+        "marketplace": "电商",
+        "live": "直播"
+      },
+      "refreshLabel": "重新计算",
+      "hidePrice": "隐藏价格",
+      "showPrice": "显示价格",
+      "netSalePrefix": "净销售额：",
+      "discountHelper": "直播相对电商售价的折扣百分比",
+      "title": "计算器",
+      "subtitle": "使用实时费用明细计算您的电商平台利润",
+      "marketplacePrice": "电商平台价格",
+      "livePrice": "直播销售价格",
+      "marketplaceDeduction": "电商平台扣除",
+      "sellerCost": "卖家成本",
+      "inputs": {
       "marketplace": "电商平台",
       "mode": "模式",
       "modeMarketplace": "电商",
@@ -101,27 +108,47 @@
     "defaultUser": "用户"
   },
   "history": {
-    "subtitle": "管理并查看您的计算历史",
-    "marketplace": "TikTok Shop",
-    "newCalculation": "新建计算",
-    "duplicateSuccess": "计算已复制",
-    "viewDetail": "查看详情",
-    "duplicate": "复制",
-    "delete": "删除"
-  },
+      "subtitle": "管理并查看您的计算历史",
+      "marketplace": "TikTok Shop",
+      "newCalculation": "新建计算",
+      "duplicateSuccess": "计算已复制",
+      "viewDetail": "查看详情",
+      "duplicate": "复制",
+      "delete": "删除",
+      "title": "历史",
+      "empty": "暂无计算",
+      "allMarketplaces": "所有电商平台",
+      "allModes": "所有模式",
+      "newest": "最新优先",
+      "oldest": "最旧优先",
+      "highestProfit": "利润最高",
+      "lowestProfit": "利润最低",
+      "deleteConfirm": "确定要删除此计算吗？"
+    },
   "presets": {
-    "editPreset": "编辑预设",
-    "createNew": "新建预设",
-    "deleteFailed": "删除预设失败",
-    "createFailed": "创建预设失败",
-    "updateFailed": "更新预设失败",
-    "loadFailed": "加载预设失败",
-    "setAsDefaultHint": "每个电商平台只能有一个默认预设",
-    "categoryAndParams": "分类及其他参数",
-    "presetSavesAllParams": "预设将保存当前计算器表单的所有参数。",
-    "goToCalculator": "请前往 {{link}} 页面，设置所需的参数，然后返回此处保存为预设。",
-    "namePlaceholder": "示例：Tokopedia 电子产品标准"
-  },
+      "editPreset": "编辑预设",
+      "createNew": "新建预设",
+      "deleteFailed": "删除预设失败",
+      "createFailed": "创建预设失败",
+      "updateFailed": "更新预设失败",
+      "loadFailed": "加载预设失败",
+      "setAsDefaultHint": "每个电商平台只能有一个默认预设",
+      "categoryAndParams": "分类及其他参数",
+      "presetSavesAllParams": "预设将保存当前计算器表单的所有参数。",
+      "goToCalculator": "请前往 {{link}} 页面，设置所需的参数，然后返回此处保存为预设。",
+      "namePlaceholder": "示例：Tokopedia 电子产品标准",
+      "title": "预设",
+      "empty": "暂无预设",
+      "name": "名称",
+      "marketplace": "电商平台",
+      "mode": "模式",
+      "category": "分类",
+      "actions": "操作",
+      "save": "保存",
+      "cancel": "取消",
+      "deleteConfirm": "确定要删除此预设吗？",
+      "setAsDefault": "设为默认"
+    },
   "translation": {
     "subtitle": "使用 DeepL API 翻译文本 - 支持 5 种语言",
     "swapWhileAuto": "自动检测模式下无法切换语言",
@@ -251,6 +278,45 @@
     "calculatorPreview": "计算器预览",
     "calculatorPreviewDesc": "界面简洁、响应式，桌面和移动设备都易用",
     "detailedBreakdown": "包含完整的费用明细",
-    "ctaTitle": "立即开始计算您的利润"
+    "ctaTitle": "立即开始计算您的利润",
+    "subtitle": "面向印尼卖家最完整的电商平台利润计算器。支持 Tokopedia、Shopee、Lazada 和 TikTok Shop，提供实时费用明细。",
+    "featuresSubtitle": "优化在线销售利润所需的一切功能",
+    "features": {
+      "calculator": {
+        "title": "实时计算器",
+        "description": "实时计算 Tokopedia、Shopee、Lazada 和 TikTok Shop 的售价、利润率和电商平台费用明细。"
+      },
+      "dualMode": {
+        "title": "双模式计算",
+        "description": "支持电商平台售价（店铺）和直播售价的计算，带自动折扣。"
+      },
+      "translation": {
+        "title": "集成翻译",
+        "description": "由 DeepL API 提供支持的集成翻译功能，支持 5 种语言：印尼语、英语、中文、日语、韩语。"
+      },
+      "breakdown": {
+        "title": "详细费用明细",
+        "description": "高精度明细：平台费、交易费、运费、AMS、税费和包装费。"
+      },
+      "presets": {
+        "title": "店铺预设",
+        "description": "将您喜爱的店铺配置保存为预设，以便未来更快地计算。"
+      },
+      "history": {
+        "title": "计算历史",
+        "description": "访问所有计算的完整历史记录，支持复制和编辑选项。"
+      }
+    },
+    "preview": {
+      "breakdown_1": "平台佣金和服务费",
+      "breakdown_2": "交易和订单处理费",
+      "breakdown_3": "物流费（运费）按公斤/公里计算",
+      "breakdown_4": "免运费和平台促销计划",
+      "breakdown_5": "AMS (广告) 和广告预算",
+      "breakdown_6": "税费和包装费",
+      "cta_secondary": "立即开始计算",
+      "cta_register": "创建免费账户",
+      "subtitle_cta": "立即开始计算您的网店利润。免费、快速、准确。"
+    }
   }
 }

@@ -16,6 +16,7 @@
   "calculator": {
     "emptyTitle": "Click Calculate to see results",
     "emptyState": "No calculation yet",
+    "emptyHint": "Fill in the form and click Calculate to see results",
     "modeBadge": {
       "marketplace": "Marketplace",
       "live": "Live Selling"
@@ -25,6 +26,12 @@
     "showPrice": "Show price",
     "netSalePrefix": "Net Sale:",
     "discountHelper": "Discount percentage from Marketplace Selling Price for Live Selling",
+    "title": "Calculator",
+    "subtitle": "Calculate your marketplace profit with real-time fee breakdown",
+    "marketplacePrice": "Marketplace Price",
+    "livePrice": "Live Selling Price",
+    "marketplaceDeduction": "Marketplace Deductions",
+    "sellerCost": "Seller Costs",
     "inputs": {
       "marketplace": "Marketplace",
       "mode": "Mode",
@@ -107,7 +114,16 @@
     "duplicateSuccess": "Calculation duplicated",
     "viewDetail": "View details",
     "duplicate": "Duplicate",
-    "delete": "Delete"
+    "delete": "Delete",
+    "title": "History",
+    "empty": "No calculations yet",
+    "allMarketplaces": "All Marketplaces",
+    "allModes": "All Modes",
+    "newest": "Newest First",
+    "oldest": "Oldest First",
+    "highestProfit": "Highest Profit",
+    "lowestProfit": "Lowest Profit",
+    "deleteConfirm": "Are you sure you want to delete this calculation?"
   },
   "presets": {
     "editPreset": "Edit Preset",
@@ -120,7 +136,18 @@
     "categoryAndParams": "Category & Other Parameters",
     "presetSavesAllParams": "Preset will save all parameters from the current calculator form.",
     "goToCalculator": "Please go to the {{link}} page, set the desired parameters, then come back here to save as a preset.",
-    "namePlaceholder": "Example: Tokopedia Electronics Standard"
+    "namePlaceholder": "Example: Tokopedia Electronics Standard",
+    "title": "Presets",
+    "empty": "No presets yet",
+    "name": "Name",
+    "marketplace": "Marketplace",
+    "mode": "Mode",
+    "category": "Category",
+    "actions": "Actions",
+    "save": "Save",
+    "cancel": "Cancel",
+    "deleteConfirm": "Are you sure you want to delete this preset?",
+    "setAsDefault": "Set as Default"
   },
   "translation": {
     "subtitle": "Translate text with DeepL API - supports 5 languages",
@@ -253,43 +280,43 @@
     "detailedBreakdown": "Includes complete fee breakdown",
     "ctaTitle": "Start Calculating Your Profit Now",
     "subtitle": "The most complete marketplace profit calculator for Indonesian sellers. Supports Tokopedia, Shopee, Lazada, & TikTok Shop with real-time fee breakdowns.",
-    "featuresSubtitle": "Everything you need to optimize your online selling profit"
-  },
-  "home.features": {
-    "calculator": {
-      "title": "Real-time Calculator",
-      "description": "Calculate selling price, profit margin, and marketplace fee breakdowns in real-time for Tokopedia, Shopee, Lazada, and TikTok Shop."
+    "featuresSubtitle": "Everything you need to optimize your online selling profit",
+    "features": {
+      "calculator": {
+        "title": "Real-time Calculator",
+        "description": "Calculate selling price, profit margin, and marketplace fee breakdowns in real-time for Tokopedia, Shopee, Lazada, and TikTok Shop."
+      },
+      "dualMode": {
+        "title": "Dual Mode Calculation",
+        "description": "Calculation support for Marketplace Selling Price (Store) and Live Selling Price with automatic discounts."
+      },
+      "translation": {
+        "title": "Integrated Translation",
+        "description": "Integrated translation feature powered by DeepL API supporting 5 languages: Indonesian, English, 中文, 日本語, 한국어."
+      },
+      "breakdown": {
+        "title": "Detailed Fee Breakdown",
+        "description": "High-precision breakdown of platform fees, transaction fees, shipping, AMS, taxes, and packing costs."
+      },
+      "presets": {
+        "title": "Store Presets",
+        "description": "Save your favorite store configurations as presets for faster future calculations."
+      },
+      "history": {
+        "title": "Calculation History",
+        "description": "Access full history of all calculations with duplication and edit options."
+      }
     },
-    "dualMode": {
-      "title": "Dual Mode Calculation",
-      "description": "Calculation support for Marketplace Selling Price (Store) and Live Selling Price with automatic discounts."
-    },
-    "translation": {
-      "title": "Integrated Translation",
-      "description": "Integrated translation feature powered by DeepL API supporting 5 languages: Indonesian, English, 中文, 日本語, 한국어."
-    },
-    "breakdown": {
-      "title": "Detailed Fee Breakdown",
-      "description": "High-precision breakdown of platform fees, transaction fees, shipping, AMS, taxes, and packing costs."
-    },
-    "presets": {
-      "title": "Store Presets",
-      "description": "Save your favorite store configurations as presets for faster future calculations."
-    },
-    "history": {
-      "title": "Calculation History",
-      "description": "Access full history of all calculations with duplication and edit options."
+    "preview": {
+      "breakdown_1": "Platform commission & service fee",
+      "breakdown_2": "Transaction & order processing fees",
+      "breakdown_3": "Logistics fees (shipping) per kg/km",
+      "breakdown_4": "Free shipping & platform promo programs",
+      "breakdown_5": "AMS (Advertising) & ad budget",
+      "breakdown_6": "Taxes & packing costs",
+      "cta_secondary": "Start Calculating Now",
+      "cta_register": "Create Free Account",
+      "subtitle_cta": "Start calculating your online store profit now. Free, fast, and accurate."
     }
-  },
-  "home.preview": {
-    "breakdown_1": "Platform commission & service fee",
-    "breakdown_2": "Transaction & order processing fees",
-    "breakdown_3": "Logistics fees (shipping) per kg/km",
-    "breakdown_4": "Free shipping & platform promo programs",
-    "breakdown_5": "AMS (Advertising) & ad budget",
-    "breakdown_6": "Taxes & packing costs",
-    "cta_secondary": "Start Calculating Now",
-    "cta_register": "Create Free Account",
-    "subtitle_cta": "Start calculating your online store profit now. Free, fast, and accurate."
   }
 }

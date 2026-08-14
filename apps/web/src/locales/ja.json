@@ -14,18 +14,25 @@
     "profile": "プロフィール"
   },
   "calculator": {
-    "emptyTitle": "計算ボタンをクリックして結果を表示",
-    "emptyState": "計算がありません",
-    "modeBadge": {
-      "marketplace": "マーケットプレイス",
-      "live": "ライブ販売"
-    },
-    "refreshLabel": "再計算",
-    "hidePrice": "価格を隠す",
-    "showPrice": "価格を表示",
-    "netSalePrefix": "純売上高：",
-    "discountHelper": "ライブ販売のマーケットプレイス価格からの割引率",
-    "inputs": {
+      "emptyTitle": "計算ボタンをクリックして結果を表示",
+      "emptyState": "計算がありません",
+      "emptyHint": "フォームに入力して計算ボタンをクリックして結果を見てください",
+      "modeBadge": {
+        "marketplace": "マーケットプレイス",
+        "live": "ライブ販売"
+      },
+      "refreshLabel": "再計算",
+      "hidePrice": "価格を隠す",
+      "showPrice": "価格を表示",
+      "netSalePrefix": "純売上高：",
+      "discountHelper": "ライブ販売のマーケットプレイス価格からの割引率",
+      "title": "計算機",
+      "subtitle": "リアルタイム手数料内訳でマーケットプレイスの利益を計算",
+      "marketplacePrice": "マーケットプレイス価格",
+      "livePrice": "ライブ販売価格",
+      "marketplaceDeduction": "マーケットプレイス控除",
+      "sellerCost": "セラーコスト",
+      "inputs": {
       "marketplace": "マーケットプレイス",
       "mode": "モード",
       "modeMarketplace": "マーケットプレイス",
@@ -101,27 +108,47 @@
     "defaultUser": "ユーザー"
   },
   "history": {
-    "subtitle": "計算履歴を管理・表示",
-    "marketplace": "TikTok Shop",
-    "newCalculation": "新規計算",
-    "duplicateSuccess": "計算を複製しました",
-    "viewDetail": "詳細を見る",
-    "duplicate": "複製",
-    "delete": "削除"
-  },
+      "subtitle": "計算履歴を管理・表示",
+      "marketplace": "TikTok Shop",
+      "newCalculation": "新規計算",
+      "duplicateSuccess": "計算を複製しました",
+      "viewDetail": "詳細を見る",
+      "duplicate": "複製",
+      "delete": "削除",
+      "title": "履歴",
+      "empty": "計算がありません",
+      "allMarketplaces": "すべてのマーケットプレイス",
+      "allModes": "すべてのモード",
+      "newest": "新着順",
+      "oldest": "古い順",
+      "highestProfit": "利益が高い順",
+      "lowestProfit": "利益が低い順",
+      "deleteConfirm": "この計算を削除してもよろしいですか？"
+    },
   "presets": {
-    "editPreset": "プリセット編集",
-    "createNew": "新規プリセット",
-    "deleteFailed": "プリセットの削除に失敗しました",
-    "createFailed": "プリセットの作成に失敗しました",
-    "updateFailed": "プリセットの更新に失敗しました",
-    "loadFailed": "プリセットの読み込みに失敗しました",
-    "setAsDefaultHint": "マーケットプレイスごとに1つのデフォルトプリセットのみ",
-    "categoryAndParams": "カテゴリーとその他のパラメータ",
-    "presetSavesAllParams": "プリセットは現在の計算機フォームのすべてのパラメータを保存します。",
-    "goToCalculator": "{{link}} ページに移動し、希望のパラメータを設定してから、ここに戻ってプリセットとして保存してください。",
-    "namePlaceholder": "例：Tokopedia 電子機器 標準"
-  },
+      "editPreset": "プリセット編集",
+      "createNew": "新規プリセット",
+      "deleteFailed": "プリセットの削除に失敗しました",
+      "createFailed": "プリセットの作成に失敗しました",
+      "updateFailed": "プリセットの更新に失敗しました",
+      "loadFailed": "プリセットの読み込みに失敗しました",
+      "setAsDefaultHint": "マーケットプレイスごとに1つのデフォルトプリセットのみ",
+      "categoryAndParams": "カテゴリーとその他のパラメータ",
+      "presetSavesAllParams": "プリセットは現在の計算機フォームのすべてのパラメータを保存します。",
+      "goToCalculator": "{{link}} ページに移動し、希望のパラメータを設定してから、ここに戻ってプリセットとして保存してください。",
+      "namePlaceholder": "例：Tokopedia 電子機器 標準",
+      "title": "プリセット",
+      "empty": "プリセットがありません",
+      "name": "名前",
+      "marketplace": "マーケットプレイス",
+      "mode": "モード",
+      "category": "カテゴリー",
+      "actions": "操作",
+      "save": "保存",
+      "cancel": "キャンセル",
+      "deleteConfirm": "このプリセットを削除してもよろしいですか？",
+      "setAsDefault": "デフォルトに設定"
+    },
   "translation": {
     "subtitle": "DeepL API でテキストを翻訳 - 5言語対応",
     "swapWhileAuto": "自動検出中は言語を切り替えできません",
@@ -251,6 +278,45 @@
     "calculatorPreview": "計算機プレビュー",
     "calculatorPreviewDesc": "デスクトップとモバイルの両方で使いやすい、シンプルで応答性の高いインターフェース",
     "detailedBreakdown": "詳細な手数料内訳を含む",
-    "ctaTitle": "今すぐ利益計算を始めましょう"
+    "ctaTitle": "今すぐ利益計算を始めましょう",
+    "subtitle": "インドネシアのセラー向け最も完全なマーケットプレイス利益計算機。Tokopedia、Shopee、Lazada、TikTok Shop に対応し、リアルタイム手数料内訳を提供。",
+    "featuresSubtitle": "オンライン販売利益を最適化するために必要なすべての機能",
+    "features": {
+      "calculator": {
+        "title": "リアルタイム計算機",
+        "description": "Tokopedia、Shopee、Lazada、TikTok Shop の販売価格、利益率、マーケットプレイス手数料内訳をリアルタイムで計算。"
+      },
+      "dualMode": {
+        "title": "デュアルモード計算",
+        "description": "マーケットプレイス販売価格（店舗）とライブ販売価格の計算をサポート、自動割引付き。"
+      },
+      "translation": {
+        "title": "統合翻訳",
+        "description": "DeepL API による統合翻訳機能で、インドネシア語、英語、中国語、日本語、韓国語の 5 言語に対応。"
+      },
+      "breakdown": {
+        "title": "詳細手数料内訳",
+        "description": "プラットフォーム手数料、取引手数料、送料、AMS、税金、梱包費の高精度内訳。"
+      },
+      "presets": {
+        "title": "店舗プリセット",
+        "description": "お気に入りの店舗設定をプリセットとして保存し、将来の計算を高速化。"
+      },
+      "history": {
+        "title": "計算履歴",
+        "description": "複製と編集オプション付きで、すべての計算の完全な履歴にアクセス。"
+      }
+    },
+    "preview": {
+      "breakdown_1": "プラットフォーム手数料とサービス料",
+      "breakdown_2": "取引と注文処理手数料",
+      "breakdown_3": "物流費（送料）kg/km 単位",
+      "breakdown_4": "送料無料とプラットフォームプロモプログラム",
+      "breakdown_5": "AMS (広告) と広告予算",
+      "breakdown_6": "税金と梱包費",
+      "cta_secondary": "今すぐ計算を開始",
+      "cta_register": "無料アカウント作成",
+      "subtitle_cta": "今すぐオンラインショップの利益を計算しましょう。無料、高速、正確。"
+    }
   }
 }

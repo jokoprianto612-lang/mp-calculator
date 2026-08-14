@@ -14,18 +14,25 @@
     "profile": "Profil"
   },
   "calculator": {
-    "emptyTitle": "Klik tombol Hitung untuk melihat hasil",
-    "emptyState": "Belum ada perhitungan",
-    "modeBadge": {
-      "marketplace": "Marketplace",
-      "live": "Live Selling"
-    },
-    "refreshLabel": "Hitung ulang",
-    "hidePrice": "Sembunyikan harga",
-    "showPrice": "Tampilkan harga",
-    "netSalePrefix": "Net Sale:",
-    "discountHelper": "Persentase diskon dari Harga Jual Marketplace untuk Live Selling",
-    "inputs": {
+      "emptyTitle": "Klik tombol Hitung untuk melihat hasil",
+      "emptyState": "Belum ada perhitungan",
+      "emptyHint": "Isi form dan klik Hitung untuk melihat hasil",
+      "modeBadge": {
+        "marketplace": "Marketplace",
+        "live": "Live Selling"
+      },
+      "refreshLabel": "Hitung ulang",
+      "hidePrice": "Sembunyikan harga",
+      "showPrice": "Tampilkan harga",
+      "netSalePrefix": "Net Sale:",
+      "discountHelper": "Persentase diskon dari Harga Jual Marketplace untuk Live Selling",
+      "title": "Kalkulator",
+      "subtitle": "Hitung keuntungan marketplace Anda dengan rincian biaya real-time",
+      "marketplacePrice": "Harga Marketplace",
+      "livePrice": "Harga Live Selling",
+      "marketplaceDeduction": "Potongan Marketplace",
+      "sellerCost": "Biaya Penjual",
+      "inputs": {
       "marketplace": "Marketplace",
       "mode": "Mode",
       "modeMarketplace": "Marketplace",
@@ -101,27 +108,47 @@
     "defaultUser": "Pengguna"
   },
   "history": {
-    "subtitle": "Kelola dan lihat riwayat perhitungan keuntungan Anda",
-    "marketplace": "TikTok Shop",
-    "newCalculation": "Buat Perhitungan Baru",
-    "duplicateSuccess": "Perhitungan diduplikat",
-    "viewDetail": "Lihat detail",
-    "duplicate": "Duplikat",
-    "delete": "Hapus"
-  },
+      "subtitle": "Kelola dan lihat riwayat perhitungan keuntungan Anda",
+      "marketplace": "TikTok Shop",
+      "newCalculation": "Buat Perhitungan Baru",
+      "duplicateSuccess": "Perhitungan diduplikat",
+      "viewDetail": "Lihat detail",
+      "duplicate": "Duplikat",
+      "delete": "Hapus",
+      "title": "Riwayat",
+      "empty": "Belum ada perhitungan",
+      "allMarketplaces": "Semua Marketplace",
+      "allModes": "Semua Mode",
+      "newest": "Terbaru",
+      "oldest": "Terlama",
+      "highestProfit": "Keuntungan Tertinggi",
+      "lowestProfit": "Keuntungan Terendah",
+      "deleteConfirm": "Apakah Anda yakin ingin menghapus perhitungan ini?"
+    },
   "presets": {
-    "editPreset": "Edit Preset",
-    "createNew": "Buat Preset Baru",
-    "deleteFailed": "Gagal menghapus preset",
-    "createFailed": "Gagal membuat preset",
-    "updateFailed": "Gagal mengupdate preset",
-    "loadFailed": "Gagal memuat preset",
-    "setAsDefaultHint": "Hanya satu preset default per marketplace",
-    "categoryAndParams": "Kategori & Parameter Lainnya",
-    "presetSavesAllParams": "Preset akan menyimpan semua parameter dari form kalkulator saat ini.",
-    "goToCalculator": "Silakan buka halaman {{link}}, atur parameter yang diinginkan, lalu kembali ke sini untuk menyimpan sebagai preset.",
-    "namePlaceholder": "Contoh: Tokopedia Elektronik Standard"
-  },
+      "editPreset": "Edit Preset",
+      "createNew": "Buat Preset Baru",
+      "deleteFailed": "Gagal menghapus preset",
+      "createFailed": "Gagal membuat preset",
+      "updateFailed": "Gagal mengupdate preset",
+      "loadFailed": "Gagal memuat preset",
+      "setAsDefaultHint": "Hanya satu preset default per marketplace",
+      "categoryAndParams": "Kategori & Parameter Lainnya",
+      "presetSavesAllParams": "Preset akan menyimpan semua parameter dari form kalkulator saat ini.",
+      "goToCalculator": "Silakan buka halaman {{link}}, atur parameter yang diinginkan, lalu kembali ke sini untuk menyimpan sebagai preset.",
+      "namePlaceholder": "Contoh: Tokopedia Elektronik Standard",
+      "title": "Preset",
+      "empty": "Belum ada preset",
+      "name": "Nama",
+      "marketplace": "Marketplace",
+      "mode": "Mode",
+      "category": "Kategori",
+      "actions": "Aksi",
+      "save": "Simpan",
+      "cancel": "Batal",
+      "deleteConfirm": "Apakah Anda yakin ingin menghapus preset ini?",
+      "setAsDefault": "Jadikan Default"
+    },
   "translation": {
     "subtitle": "Terjemahkan teks dengan DeepL API - mendukung 5 bahasa",
     "swapWhileAuto": "Tidak bisa menukar saat deteksi otomatis",
@@ -253,43 +280,43 @@
     "detailedBreakdown": "Termasuk rincian biaya lengkap",
     "ctaTitle": "Mulai Hitung Keuntungan Anda Sekarang",
     "subtitle": "Kalkulator profit marketplace terlengkap untuk seller Indonesia. Dukung Tokopedia, Shopee, Lazada, & TikTok Shop dengan breakdown biaya real-time.",
-    "featuresSubtitle": "Semua fitur yang Anda butuhkan untuk mengoptimalkan profit penjualan online"
-  },
-  "home.features": {
-    "calculator": {
-      "title": "Kalkulator Real-time",
-      "description": "Hitung harga jual, margin keuntungan, dan rincian biaya marketplace secara real-time untuk Tokopedia, Shopee, Lazada, dan TikTok Shop."
+    "featuresSubtitle": "Semua fitur yang Anda butuhkan untuk mengoptimalkan profit penjualan online",
+    "features": {
+      "calculator": {
+        "title": "Kalkulator Real-time",
+        "description": "Hitung harga jual, margin keuntungan, dan rincian biaya marketplace secara real-time untuk Tokopedia, Shopee, Lazada, dan TikTok Shop."
+      },
+      "dualMode": {
+        "title": "Dual Mode Calculation",
+        "description": "Dukungan perhitungan untuk Harga Jual Marketplace (toko) dan Harga Jual Live (live selling) dengan diskon otomatis."
+      },
+      "translation": {
+        "title": "Terjemahan Terintegrasi",
+        "description": "Fitur terjemahan terintegrasi dengan DeepL API untuk mendukung 5 bahasa: Indonesia, English, 中文, 日本語, 한국어."
+      },
+      "breakdown": {
+        "title": "Rincian Biaya Lengkap",
+        "description": "Breakdown biaya platform fee, biaya transaksi, ongkir, AMS, pajak, dan biaya packing dengan presisi tinggi."
+      },
+      "presets": {
+        "title": "Preset Toko",
+        "description": "Simpan konfigurasi toko favorit sebagai preset untuk perhitungan cepat di masa mendatang."
+      },
+      "history": {
+        "title": "Riwayat Perhitungan",
+        "description": "Akses riwayat lengkap semua perhitungan yang pernah dilakukan dengan opsi duplikasi dan edit."
+      }
     },
-    "dualMode": {
-      "title": "Dual Mode Calculation",
-      "description": "Dukungan perhitungan untuk Harga Jual Marketplace (toko) dan Harga Jual Live (live selling) dengan diskon otomatis."
-    },
-    "translation": {
-      "title": "Terjemahan Terintegrasi",
-      "description": "Fitur terjemahan terintegrasi dengan DeepL API untuk mendukung 5 bahasa: Indonesia, English, 中文, 日本語, 한국어."
-    },
-    "breakdown": {
-      "title": "Rincian Biaya Lengkap",
-      "description": "Breakdown biaya platform fee, biaya transaksi, ongkir, AMS, pajak, dan biaya packing dengan presisi tinggi."
-    },
-    "presets": {
-      "title": "Preset Toko",
-      "description": "Simpan konfigurasi toko favorit sebagai preset untuk perhitungan cepat di masa mendatang."
-    },
-    "history": {
-      "title": "Riwayat Perhitungan",
-      "description": "Akses riwayat lengkap semua perhitungan yang pernah dilakukan dengan opsi duplikasi dan edit."
+    "preview": {
+      "breakdown_1": "Platform commission & service fee",
+      "breakdown_2": "Biaya transaksi & order processing",
+      "breakdown_3": "Biaya logistik (ongkir) per kg/km",
+      "breakdown_4": "Program gratis ongkir & promo platform",
+      "breakdown_5": "AMS (Advertising) & biaya iklan",
+      "breakdown_6": "Pajak & biaya packing",
+      "cta_secondary": "Mulai Hitung Sekarang",
+      "cta_register": "Buat Akun Gratis",
+      "subtitle_cta": "Mulai hitung keuntungan toko online Anda sekarang. Gratis, cepat, dan akurat."
     }
-  },
-  "home.preview": {
-    "breakdown_1": "Platform commission & service fee",
-    "breakdown_2": "Biaya transaksi & order processing",
-    "breakdown_3": "Biaya logistik (ongkir) per kg/km",
-    "breakdown_4": "Program gratis ongkir & promo platform",
-    "breakdown_5": "AMS (Advertising) & biaya iklan",
-    "breakdown_6": "Pajak & biaya packing",
-    "cta_secondary": "Mulai Hitung Sekarang",
-    "cta_register": "Buat Akun Gratis",
-    "subtitle_cta": "Mulai hitung keuntungan toko online Anda sekarang. Gratis, cepat, dan akurat."
   }
 }

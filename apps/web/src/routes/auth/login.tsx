@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +8,7 @@ import { CalculatorIcon, EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, Us
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
 import React from 'react';
+import { rootRoute } from '../../routes/__root';
 
 const loginSchema = z.object({
   email: z.string().email('Format email tidak valid'),
@@ -17,7 +18,9 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-export const loginRoute = createFileRoute('/auth/login')({
+export const Route = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/auth/login',
   component: LoginPage,
 });
 

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { createRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +8,7 @@ import { CalculatorIcon, EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, Us
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
 import React from 'react';
+import { rootRoute } from '../../routes/__root';
 
 const registerSchema = z.object({
   name: z.string().min(1, 'Nama wajib diisi').max(100),
@@ -21,7 +22,9 @@ const registerSchema = z.object({
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
-export const registerRoute = createFileRoute('/auth/register')({
+export const Route = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/auth/register',
   component: RegisterPage,
 });
 
@@ -38,9 +41,15 @@ export function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
   });
 
-  const password = watch('password');
+  const password = watch('password') || '';
 
   const onSubmit = async (data: RegisterForm) => {
     try {
