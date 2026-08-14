@@ -134,10 +134,10 @@ function HomePage() {
                 <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{feature.description}</p>
               </div>
-            ))
-          }
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Calculator Preview */}
       <section className="py-20 lg:py-28">
@@ -234,6 +234,6 @@ function HomePage() {
           </div>
         </div>
       </footer>
-    </section>
+    </div>
   );
 }
