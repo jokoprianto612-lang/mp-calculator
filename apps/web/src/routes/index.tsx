@@ -51,20 +51,19 @@ function HomePage() {
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="container-main">
           <div className="max-w-4xl mx-auto text-center">
+            {/* Logo */}
+            <Link to="/" className="inline-flex items-center gap-3 text-3xl font-bold text-primary-500 hover:text-primary-400 transition-colors mb-4">
+              <img src="/logo.png" alt="OkongzINC" className="w-[56px] h-[56px] object-contain rounded-lg" />
+              <span>{t('app.name')}</span>
+            </Link>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-400 text-sm font-medium mb-8 animate-in slide-in-from-bottom-4 duration-500">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-400 text-sm font-medium animate-in slide-in-from-bottom-4 duration-500">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
               </span>
               {t('home.versionBadge')}
             </div>
-
-            {/* Logo */}
-            <Link to="/" className="inline-flex items-center gap-3 text-3xl font-bold text-primary-500 hover:text-primary-400 transition-colors mb-8">
-              <img src="/logo.png" alt="OkongzINC" className="w-[56px] h-[56px] object-contain rounded-lg" />
-              <span>{t('app.name')}</span>
-            </Link>
 
             {/* Headline */}
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-500 delay-100">
