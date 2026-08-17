@@ -56,14 +56,6 @@ function HomePage() {
               <img src="/logo.png" alt="OkongzINC" className="w-10 h-10 object-contain rounded-lg" />
               <span>{t('app.name')}</span>
             </Link>
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-400 text-sm font-medium animate-in slide-in-from-bottom-4 duration-500">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
-              </span>
-              {t('home.versionBadge')}
-            </div>
 
             {/* Headline */}
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-500 delay-100">
