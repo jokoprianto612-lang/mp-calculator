@@ -21,7 +21,7 @@
     }
   },
   "scripts": {
-        "build": "pnpm exec tsc",
+        "build": "node /workdir/node_modules/typescript/bin/tsc --project ./tsconfig.json",
         "dev": "pnpm exec tsc --watch",
         "lint": "eslint src --ext .ts",
         "test": "vitest run",
