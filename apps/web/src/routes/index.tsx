@@ -1,7 +1,6 @@
 import { createRoute, Link } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { CalculatorIcon, ArrowRightIcon, CheckCircleIcon, GlobeAltIcon, SparklesIcon, BoltIcon, ChartBarIcon, UserIcon } from '@heroicons/react/24/outline';
-import { OkongzINCLogo } from '../components/brand/OkongzINCLogo';
 import { rootRoute } from './__root';
 
 export const Route = createRoute({
@@ -63,7 +62,7 @@ function HomePage() {
 
             {/* Logo */}
             <Link to="/" className="inline-flex items-center gap-3 text-3xl font-bold text-primary-500 hover:text-primary-400 transition-colors mb-8">
-              <OkongzINCLogo size={56} />
+              <img src="/logo.png" alt="OkongzINC" className="w-[56px] h-[56px] object-contain rounded-lg" />
               <span>{t('app.name')}</span>
             </Link>
 
@@ -223,7 +222,7 @@ function HomePage() {
         <div className="container-main">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary-500">
-              <OkongzINCLogo size={32} />
+              <img src="/logo.png" alt="OkongzINC" className="w-8 h-8 object-contain rounded-lg" />
               <span>{t('app.name')}</span>
             </Link>
             <p className="text-slate-500 text-sm">

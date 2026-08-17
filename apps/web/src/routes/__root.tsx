@@ -2,7 +2,6 @@ import { createRouter, createRoute, createRootRoute, Outlet, Link, useNavigate }
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/authStore';
 import { Bars3Icon, XMarkIcon, CalculatorIcon, Cog6ToothIcon, UserCircleIcon, ArrowRightOnRectangleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
-import { OkongzINCLogo } from '../components/brand/OkongzINCLogo';
 import { clsx } from 'clsx';
 import React from 'react';
 import { AnimatedBackground } from '../components/common/AnimatedBackground';
@@ -49,7 +48,7 @@ function RootLayout() {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary-500 hover:text-primary-400 transition-colors">
-              <OkongzINCLogo size={40} />
+              <img src="/logo.png" alt="OkongzINC" className="w-10 h-10 object-contain rounded-lg" />
               <span>{t('app.name')}</span>
           </Link>
 
