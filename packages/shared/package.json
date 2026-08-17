@@ -21,13 +21,13 @@
     }
   },
   "scripts": {
-        "build": "node /workdir/node_modules/typescript/bin/tsc --project ./tsconfig.json",
-        "dev": "pnpm exec tsc --watch",
-        "lint": "eslint src --ext .ts",
-        "test": "vitest run",
-        "typecheck": "pnpm exec tsc --noEmit",
-        "clean": "rm -rf dist"
-      },
+    "build": "node -e \"require('child_process').execSync('node ' + require.resolve('typescript/bin/tsc') + ' --project ./tsconfig.json', {stdio:'inherit'})\"",
+    "dev": "pnpm exec tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest run",
+    "typecheck": "pnpm exec tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
   "dependencies": {
     "zod": "^3.22.0",
     "decimal.js": "^10.4.0"
