@@ -52,8 +52,8 @@ function HomePage() {
         <div className="container-main">
           <div className="max-w-4xl mx-auto text-center">
             {/* Logo */}
-            <Link to="/" className="inline-flex items-center gap-3 text-3xl font-bold text-primary-500 hover:text-primary-400 transition-colors mb-4">
-              <img src="/logo.png" alt="OkongzINC" className="w-[56px] h-[56px] object-contain rounded-lg" />
+            <Link to="/" className="inline-flex items-center gap-3 text-2xl font-bold text-primary-500 hover:text-primary-400 transition-colors mb-4">
+              <img src="/logo.png" alt="OkongzINC" className="w-10 h-10 object-contain rounded-lg" />
               <span>{t('app.name')}</span>
             </Link>
             {/* Badge */}
