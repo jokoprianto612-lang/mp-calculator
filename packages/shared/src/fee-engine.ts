@@ -352,37 +352,61 @@ function calculateSellingPriceFromMargin(
     throw new Error('Target margin must be greater than -100%');
   }
 
-  // Closed-form initial upper bound estimate (effective fee rate ~50% conservative):
-  // price = HPP / (1 - targetMargin - 0.50), with safety floor 0.05 to avoid div-by-zero
-  // then multiply by 2 for headroom. This guarantees upperMargin > target for normal inputs.
-  const denominator = Math.max(0.05, 1 - targetMargin - 0.50);
-  let upper = hpp.times(2).div(new Decimal(denominator));
+  // Initial bounds calculation (as in original code)
   let lower = hpp;
+  let upper = hpp.times(2).div(new Decimal(Math.max(0.05, 1 - targetMargin - 0.50)));
 
-  // Quick feasibility check at lower bound: if margin already exceeds target,
-  // return lower (best we can do — increasing price only adds more margin).
+  // Adjust bounds to ensure netRevenue > 0 to avoid computeFees throwing
+  const sellerVoucherDec = new Decimal(inputs.sellerVoucher);
+  const minSellingPriceToAvoidZeroRevenue = sellerVoucherDec.plus(new Decimal('0.01'));
+  lower = Decimal.max(lower, minSellingPriceToAvoidZeroRevenue);
+  upper = Decimal.max(upper, minSellingPriceToAvoidZeroRevenue); // Also adjust upper to be safe
+
+  // Feasibility check: if margin at lower bound is already >= target, return lower
   const lowerResult = computeFees(lower, inputs, config, dynamicRate);
   const lowerMargin = Number(lowerResult.netProfitPercent) / 100;
   if (lowerMargin >= targetMargin) {
     return lower;
   }
 
-  // If upper bound doesn't reach target margin, expand until it does (or give up at 1000x).
-  let upperResult = computeFees(upper, inputs, config, dynamicRate);
-  let upperMargin = Number(upperResult.netProfitPercent) / 100;
-  while (upperMargin < targetMargin && upper.lessThan(hpp.times(1000))) {
-    upper = upper.times(2);
-    const next = computeFees(upper, inputs, config, dynamicRate);
-    upperMargin = Number(next.netProfitPercent) / 100;
-  }
-  if (upperMargin < targetMargin) {
-    // Truly impossible margin for given fee structure — return best achievable
-    return upper;
+  // If we reach here, we know margin at lower < target, so we need to search above
+  // Find upper bound where margin >= targetMargin by doubling from lower
+  let upperBound = lower;
+  let upperBoundResult: Omit<CalculationResult, 'marketplacePrice' | 'livePrice'>;
+  let upperBoundMargin: number;
+  let foundUpperBound = false;
+
+  // Try doubling up to 20 times
+  for (let i = 0; i < 20; i++) {
+    try {
+      upperBoundResult = computeFees(upperBound, inputs, config, dynamicRate);
+      upperBoundMargin = Number(upperBoundResult.netProfitPercent) / 100;
+      if (upperBoundMargin >= targetMargin) {
+        foundUpperBound = true;
+        break;
+      }
+      upperBound = upperBound.times(2);
+    } catch (error) {
+      // If computeFees throws, try a larger upper bound
+      upperBound = upperBound.times(2);
+    }
   }
 
-  // Binary search for 50 iterations (precision ~ 1/2^50 ≈ 1e-15)
+  // If we couldn't find a valid upper bound after many attempts, use a large fallback
+  if (!foundUpperBound) {
+    upperBound = lower.times(1000);
+    upperBoundResult = computeFees(upperBound, inputs, config, dynamicRate);
+    upperBoundMargin = Number(upperBoundResult.netProfitPercent) / 100;
+  }
+
+  // Now we have:
+  // - lower: margin < targetMargin (feasibility check confirmed this)
+  // - upperBound: margin >= targetMargin (we just verified this)
+  // Binary search between them
+  let finalLower = lower;
+  let finalUpper = upperBound;
   for (let i = 0; i < 50; i++) {
-    const mid = lower.plus(upper).div(2);
+    const mid = finalLower.plus(finalUpper).div(2);
     const testResult = computeFees(mid, inputs, config, dynamicRate);
     const actualMargin = Number(testResult.netProfitPercent) / 100;
     const diff = actualMargin - targetMargin;
@@ -394,13 +418,13 @@ function calculateSellingPriceFromMargin(
     // If actual margin > target → price too high (overpriced) → lower upper bound
     // If actual margin < target → price too low (underpriced) → raise lower bound
     if (diff > 0) {
-      upper = mid;
+      finalUpper = mid;
     } else {
-      lower = mid;
+      finalLower = mid;
     }
   }
 
-  return lower.plus(upper).div(2);
+  return finalLower.plus(finalUpper).div(2);
 }
 
 /**

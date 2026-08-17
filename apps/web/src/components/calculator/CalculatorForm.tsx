@@ -132,7 +132,7 @@ export function CalculatorForm() {
   const formatNumber = (num: number) => `Rp${num.toLocaleString('id-ID')}`;
 
   return (
-    <form onSubmit={handleSubmit(handleSubmitForm, handleInvalid)} className="relative overflow-hidden rounded-xl border border-primary-900/30 bg-[#121812]/60 backdrop-blur-sm p-5 space-y-6">
+    <form onSubmit={handleSubmit(handleSubmitForm, handleInvalid)} className="relative overflow-hidden rounded-xl border border-primary-500 bg-black p-5 space-y-6 shadow-[0_0_30px_rgba(118,185,0,0.25)]">
       {/* Marketplace & Mode */}
       <div className="space-y-4">
         <div>

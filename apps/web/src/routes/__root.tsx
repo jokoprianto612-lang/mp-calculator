@@ -38,12 +38,12 @@ function RootLayout() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#0a0e0a] text-slate-100 overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#030303] text-slate-100 overflow-x-hidden">
       {/* Animated background - green network pattern */}
       <AnimatedBackground />
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0e0a]/80 backdrop-blur-md border-b border-primary-900/30">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#030303]/80 backdrop-blur-md border-b border-primary-900/30">
         <div className="container-main">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
@@ -90,7 +90,7 @@ function RootLayout() {
                   <span>{languages.find(l => l.code === i18n.language)?.nativeName || i18n.language}</span>
                </button>
                 {langMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-[#121812] rounded-lg shadow-xl border border-primary-900/40 py-1 z-50 animate-in">
+                  <div className="absolute right-0 mt-2 w-40 bg-[#0e0e0e] rounded-lg shadow-xl border border-primary-900/40 py-1 z-50 animate-in">
                     {languages.map(lang => (
                       <button
                         key={lang.code}
@@ -124,7 +124,7 @@ function RootLayout() {
                    </span>
                  </button>
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-[#121812] rounded-lg shadow-xl border border-primary-900/40 py-1 z-50 animate-in">
+                    <div className="absolute right-0 mt-2 w-48 bg-[#0e0e0e] rounded-lg shadow-xl border border-primary-900/40 py-1 z-50 animate-in">
                       <Link
                         to="/settings"
                         className="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-primary-900/20"
@@ -170,7 +170,7 @@ function RootLayout() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#0a0e0a]/95 border-t border-primary-900/30 py-4 animate-in">
+          <div className="md:hidden bg-[#030303]/95 border-t border-primary-900/30 py-4 animate-in">
             <div className="container-main space-y-2">
               {isAuthenticated ? (
                 <>
@@ -212,7 +212,7 @@ function RootLayout() {
      </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-primary-900/30 bg-[#0a0e0a]/80 backdrop-blur-md">
+      <footer className="relative z-10 border-t border-primary-900/30 bg-[#030303]/80 backdrop-blur-md">
         <div className="container-main py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-slate-400 text-center md:text-left">

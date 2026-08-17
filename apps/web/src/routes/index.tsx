@@ -46,7 +46,7 @@ function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0e0a] text-slate-100">
+    <div className="min-h-screen bg-[#030303] text-slate-100">
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="container-main">
@@ -63,7 +63,7 @@ function HomePage() {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xl sm:text-2xl text-slate-300 max-w-3xl mx-auto mb-12 animate-in slide-in-from-bottom-4 duration-500 delay-200">
+            <p className="text-xl sm:text-2xl text-slate-200 max-w-3xl mx-auto mb-12 animate-in slide-in-from-bottom-4 duration-500 delay-200">
               {t('home.subtitle')}
             </p>
 
@@ -103,13 +103,13 @@ function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 lg:py-28 bg-[#121812]/50 border-y border-primary-900/30">
+      <section className="py-20 lg:py-28 bg-[#0e0e0e]/40 border-y border-primary-900/30">
         <div className="container-main">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               {t('home.featuresSubtitle')}
             </h2>
-            <p className="text-slate-400 text-lg">
+            <p className="text-slate-300 text-lg">
               Semua fitur yang Anda butuhkan untuk mengoptimalkan profit penjualan online
             </p>
           </div>
@@ -117,7 +117,7 @@ function HomePage() {
             {features.map((feature, index) => (
               <div
                 key={feature.title}
-                className="relative overflow-hidden rounded-2xl border border-primary-900/30 bg-[#121812]/60 backdrop-blur-sm p-6 hover:border-primary-500/40 hover:bg-primary-500/5 transition-all duration-300 animate-in slide-in-from-bottom-4 duration-500"
+                className="relative overflow-hidden rounded-2xl border border-primary-900/30 bg-[#0e0e0e]/60 backdrop-blur-sm p-6 hover:border-primary-500/40 hover:bg-primary-500/5 transition-all duration-300 animate-in slide-in-from-bottom-4 duration-500"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500/40 to-transparent" />
@@ -125,7 +125,7 @@ function HomePage() {
                   <feature.icon className="h-7 w-7" />
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{feature.description}</p>
+                <p className="text-slate-300 text-sm leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -139,15 +139,15 @@ function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               {t('home.calculatorPreview')}
             </h2>
-            <p className="text-slate-400 text-lg">{t('home.calculatorPreviewDesc')}</p>
+            <p className="text-slate-300 text-lg">{t('home.calculatorPreviewDesc')}</p>
           </div>
-          <div className="relative overflow-hidden rounded-2xl border border-primary-900/30 bg-[#121812]/60 backdrop-blur-sm p-8">
+          <div className="relative overflow-hidden rounded-2xl border border-primary-900/30 bg-[#0e0e0e]/60 backdrop-blur-sm p-8">
             <div className="grid gap-8 lg:grid-cols-2 items-start">
               <div className="text-left">
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {t('home.detailedBreakdown')}
                 </h3>
-                <ul className="space-y-3 text-slate-300">
+                <ul className="space-y-3 text-slate-200">
                   <li className="flex items-center gap-3">
                     <CheckCircleIcon className="h-5 w-5 text-primary-500 flex-shrink-0" />
                     <span>Platform commission & service fee</span>
@@ -191,7 +191,7 @@ function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
               {t('home.ctaTitle')}
             </h2>
-            <p className="text-slate-300 text-lg mb-10">
+            <p className="text-slate-200 text-lg mb-10">
               Mulai hitung keuntungan toko online Anda sekarang. Gratis, cepat, dan akurat.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

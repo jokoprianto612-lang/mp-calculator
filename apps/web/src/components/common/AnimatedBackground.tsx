@@ -89,7 +89,7 @@ export const AnimatedBackground: React.FC = () => {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
       {/* Base gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0e0a] via-[#0d120d] to-[#0a0e0a]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#030303] via-[#060606] to-[#030303]" />
       {/* Subtle radial green tint from top */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(118,185,0,0.08),_transparent_60%)]" />
       {/* Canvas network */}
