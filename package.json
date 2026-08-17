@@ -10,7 +10,7 @@
   "scripts": {
     "preinstall": "node -e \"if(process.env.CF_PAGES){try{require('child_process').execSync('rm -rf node_modules apps/*/node_modules packages/*/node_modules bun.lock bun.lockb',{stdio:'inherit'})}catch(e){console.error('preinstall cleanup skipped:',e.message)}}\"",
     "dev": "turbo run dev",
-    "build": "node -e \"if(process.env.CF_PAGES){require('child_process').execSync('pnpm install --no-frozen-lockfile --filter @mp-calculator/shared --filter @mp-calculator/web && pnpm --filter @mp-calculator/shared run build && pnpm --filter @mp-calculator/web run build',{stdio:'inherit'})}else{require('child_process').execSync('turbo run build',{stdio:'inherit'})}\"",
+    "build": "node -e \"if(process.env.CF_PAGES){require('child_process').execSync('pnpm install --no-frozen-lockfile && node node_modules/typescript/bin/tsc --project packages/shared/tsconfig.json && pnpm --filter @mp-calculator/web run build',{stdio:'inherit'})}else{require('child_process').execSync('turbo run build',{stdio:'inherit'})}\"",
     "build:web": "pnpm --filter @mp-calculator/shared run build && pnpm --filter @mp-calculator/web run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
